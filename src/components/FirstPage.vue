@@ -35,42 +35,44 @@
         <el-menu-item index="3">宣讲室</el-menu-item>
         <el-menu-item index="4"><a href="" target="_blank">首页</a></el-menu-item>
       </el-menu>
-
     </el-header>
+<!--    主体部分  -->
     <el-container>
-      <!--        <el-aside width="200px">Aside</el-aside>-->
-      <el-container>
         <!--          主体部分-->
-        <el-main>
+        <el-main >
           <!--  走马灯-->
-          <el-carousel height="300px">
-            <!--              <el-carousel-item v-for="item in 4" :key="item">-->
-            <!--                <h3 class="small">{{ item }}</h3>-->
-            <!--              </el-carousel-item>-->
+          <el-carousel height="200px">
             <el-carousel-item>
-
-              <img src="../assets/11.png" height="100%" width="100%"/>
+              <img src="../assets/11.png" height="100%" width="100%" alt=""/>
             </el-carousel-item>
             <el-carousel-item>
-
-              <img src="../assets/22.png" height="100%" width="100%"/></el-carousel-item>
+              <img src="../assets/22.png" height="100%" width="100%" alt=""/></el-carousel-item>
             <el-carousel-item>
-
-              <img src="../assets/33.png" height="100%" width="100%"/></el-carousel-item>
+              <img src="../assets/33.png" height="100%" width="100%" alt=""/></el-carousel-item>
             <el-carousel-item>
-
-              <img src="../assets/全景图.jpg" height="100%" width="100%"/></el-carousel-item>
+              <img src="../assets/全景图.jpg" height="100%" width="100%" alt=""/></el-carousel-item>
           </el-carousel>
-
-
+<!--          讲座信息显示的地方-->
           <el-row>
             <el-col :span="16">
               <div class="grid-content bg-purple">
-                <div>__________________________________________________________</div>
-                <div>
-                  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-                    <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
-                  </ul>
+                <div>近期讲座<el-divider></el-divider>
+                    <el-row>
+                      <el-col :span="24"><div class="grid-content bg-purple-dark">
+                        <!--                      显示某个讲座信息数组的具体信息-->
+                        <div v-for="item of lecture.dataInfo">
+                          <div> {{item.title}}</div>
+                          <div> {{item.lecNumber}}</div>
+                          <router-link to="/classRoom">{{item.lecRoom}}</router-link>
+
+                        </div>
+                      </div>
+                      </el-col>
+                    </el-row>
+                    <!--                  预留作为无限滚动的显示部位-->
+                    <!--                  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">-->
+                    <!--                    <li v-for="i in count" class="infinite-list-item">{{ i }}</li>-->
+                    <!--                  </ul>-->
                 </div>
               </div>
             </el-col>
@@ -115,9 +117,6 @@
         </el-main>
         <el-footer>Footer</el-footer>
       </el-container>
-      <!--        <el-aside width="200px">Aside</el-aside>-->
-
-    </el-container>
   </el-container>
 </template>
 
@@ -130,38 +129,45 @@
                 activeIndex2: '1',
                 input: '',
                 count: 6,
+                // 从后台获取的一个讲座的信息
+                lecture:{
+                    message:'',
+                    code:0,
+                    dataInfo: [{'lecNumber':'',
+                                'lecRoom':'',
+                                'lecScore':'',
+                                'lecTime':'',
+                                'speaker':'',
+                                'title':'',
+                                 'content':'',}]
+                }
             }
         },
         methods: {
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
             },
-            load () {
+            load() {
                 this.count += 0
             },
             //加载界面的时候从后端获取数据
-            created(){
-                this.axios.get('home/first').then(res=>{
-                    console.log(res)
-                }).catch(err=>{
-                    console.log(err)
-                })
-            },
-
-    },}
+        },
+        created() {
+            this.$axios.get('/home/first').then(res => {
+                  this.lecture.message = res.data.message;
+                  this.lecture.code = res.data.code;
+                  this.lecture.dataInfo = res.data.data;
+                  console.log(this.lecture.dataInfo);
+            }).catch(err => {
+                console.log(err)
+            })
+        },//created
+    }
 </script>
 
 
 <style scoped>
   /*登录卡片内容*/
-  .text {
-    font-size: 14px;
-  }
-
-  /*.item {*/
-  /*  padding: 5px 0;*/
-  /*}*/
-
   .box-card {
     width: 100%;
     margin-top: 3%;
@@ -169,8 +175,6 @@
 
   /*整体布局*/
   .el-header {
-    /*background-color: #B3C0D1;*/
-    /*color: #333;*/
     text-align: center;
     float: left;
     line-height: 3%;
@@ -195,14 +199,14 @@
   }
 
   .el-main {
-    padding-right: 15%;
-    padding-left: 15%;
+    padding-right: 6%;
+    padding-left: 6%;
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
     line-height: 60px;
+    padding-top: 0;
   }
-
   body > .el-container {
     margin-bottom: 40px;
   }
@@ -211,7 +215,6 @@
   .el-container:nth-child(6) .el-aside {
     line-height: 260px;
   }
-
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
   }
@@ -222,12 +225,10 @@
   }
 
   .el-menu-item {
-
     float: right;
   }
 
   .el-submenu {
-
     float: right;
   }
 
@@ -239,32 +240,19 @@
     line-height: 150px;
     margin: 0;
   }
-
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
-
   /*标题栏css*/
   .el-col {
     border-radius: 4px;
   }
-
   .bg-purple-dark {
     background: #99a9bf;
   }
-
   .bg-purple {
     background: #d3dce6;
   }
-
   .bg-purple-light {
     background: #e5e9f2;
   }
-
   .grid-content {
     border-radius: 4px;
     min-height: 50px;

@@ -1,22 +1,21 @@
-'use strict'
+'use strict';
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     // 配置支持跨域支持
     proxyTable: {
       '/api':{
+        // 实际上这里没有起到任何作用
         target: 'http://localhost:8088/api',
         changeOrigin: true,
         pathRewrite: {
-          '^/api':''
+          '^/api':''//需要rewrite重写的
         }
       }
     },

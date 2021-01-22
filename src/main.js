@@ -9,11 +9,14 @@ import axios from 'axios'; /* 引入axios进行地址访问*/
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 // 挂载到vue原型链上
-Vue.prototype.axios = axios;
+Vue.prototype.$axios = axios;
+axios.defaults.baseURL = 'http://localhost:8088/api';
+//配置发送带请求携带cookie
+// axios.defaults.withCredentials = true;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
-})
+});
