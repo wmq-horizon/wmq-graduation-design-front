@@ -385,20 +385,19 @@
   }
 
   .selected-seat {
-    background: url('./../assets/selected.png') center center no-repeat;
+    background: url('./../../assets/selected.png') center center no-repeat;
     background-size: 100% 100%;
   }
 
   .unselected-seat {
-    background: url('./../assets/unselected.png') center center no-repeat;
+    background: url('./../../assets/unselected.png') center center no-repeat;
     background-size: 100% 100%;
   }
 
   .bought-seat {
-    background: url('./../assets/bought.png') center center no-repeat;
+    background: url('./../../assets/bought.png') center center no-repeat;
     background-size: 100% 100%;
   }
-
   .screen-center {
     position: absolute;
     left: 50%;
