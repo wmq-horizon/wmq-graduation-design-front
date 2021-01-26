@@ -5,7 +5,10 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import homeComponent from "./components/student/homeComponent";
 import axios from 'axios'; /* 引入axios进行地址访问*/
+// 自定义全局组件进行复用
+Vue.component('homeComponent',homeComponent);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 // 挂载到vue原型链上

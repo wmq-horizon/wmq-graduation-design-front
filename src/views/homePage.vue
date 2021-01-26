@@ -11,26 +11,7 @@
     </el-row>
     <el-header>
       <!--    导航菜单-->
-      <el-menu
-        :default-active="activeIndex2"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="1">讲座大厅</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">人气榜</template>
-          <el-menu-item index="2-1">选项1</el-menu-item>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="3" disabled>勤学榜</el-menu-item>
-        <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">个人中心</a></el-menu-item>
-      </el-menu>
+    <homeComponent></homeComponent>
     </el-header>
     <!--    主体部分  -->
     <el-container>
@@ -49,7 +30,6 @@
             <img src="../assets/全景图.jpg" height="100%" width="100%" alt=""/></el-carousel-item>
         </el-carousel>
         <!--          讲座信息显示的地方-->
-
         <el-row>
           <el-col :span="16" style="padding-right: 1%">
             <el-divider content-position="left">
@@ -64,7 +44,7 @@
                     <div class="lecture-text-class"><i class="el-icon-caret-right"></i> {{item.title}}</div>
                   </el-col>
                   <el-col :span="12">
-                    <div class="lecture-class">{{item.lecTime}} | 量化分 {{item.lecScore}}</div>
+                    <div class="lecture-class">{{item.lecDate}} | 量化分 {{item.lecScore}}</div>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -77,13 +57,20 @@
                     </el-col>
                     <el-col :span="8">
                       <div class="lecture-class">【{{item.lecRoom}}】
-                        <router-link to="/classRoom"> 预定座位</router-link>
+                        <router-link
+                          :to="{
+                              path:'/classRoom',
+                              query:{
+                                // roomNumber:'{{item.lecRoom}}',
+                                // lecNumber:'{{item.lecNumber}}',
+                                stuNumber:'2017110336',
+                                // time:'{{item.lecTime}}',
+                                date:'2020-01-01'
+                                }}"> 预定座位</router-link>
                       </div>
                     </el-col>
                   </el-row>
-
                 </el-row>
-
               </div>
               <!--                  预留作为无限滚动的显示部位-->
               <!--                  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">-->
@@ -92,7 +79,7 @@
             </div>
             <el-divider content-position="left">
               <i class="el-icon-upload2"></i>
-              <sapn class="lecture-text-class">人气讲座</sapn>
+              <span class="lecture-text-class">人气讲座</span>
             </el-divider>
             <div v-for="item of lecture.dataInfo">
               <el-row>
@@ -145,6 +132,7 @@
             </div>
             <!--              </div>-->
           </el-col>
+<!--          右边的两个侧栏-->
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
               <el-card class="box-card">
@@ -154,6 +142,7 @@
                 <el-button round style="height: 45px;width: 100%">登录</el-button>
                 <el-link :underline="false" style="color:#2D634E">重置密码</el-link>
               </el-card>
+<!--              其他讲座的连接入口-->
               <el-card class="box-card">
                 <div slot="header">
                   <span style="text-align: left">外校讲座</span>
@@ -188,7 +177,7 @@
           四川师范大学 讲座信息网
       </el-footer>
       <el-footer>
-        <sapn>联系人：王女士</sapn>
+        <span>联系人：王女士</span>
         <el-divider direction="vertical"></el-divider>
         <span>联系电话：15760232967 </span>
       </el-footer>
@@ -201,8 +190,7 @@
         name: "FirstPage",
         data() {
             return {
-                activeIndex: '1',
-                activeIndex2: '1',
+
                 input: '',
                 count: 6,
                 // 从后台获取的一个讲座的信息
@@ -213,6 +201,7 @@
                         'lecNumber': '',
                         'lecRoom': '',
                         'lecScore': '',
+                        'letDate':'',
                         'lecTime': '',
                         'speaker': '',
                         'title': '',
@@ -222,9 +211,6 @@
             }
         },
         methods: {
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-            },
             load() {
                 this.count += 0
             },

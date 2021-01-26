@@ -1,7 +1,19 @@
 <template>
   <div class="wrapper">
+    <el-row>
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+        <div class="grid-content" style="padding-left:3%;float: left">
+          <img src="../../assets/校徽.png" height="50" width="50"/>
+          <img src="../../assets/标题.png" height="50" width="250"/>
+        </div>
+      </el-col>
+    </el-row>
+    <el-header>
+      <!--    导航菜单-->
+      <homeComponent></homeComponent>
+    </el-header>
     <div class="cinema-wrapper">
-      <h1 class="title">学校公开讲座预约管理系统</h1>
+<!--      <h1 class="title">学校公开讲座预约管理系统</h1>-->
 <!--      标题下面的按钮-->
       <div class="btn-wrapper">
         <div class="btn-buy" @click="buySeat">
@@ -82,6 +94,14 @@
                     col_count:'',
                     seatInfo:[]
                   },
+                // 从homePage传递过来的参数
+                bookInfo:{
+                    roomNumber:'',
+                    lecNumber:'',
+                    stuNumber:'',
+                    time:'',
+                    date:''
+                }
             }
         },
         computed: {},
@@ -107,7 +127,6 @@
                             this.tempArray[x][j] = array_zero[count1];
                         }
                     }
-                    console.log(this.tempArray);
                     this.initSeatArray();
                 }).catch(err=>{
                     console.log(err);
@@ -130,12 +149,10 @@
                  *   offset:Number
                  * }
                  */
-
                 let currentDirectionSearchResult = [];
                 // 判断出谁是小一点的函数，谁是大一点的函数，没有判断row和座位组数的大小，传递进来对的座位行数的大小
                 let largeRow = fromRow > toRow ? fromRow : toRow,
                     smallRow = fromRow > toRow ? toRow : fromRow;
-
                 for (let i = smallRow; i <= largeRow; i++) {
                     //每一次的搜索,找出该次里中轴线最近的一组座位
                     let tempRowResult = [],
@@ -143,10 +160,11 @@
                         minDistanceToMidLine = Infinity;
                     for (let j = 0; j <= this.seatCol - num; j++) {
                         //如果有合法位置， 双重循环选择数组内的座位数，I为行数，j为列数，调用check函数
-                        if (this.checkRowSeatContinusAndEmpty(i, j, j + num - 1)) {
+                        if (this.checkRowSeatContinuousAndEmpty(i, j, j + num - 1)) {
                             //计算该组位置距离中轴线的距离:该组位置的中间位置到中轴线的距离；parseInt(xy);y为解析数字的基数，这里表示出来即为10进制
                             let resultMidPos = parseInt((j + num / 2), 10);
-                            //计算现在的距离到中心线的距离
+                            //计算现在的距离到中心线的
+                            // 距离
                             let distance = Math.abs(parseInt(this.seatCol / 2) - resultMidPos);
                             //如果距离较短则更新，即如果合理的话就更新
                             if (distance < minDistanceToMidLine) {
@@ -162,19 +180,17 @@
                         offset: minDistanceToMidLine
                     })
                 }
-
-
                 //处理后行的搜索结果:找到距离中轴线最短的一个
                 //注意这里的逻辑需要区分前后行，对于后行是从前往后，前行则是从后往前找
                 // IsBackDire是一个boolean类型的变量；minDistanceToMid和minDistanceToMidLine的差别是什么
                 let isBackDir = fromRow < toRow;
-                let finalReuslt = [], minDistanceToMid = Infinity;
+                let finalResult = [], minDistanceToMid = Infinity;
                 //如果前行小于后行
                 if (isBackDir) {
                     //后向情况,从前往后，将currentDirectionSearchResult中存储的位置一个一个的存储到最后的结果当中
                     currentDirectionSearchResult.forEach((item) => {
                         if (item.offset < minDistanceToMid) {
-                            finalReuslt = item.result;
+                            finalResult = item.result;
                             minDistanceToMid = item.offset;
                         }
                     });
@@ -182,14 +198,15 @@
                     //前排情况，从后往前找，将结果导致再逐个的取出
                     currentDirectionSearchResult.reverse().forEach((item) => {
                         if (item.offset < minDistanceToMid) {
-                            finalReuslt = item.result;
+                            finalResult = item.result;
                             minDistanceToMid = item.offset;
                         }
                     })
                 }
                 //直接返回结果
-                return finalReuslt
+                return finalResult
             },
+
             //辅助函数:智能推荐的选座操作
             chooseSeat: function (result) {
                 // slice() 方法可从已有的数组中返回选定的元素，返回其中的所有的元素，存储到oldArray中
@@ -197,7 +214,7 @@
                 // oldArray用来存储变量，result用来
                 for (let i = 0; i < result.length; i++) {
                     //选定座位
-                    oldArray[result[i][0]][result[i][1]] = 1;
+                    oldArray[result[i][0]][result[i][1]] = '1';
                 }
                 this.seatArray = oldArray;
             },
@@ -205,8 +222,14 @@
             smartChoose: function (num) {
                 //找到影院座位水平垂直中间位置，parseInt的第一个参数要求是string
                 let rowStart = parseInt((this.seatRow - 1) / 2, 10) ;
+                console.log('rowStart');
+                console.log(rowStart);
+                console.log(this.seatRow-1);
+                console.log(num);
                 //先从前排往后排搜索，参数为开始行、结束行和座位的格式，backResult表示从前往后
                 let backResult = this.searchSeatByDirection(rowStart, this.seatRow - 1, num);
+                console.log('backResult');
+                console.log(backResult);
                 if (backResult.length > 0) {
                     this.chooseSeat(backResult);
                     return
@@ -218,12 +241,12 @@
                     this.chooseSeat(forwardResult);
                     return
                 }
-                //提示用户无合法位置可选，什么时候提示无合法位置可选
+                //提示用户无合法位置可选
                 alert('无合法位置可选!')
             },
             /*辅助函数，判断每一行座位从i列到j列是否全部空余且连续，返回的是一个bool函数
              */
-            checkRowSeatContinusAndEmpty: function (rowNum, startPos, endPos) {
+            checkRowSeatContinuousAndEmpty: function (rowNum, startPos, endPos) {
                 let isValid = true;
                 for (let i = startPos; i <= endPos; i++) {
                     if (this.seatArray[rowNum][i] !== 0) {
@@ -247,8 +270,8 @@
                 let oldArray = this.seatArray.slice();
                 for (let i = 0; i < this.seatRow; i++) {
                     for (let j = 0; j < this.seatCol; j++) {
-                        if (oldArray[i][j] !== -1) {
-                            oldArray[i][j] = 0
+                        if (oldArray[i][j] !== '-1') {
+                            oldArray[i][j] = '0'
                         }
                     }
                 }
@@ -260,8 +283,8 @@
                 let oldArray = this.seatArray.slice();
                 for (let i = 0; i < this.seatRow; i++) {
                     for (let j = 0; j < this.seatCol; j++) {
-                        if (oldArray[i][j] === 1) {
-                            oldArray[i][j] = 2
+                        if (oldArray[i][j] === '1') {
+                            oldArray[i][j] ='2'
                         }
                     }
                 }
@@ -274,27 +297,19 @@
                 // 定义新的数组为将要接收信息的数组，可以直接在oldArray上进行修改吗
                 let newArray = this.seatArray;
                 //如果是已购座位，直接返回
-                if (seatValue === 2) return;
+                if (seatValue === '2') return;
                 //如果是已选座位点击后变未选
-                if (seatValue === 1) {
-                    newArray[row][col] = 0
-                } else if (seatValue === 0) {
-                    newArray[row][col] = 1
+                if (seatValue === '1') {
+                    newArray[row][col] = '0'
+                } else if (seatValue === '0') {
+                    newArray[row][col] = '1'
                 }
                 //必须整体更新二维数组，Vue无法检测到数组某一项更新,必须slice复制一个数组才行
                 this.seatArray = newArray.slice();
-                console.log(this.seatArray);
                 // 输出的是二维数组
             },
             //初始座位数组，包括座位的相关信息和不是座位的相关信息
             initSeatArray: function () {
-                // 初始化二维数组并且填充0
-                // let tempSeatArray;
-                 // tempSeatArray = Array(this.seatRow).fill(0).map(() => Array(this.seatCol).fill(0));
-                // this.seatArray = tempSeatArray;
-                console.log("hello");
-                console.log(this.tempArray);
-                console.log("nihao");
                 this.seatArray = this.tempArray;
                 console.log(this.seatArray);
                 // 可以通过 $refs 得到组件，进而调用组件的变量和方法,根据座位的容量设置座位的宽度，能取到座位跨度就是座位宽度，不能取到座位宽度就为0
@@ -319,11 +334,20 @@
                     this.seatArray[2][i] = -1;
                 }
             },
+            getParams:function(){
+                this.bookInfo.roomNumber = this.$route.query.roomNumber;
+                this.bookInfo.lecNumber = this.$route.query.lecNumber;
+                this.bookInfo.stuNumber = this.$route.query.stuNumber;
+                this.bookInfo.time = this.$route.query.time;
+                this.bookInfo.date = this.$route.query.date;
+                console.log('教室名称');
+                console.log(this.bookInfo.stuNumber);
+            }
         },
         //挂载的时候初始化座位的相关信息。
         mounted: function () {
             this.getSeatInfo();
-
+            this.getParams();
         }
     }
 </script>
@@ -331,7 +355,7 @@
 <style scoped>
   .wrapper {
     height: 100%;
-    padding: 40px;
+    /*padding: 40px;*/
     box-sizing:border-box;
   }
 
