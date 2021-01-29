@@ -19,9 +19,9 @@
         <div class="btn-buy" @click="buySeat">
           选定座位
         </div>
-        <div class="btn-buy" @click="resetSeat">
-          重置座位
-        </div>
+<!--        <div class="btn-buy" @click="resetSeat">-->
+<!--          重置座位-->
+<!--        </div>-->
         <!--智能选择-->
         <template v-for="(item,index) in smartChooseMaxNum">
           <div class="btn-buy smart" @click="smartChoose(index+1)">
@@ -79,7 +79,6 @@
                 //教室座位的二维数组,-1为非座位，0为未购座位，1为已选座位(绿色),2为已购座位(红色)
                 seatArray:[],
                 dataArray:[],
-                temArray:[],
                 //教室座位行数
                 //问题，当输入的行数和列数为10和10的时候画出的座位列表不对
                 seatSize: '',
@@ -106,32 +105,7 @@
         },
         computed: {},
         methods: {
-            getSeatInfo(){
-                this.$axios.get('/classRoomInfo/getClassRoomInfo').then(res=>{
-                    this.dataArray = res.data.data;
-                    this.classRoom.row_count = this.dataArray[0].rowCount;
-                    this.classRoom.col_count = this.dataArray[0].colCount;
-                    this.tempArray = Array(this.classRoom.row_count).fill(0).map(() => Array(this.classRoom.col_count).fill(0));
-                    let count = 0;
-                    let array_zero = [];
-                    for (let item in this.dataArray[0]){
-                        count++;
-                        if(count>4){
-                            array_zero.push(this.dataArray[0][item]);
-                        }
-                    }
-                    let count1 = 0;
-                    for(let x=0;x<parseInt(this.classRoom.row_count);x++){
-                        for(let j=0;j<parseInt(this.classRoom.col_count);j++){
-                            count1++;
-                            this.tempArray[x][j] = array_zero[count1];
-                        }
-                    }
-                    this.initSeatArray();
-                }).catch(err=>{
-                    console.log(err);
-                });
-            },
+
             //智能推荐座位的函数，按照座位的方向进行搜索
             //向前后某个方向进行搜索的函数,参数是起始行，终止行,推荐座位个数，
             searchSeatByDirection: function (fromRow, toRow, num) {
@@ -222,10 +196,6 @@
             smartChoose: function (num) {
                 //找到影院座位水平垂直中间位置，parseInt的第一个参数要求是string
                 let rowStart = parseInt((this.seatRow - 1) / 2, 10) ;
-                console.log('rowStart');
-                console.log(rowStart);
-                console.log(this.seatRow-1);
-                console.log(num);
                 //先从前排往后排搜索，参数为开始行、结束行和座位的格式，backResult表示从前往后
                 let backResult = this.searchSeatByDirection(rowStart, this.seatRow - 1, num);
                 console.log('backResult');
@@ -249,7 +219,7 @@
             checkRowSeatContinuousAndEmpty: function (rowNum, startPos, endPos) {
                 let isValid = true;
                 for (let i = startPos; i <= endPos; i++) {
-                    if (this.seatArray[rowNum][i] !== 0) {
+                    if (this.seatArray[rowNum][i] !== '0') {
                         isValid = false;
                         break;
                     }
@@ -271,7 +241,7 @@
                 for (let i = 0; i < this.seatRow; i++) {
                     for (let j = 0; j < this.seatCol; j++) {
                         if (oldArray[i][j] !== '-1') {
-                            oldArray[i][j] = '0'
+                            oldArray[i][j] = '0';
                         }
                     }
                 }
@@ -281,14 +251,24 @@
             buySeat: function () {
                 //遍历seatArray，将值为1的座位变为2
                 let oldArray = this.seatArray.slice();
+                let count = 0;
                 for (let i = 0; i < this.seatRow; i++) {
                     for (let j = 0; j < this.seatCol; j++) {
+                        count++;
                         if (oldArray[i][j] === '1') {
-                            oldArray[i][j] ='2'
+                            oldArray[i][j] ='2';
+                            this.seatArray = oldArray;
+                            let  seatNumberAndName='seat_'+count+'='+this.bookInfo.roomNumber;
+                            console.log(seatNumberAndName);
+                            this.$axios.get('/classRoomInfo/buySeat?seatNumberAndName='+seatNumberAndName).then(res=>{
+                                 console.log('修改成功');
+                            }).catch(()=>{
+                                console.log(seatNumberAndName);
+                                console.log('err')
+                            });
                         }
                     }
                 }
-                this.seatArray = oldArray;
             },
             //处理座位选择逻辑，手动用鼠标选择单个座位
             handleChooseSeat: function (row, col) {
@@ -309,44 +289,70 @@
                 // 输出的是二维数组
             },
             //初始座位数组，包括座位的相关信息和不是座位的相关信息
-            initSeatArray: function () {
-                this.seatArray = this.tempArray;
-                console.log(this.seatArray);
-                // 可以通过 $refs 得到组件，进而调用组件的变量和方法,根据座位的容量设置座位的宽度，能取到座位跨度就是座位宽度，不能取到座位宽度就为0
-                this.seatSize = this.$refs.innerSeatWrapper
-                    ? parseInt(parseInt(window.getComputedStyle(this.$refs.innerSeatWrapper).width, 10) / this.seatCol, 10)
-                    : 0;
-                // 初始化不是座位的地方
-                for (let i = 0; i < 9; i++) {
-                    this.seatArray[i][0] = -1;
-                }
-                // 前八行倒数第一列和第二列全部
-                for (let i = 0; i < 9; i++) {
-                    this.seatArray[i][this.seatArray[0].length - 1] = -1;
-                    this.seatArray[i][this.seatArray[0].length - 2] = -1;
-                }
-                //倒数第三行前九列全部为非座位。
-                for (let i = 0; i < 9; i++) {
-                    this.seatArray[i][this.seatArray[0].length - 3] = -1;
-                }
-                //第二行全部为非座位
-                for (let i = 0; i < this.seatArray[0].length; i++) {
-                    this.seatArray[2][i] = -1;
-                }
-            },
             getParams:function(){
                 this.bookInfo.roomNumber = this.$route.query.roomNumber;
                 this.bookInfo.lecNumber = this.$route.query.lecNumber;
                 this.bookInfo.stuNumber = this.$route.query.stuNumber;
                 this.bookInfo.time = this.$route.query.time;
                 this.bookInfo.date = this.$route.query.date;
-                console.log('教室名称');
-                console.log(this.bookInfo.stuNumber);
-            }
+                this.$axios.get('/home/getSeatInfo?roomName='+this.bookInfo.roomNumber).then(res=>{
+                    console.log(res.data.data);
+                    this.dataArray = res.data.data;
+                    this.classRoom.row_count = this.dataArray[0].rowCount;
+                    this.classRoom.col_count = this.dataArray[0].colCount;
+                    this.tempArray = Array(this.classRoom.row_count).fill(0).map(() => Array(this.classRoom.col_count).fill(0));
+                    let count = 0;
+                    let array_zero = [];
+                    for (let item in this.dataArray[0]){
+                        count++;
+                        if(count>4){
+                            array_zero.push(this.dataArray[0][item]);
+                        }
+                    }
+                    count = 0;
+                    for(let x=0;x<parseInt(this.classRoom.row_count);x++){
+                        for(let j=0;j<parseInt(this.classRoom.col_count);j++){
+                            this.tempArray[x][j] = array_zero[count];
+                            count++;
+                        }
+                    }
+                    // this.initSeatArray();
+                    this.seatArray = this.tempArray;
+                }).catch(err=>{
+                    console.log(err)
+                })
+
+            },
+            initSeatArray: function () {
+
+
+
+                // 初始化不是座位的地方
+                // for (let i = 0; i < 9; i++) {
+                //     this.tempArray[i][0] = '-1';
+                // }
+                // // 前八行倒数第一列和第二列全部
+                // for (let i = 0; i < 9; i++) {
+                //     this.tempArray[i][this.tempArray[0].length - 1] = '-1';
+                //     this.tempArray[i][this.tempArray[0].length - 2] = '-1';
+                // }
+                // //倒数第三行前九列全部为非座位。
+                // for (let i = 0; i < 9; i++) {
+                //     this.tempArray[i][this.tempArray[0].length - 3] = '-1';
+                // }
+                // //第二行全部为非座位
+                // for (let i = 0; i < this.tempArray[0].length; i++) {
+                //     this.tempArray[2][i] = '-1';
+                // }
+            },
+            // 从定讲座首页传递过来相关信息、
         },
         //挂载的时候初始化座位的相关信息。
         mounted: function () {
-            this.getSeatInfo();
+            // 可以通过 $refs 得到组件，进而调用组件的变量和方法,根据座位的容量设置座位的宽度，能取到座位跨度就是座位宽度，不能取到座位宽度就为0
+            this.seatSize = this.$refs.innerSeatWrapper
+                ? parseInt(parseInt(window.getComputedStyle(this.$refs.innerSeatWrapper).width, 10) / this.seatCol, 10)
+                : 0;
             this.getParams();
         }
     }

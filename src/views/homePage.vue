@@ -61,11 +61,11 @@
                           :to="{
                               path:'/classRoom',
                               query:{
-                                // roomNumber:'{{item.lecRoom}}',
-                                // lecNumber:'{{item.lecNumber}}',
-                                stuNumber:'2017110336',
-                                // time:'{{item.lecTime}}',
-                                date:'2020-01-01'
+                                roomNumber:item.lecRoom,
+                                lecNumber:item.lecNumber,
+                                stuNumber:item.lecRoom,
+                                time:item.lecTime,
+                                date:'2020-01-01',
                                 }}"> 预定座位</router-link>
                       </div>
                     </el-col>
@@ -105,7 +105,7 @@
               </el-row>
             </div>
             <el-divider content-position="left">
-              <i class="el-icon-date"></i><span class="lecture-text-class" s></span>往期回顾
+              <i class="el-icon-date"></i><span class="lecture-text-class"></span>往期回顾
             </el-divider>
             <div v-for="item of lecture.dataInfo">
               <el-row>
@@ -190,7 +190,6 @@
         name: "FirstPage",
         data() {
             return {
-
                 input: '',
                 count: 6,
                 // 从后台获取的一个讲座的信息
@@ -207,6 +206,13 @@
                         'title': '',
                         'content': '',
                     }]
+                },
+                seat:{
+                    seat_message:'',
+                    seat_code:'',
+                    room_name:'',
+                    row_count:0,
+                    col_count:0
                 }
             }
         },
