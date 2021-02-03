@@ -8,9 +8,11 @@ import lectureHall from '../views/userViews/lectureHall';
 import popularityList from '../views/userViews/popularityList';
 import studentHome from '../views/userViews/studentHome';
 import lectureHome from '../views/adminViews/lectureHome';
-import classRoomHome from "../views/adminViews/classRoomHome";
+import classRoomHome from "../views/adminViews/roomHome";
 import personalInfo from "../views/adminViews/personalInfo";
 import studentCenter from "../views/adminViews/studentCenter";
+import createNewLecture from "../views/adminViews/newLecture";
+import newRoom from "../views/adminViews/newRoom";
 
 Vue.use(Router);
 export default new Router({
@@ -55,6 +57,14 @@ export default new Router({
       path: '/studentCenter',
       name: 'studentCenter',
       component: studentCenter
+    }, {
+      path: '/createNewLecture',
+      name: 'createNewLecture',
+      component: createNewLecture
+    }, {
+      path: '/newRoom',
+      name: 'newRoom',
+      component: newRoom
     }
   ]
 })

@@ -25,3 +25,12 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
+// 配置全局路由守卫
+router.beforeEach((to,from,next)=>{
+  if(to.path === '/'||to.path==='/lectureHome'){
+    next();
+  }else{
+    alert('您还没有登录，请先登录');
+    next('/');
+  }
+});
