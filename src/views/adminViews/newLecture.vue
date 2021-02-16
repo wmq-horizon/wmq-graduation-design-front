@@ -1,13 +1,6 @@
 <template>
   <div>
-  <el-row>
-    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-      <div class="grid-content" style="padding-left:3%;float: left">
-        <img src="../../assets/校徽.png" height="50" width="50"/>
-        <img src="../../assets/标题.png" height="50" width="250"/>
-      </div>
-    </el-col>
-  </el-row>
+  <headerBar></headerBar>
   <div>
     <el-col :span="4"><menuComponent></menuComponent></el-col>
     <el-col :span="20">
@@ -119,11 +112,12 @@
             }
         },
         methods:{
+
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log(this.ruleForm.date2);
-                        this.$axios.post('/back/createNewLecture',{
+                        this.$axios.post('/admin/createNewLecture',{
                             lecNumber:this.ruleForm.lec_number,
                             lecRoom:this.ruleForm.region,
                             title:this.ruleForm.name,

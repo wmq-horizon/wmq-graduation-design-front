@@ -130,17 +130,16 @@
                 </el-col>
               </el-row>
             </div>
-            <!--              </div>-->
           </el-col>
 <!--          右边的两个侧栏-->
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
               <el-card class="box-card">
                 <div>用户登录</div>
-                <el-input v-model="input" placeholder="用户名"></el-input>
-                <el-input v-model="input" placeholder="密码"></el-input>
-                <el-button round style="height: 45px;width: 100%">登录</el-button>
-                <el-link :underline="false" style="color:#2D634E">重置密码</el-link>
+                <el-input v-model="userId" placeholder="用户名"></el-input>
+                <el-input v-model="passWord" placeholder="密码" type="password"></el-input>
+                <el-button round style="height: 45px;width: 100%" @click="loginIn">登录</el-button>
+                <el-link :underline="false" style="color:#2D634E" @click="showWhoIam">重置密码</el-link>
               </el-card>
 <!--              其他讲座的连接入口-->
               <el-card class="box-card">
@@ -190,7 +189,8 @@
         name: "FirstPage",
         data() {
             return {
-                input: '',
+                userId:'',
+                passWord:'',
                 count: 6,
                 // 从后台获取的一个讲座的信息
                 lecture: {
@@ -217,13 +217,43 @@
             }
         },
         methods: {
+            showWhoIam(){
+                this.$axios.get("student/hello").then(res=>{
+                    console.log(res);
+                    console.log("show me")
+
+                }).catch(err=>{});
+            },
+
+            logOut(){
+                this.$axios.get("/user/logOut").then(res=>{
+                    console.log("logout");
+                    console.log(res);
+                }).catch(err=>{console.log(err)});
+            },
+            loginIn() {
+                this.$axios.post("/user/login", {
+                    uid: this.userId,
+                    password: this.passWord,
+                    role:'student'
+            }).then(res => {
+                    console.log(res);
+                    if(res.data.code===200){
+                        sessionStorage.setItem("session",res.data.data);
+                    }
+                    console.log("session");
+                    console.log(res.data.data);
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
             load() {
                 this.count += 0
             },
             //加载界面的时候从后端获取数据
         },
         created() {
-            this.$axios.get('/home/first').then(res => {
+            this.$axios.get('/student/home').then(res => {
                 this.lecture.message = res.data.message;
                 this.lecture.code = res.data.code;
                 this.lecture.dataInfo = res.data.data;
@@ -231,10 +261,10 @@
             }).catch(err => {
                 console.log(err)
             })
+
         },//created
     }
 </script>
-
 
 <style scoped>
   .lecture-class {

@@ -260,7 +260,7 @@
                             this.seatArray = oldArray;
                             let  seatNumberAndName='seat_'+count+'='+this.bookInfo.roomNumber;
                             console.log(seatNumberAndName);
-                            this.$axios.get('/classRoomInfo/buySeat?seatNumberAndName='+seatNumberAndName).then(res=>{
+                            this.$axios.get('/student/buySeat?seatNumberAndName='+seatNumberAndName).then(res=>{
                                  console.log('修改成功');
                             }).catch(()=>{
                                 console.log(seatNumberAndName);
@@ -295,7 +295,7 @@
                 this.bookInfo.stuNumber = this.$route.query.stuNumber;
                 this.bookInfo.time = this.$route.query.time;
                 this.bookInfo.date = this.$route.query.date;
-                this.$axios.get('/home/getSeatInfo?roomName='+this.bookInfo.roomNumber).then(res=>{
+                this.$axios.get('/student/getSeatInfo?roomName='+this.bookInfo.roomNumber).then(res=>{
                     console.log(res.data.data);
                     this.dataArray = res.data.data;
                     this.classRoom.row_count = this.dataArray[0].rowCount;
@@ -319,6 +319,7 @@
                     // this.initSeatArray();
                     this.seatArray = this.tempArray;
                 }).catch(err=>{
+                    console.log("请求出错啦");
                     console.log(err)
                 })
 

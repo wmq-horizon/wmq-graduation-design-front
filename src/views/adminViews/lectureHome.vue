@@ -1,13 +1,6 @@
 <template>
 <div>
-  <el-row>
-    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-      <div class="grid-content" style="padding-left:3%;float: left">
-        <img src="../../assets/校徽.png" height="50" width="50"/>
-        <img src="../../assets/标题.png" height="50" width="250"/>
-      </div>
-    </el-col>
-  </el-row>
+  <headerBar></headerBar>
   <div>
     <el-col :span="4"><menuComponent></menuComponent></el-col>
     <el-col :span="20">
@@ -112,8 +105,14 @@
                 console.log(row);
                 console.log(index);
             },
+
             getInitTableInfo(){
-                this.$axios.get('/back/lectureInfo').then(res=>{
+                this.$axios.get('/student/getSeatInfo?roomName=testRoom').then(res=>{
+                    console.log("登录管理员之后的数据为：");
+                    console.log(res.data.data);}).catch(err=>{
+                    console.log(err);
+                });
+                this.$axios.get('/student/lectureInfo').then(res=>{
                     console.log("res");
                     this.tableData=res.data.data;
                     console.log(this.tableData);

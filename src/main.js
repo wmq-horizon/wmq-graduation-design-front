@@ -7,15 +7,19 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import homeComponent from "./components/student/homeComponent";
 import menuComponent from "./components/administrator/menuComponent";
+import headerBar from "./components/administrator/headerBar";
 import axios from 'axios'; /* 引入axios进行地址访问*/
 // 自定义全局组件进行复用
 Vue.component('homeComponent',homeComponent);
 Vue.component('menuComponent',menuComponent);
+Vue.component('headerBar',headerBar);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 // 挂载到vue原型链上
 Vue.prototype.$axios = axios;
 axios.defaults.baseURL = 'http://localhost:8088/api';
+//设置允许携带cookie
+axios.defaults.withCredentials = true;
 //配置发送带请求携带cookie
 // axios.defaults.withCredentials = true;
 /* eslint-disable no-new */
@@ -25,12 +29,14 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
-// 配置全局路由守卫
+// 配置全局前置路由守卫
 router.beforeEach((to,from,next)=>{
-  if(to.path === '/'||to.path==='/lectureHome'){
-    next();
+  if(to.path==='/'||to.path==='/lectureHome'){
+    console.log(sessionStorage.getItem("session"));
+    next()
   }else{
-    alert('您还没有登录，请先登录');
-    next('/');
+    if(sessionStorage.getItem("session")!==null){
+      next();
+    }
   }
 });

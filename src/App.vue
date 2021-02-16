@@ -6,7 +6,14 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+    // created() {
+    //     if(sessionStorage.getItem("session")==null){
+    //         console.log("app.vue里面的session");
+    //         console.log(sessionStorage.getItem("session"));
+    //         window.location.href='/admin/login';
+    //     }
+    // }
 }
 </script>
 
