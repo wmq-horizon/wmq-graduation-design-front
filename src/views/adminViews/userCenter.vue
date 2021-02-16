@@ -22,8 +22,7 @@
           style="width: 100%;">
           <el-table-column class="table-column"
                            prop="uid"
-                           label="用户编号"
-                           width="100">
+                           label="用户编号">
           </el-table-column>
           <el-table-column
             prop="name"
@@ -31,29 +30,29 @@
           </el-table-column>
           <el-table-column
             prop="integrity"
-            label="诚信值"
-            width="130">
+            label="诚信值">
           </el-table-column>
           <el-table-column
             prop="role"
-            label="角色"
-            width="100">
+            label="角色">
           </el-table-column>
           <el-table-column
             prop="score"
-            label="量化分"
-            width="100">
+            label="量化分">
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="状态">
           </el-table-column>
           <el-table-column
             prop="operation"
-            label="操作"
-            width="100">
+            label="操作">
             <template slot-scope="scope">
               <el-button style="float: left; padding-right: 3px;" type="text">
                 <span style="color: red" @click="delItem(scope.row,scope.$index)">删除</span>
               </el-button>
               <el-button style="float: left; padding-right: 3px;" type="text">
-                <span @click="editItem(scope.row,scope.$index)">编辑</span>
+                <span @click="editItem(scope.row,scope.$index)">锁定</span>
               </el-button>
             </template>
           </el-table-column>
@@ -68,7 +67,14 @@
         name: "studentCenter",
         data() {
             return {
-                userInfo:[],
+                userInfo:[{
+                    uid:'',
+                    name:'',
+                    integrity:'',
+                    role:'',
+                    score:'',
+                    status:''
+                }],
                 input1: '',
                 input2: '',
                 input3: '',
@@ -87,6 +93,8 @@
             this.$axios.get("/admin/users").then(res=>{
                 this.userInfo = res.data.data;
                 console.log(res);
+                console.log(this.userInfo);
+                console.log(res.data.data);
             }).catch(err=>{
                 console.log(err);
             })

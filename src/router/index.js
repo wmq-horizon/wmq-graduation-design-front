@@ -9,11 +9,11 @@ import studentHome from '../views/userViews/studentHome';
 import lectureHome from '../views/adminViews/lectureHome';
 import classRoomHome from "../views/adminViews/roomHome";
 import personalInfo from "../views/adminViews/personalInfo";
-import studentCenter from "../views/adminViews/userCenter";
 import createNewLecture from "../views/adminViews/newLecture";
 import newRoom from "../views/adminViews/newRoom";
 import loginIn from "../views/adminViews/loginIn";
 import userCenter from "../views/adminViews/userCenter";
+import upLoadUsers from "../views/adminViews/upLoadUsers";
 
 Vue.use(Router);
 export default new Router({
@@ -73,6 +73,11 @@ export default new Router({
       path: '/admin/userCenter',
       name: 'userCenter',
       component: userCenter
+    }
+    , {
+      path: '/admin/upLoadUsers',
+      name: 'upLoadUsers',
+      component: upLoadUsers
     }
   ],
   mode:'history'
