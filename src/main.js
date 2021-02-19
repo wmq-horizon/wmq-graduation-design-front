@@ -9,6 +9,8 @@ import homeComponent from "./components/student/homeComponent";
 import menuComponent from "./components/administrator/menuComponent";
 import headerBar from "./components/administrator/headerBar";
 import axios from 'axios'; /* 引入axios进行地址访问*/
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
 // 自定义全局组件进行复用
 Vue.component('homeComponent',homeComponent);
 Vue.component('menuComponent',menuComponent);
@@ -20,9 +22,6 @@ Vue.prototype.$axios = axios;
 axios.defaults.baseURL = 'http://localhost:8088/api';
 //设置允许携带cookie
 axios.defaults.withCredentials = true;
-//配置发送带请求携带cookie
-// axios.defaults.withCredentials = true;
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,

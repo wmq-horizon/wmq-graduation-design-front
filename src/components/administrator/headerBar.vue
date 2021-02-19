@@ -22,10 +22,10 @@
         },
         methods:{
             logOut(){
+                sessionStorage.removeItem("session");
                 this.$axios.get("/user/logOut").then(res=>{
                     window.location.href='/admin/login';
                     console.log("logout");
-                    sessionStorage.removeItem("session");
                     console.log(res);
                 }).catch(err=>{console.log(err)});
             },

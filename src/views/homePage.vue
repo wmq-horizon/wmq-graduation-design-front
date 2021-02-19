@@ -52,20 +52,20 @@
                     <el-col :span="8">
                       <div class="lecture-class">{{item.speaker}} | {{item.introduction}}</div>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="5">
                       <div class="lecture-class">.</div>
                     </el-col>
-                    <el-col :span="8">
-                      <div class="lecture-class">【{{item.lecRoom}}】
+                    <el-col :span="11">
+                      <div class="lecture-class">{{item.lecTime}}【{{item.lecRoom}}】
                         <router-link
                           :to="{
                               path:'/classRoom',
                               query:{
                                 roomNumber:item.lecRoom,
                                 lecNumber:item.lecNumber,
-                                stuNumber:item.lecRoom,
                                 time:item.lecTime,
                                 date:'2020-01-01',
+                                score:item.lecScore
                                 }}"> 预定座位</router-link>
                       </div>
                     </el-col>
@@ -218,6 +218,7 @@
         },
         methods: {
             showWhoIam(){
+                var myChart = echarts.init(document.getElementById('main'));
                 this.$axios.get("student/hello").then(res=>{
                     console.log(res);
                     console.log("show me")

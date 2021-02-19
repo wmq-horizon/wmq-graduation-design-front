@@ -99,7 +99,8 @@
                     lecNumber:'',
                     stuNumber:'',
                     time:'',
-                    date:''
+                    date:'',
+                    score:''
                 }
             }
         },
@@ -260,7 +261,17 @@
                             this.seatArray = oldArray;
                             let  seatNumberAndName='seat_'+count+'='+this.bookInfo.roomNumber;
                             console.log(seatNumberAndName);
-                            this.$axios.get('/student/buySeat?seatNumberAndName='+seatNumberAndName).then(res=>{
+                            this.$axios.post('/student/buySeat',{
+                                title:this.bookInfo.stuNumber,
+                                lecRoom:this.bookInfo.roomNumber,
+                                lecNumber:this.bookInfo.lecNumber,
+                                speaker:i,
+                                introduction:j,
+                                lecTime:this.bookInfo.time,
+                                lecDate:this.bookInfo.date,
+                                lecScore:this.bookInfo.score,
+                                content:count,
+                            }).then(res=>{
                                  console.log('修改成功');
                             }).catch(()=>{
                                 console.log(seatNumberAndName);
@@ -295,7 +306,8 @@
                 this.bookInfo.stuNumber = this.$route.query.stuNumber;
                 this.bookInfo.time = this.$route.query.time;
                 this.bookInfo.date = this.$route.query.date;
-                this.$axios.get('/student/getSeatInfo?roomName='+this.bookInfo.roomNumber).then(res=>{
+                this.bookInfo.score = this.$route.query.score;
+                this.$axios.get('/student/getSeatInfo?roomName='+this.bookInfo.roomNumber+'&lecNumber='+this.bookInfo.lecNumber).then(res=>{
                     console.log(res.data.data);
                     this.dataArray = res.data.data;
                     this.classRoom.row_count = this.dataArray[0].rowCount;
@@ -325,8 +337,6 @@
 
             },
             initSeatArray: function () {
-
-
 
                 // 初始化不是座位的地方
                 // for (let i = 0; i < 9; i++) {

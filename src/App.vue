@@ -29,5 +29,7 @@ export default {
   margin: 0;
   padding: 0;
   text-decoration:none;
+
 }
+a{text-decoration:none}
 </style>
