@@ -23,33 +23,34 @@
     export default {
         name: "hardworkingList",
         methods:{
-           created(){
-               this.drawLine()
-           },
-            drawLine(){
-                // 基于准备好的dom，初始化echarts实例
-                let myChart = this.$echarts.init(document.getElementById('myCharts'));
-                // 绘制图表
-                let opt = {
-                    xAxis: {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        data: [120, 200, 150, 80, 70, 110, 130],
-                        type: 'bar',
-                        showBackground: true,
-                        backgroundStyle: {
-                            color: 'rgba(180, 180, 180, 0.2)'
-                        }
-                    }]
-                };
-                opt&&myChart.setOption(opt);
-            },
-        }
+
+        },
+        mounted(){
+            let echarts = require('echarts');
+            let myChart = this.$echarts.init(document.getElementById('myCharts'));
+            // 指定图表的配置项和数据
+            let option = {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                tooltip: {},
+                legend: {
+                    data:['销量']
+                },
+                xAxis: {
+                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },
     }
 </script>
 
