@@ -70,14 +70,13 @@ export default new Router({
       name: 'loginIn',
       component: loginIn
     }, {
-      path: '/admin/userCenter',
-      name: 'userCenter',
-      component: userCenter
-    }
-    , {
       path: '/admin/upLoadUsers',
       name: 'upLoadUsers',
       component: upLoadUsers
+    }, {
+      path: '/admin/userCenter',
+      name: 'userCenter',
+      component: userCenter
     }
   ],
   mode:'history'

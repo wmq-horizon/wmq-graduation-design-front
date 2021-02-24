@@ -13,7 +13,34 @@
       <homeComponent></homeComponent>
     </el-header>
     <el-container>
-      <div id="myEchart" :style="{width: '300px', height: '300px'}"></div>
+      <el-container>
+        <el-aside width="30%">
+          <div class="demo-image">
+            <div class="block" v-for="fit in fits" :key="fit">
+<!--              <span class="demonstration">{{ fit }}</span>-->
+              <el-image
+                style="width: 100%; height: 100%"
+                :src="url"
+                :fit="fit"></el-image>
+            </div>
+          </div>
+        </el-aside>
+        <el-main>
+          <el-card class="box-card">
+            <div><span style="font-weight:bold;">我的信息</span></div>
+            <el-divider></el-divider>
+            <div><span>编号：{{user.uid}}</span></div>
+            <el-divider></el-divider>
+            <div><span>昵称：{{user.name}}</span></div>
+            <el-divider></el-divider>
+            <div><span>诚信值：{{user.integrity}}</span></div>
+            <el-divider></el-divider>
+            <div><span>量化分：{{user.score}}</span></div>
+            <el-divider></el-divider>
+            <div><span>角色：{{user.role}}</span></div>
+          </el-card>
+        </el-main>
+      </el-container>
     </el-container>
   </el-container>
 </template>
@@ -21,33 +48,34 @@
 
     export default {
         name: "student_home",
+        data(){
+            return{
+                fits: ['fill'],
+                url: 'https://th.bing.com/th/id/R0cc76b7131caa1c7a6672f05d6ce4fc1?rik=bqQNNwk%2f17ZVOw&riu=http%3a%2f%2fimg.mp.itc.cn%2fupload%2f20170403%2fd265e7c573c2414ba9de52f49db14ad0_th.jpg&ehk=F58NLPLaIeKND7eyIfaa2GAGgd%2f5Y5Q1zdNmDPjbDtA%3d&risl=&pid=ImgRaw',
+                user:{
+                    uid:'',
+                    name:'',
+                    password:'',
+                    integrity:0,
+                    role:'',
+                    score:0,
+                    status:0,
+                }
+            }
+        },
         methods:{
-
+            getUserInfo(){
+                this.$axios.get('/student/hello').then(res=>{
+                    this.user = res.data.data;
+                    console.log(this.user);
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                });
+            }
         },
         mounted() {
-            let myChart = this.$echarts.init(document.getElementById('myEchart'));
-            // 指定图表的配置项和数据
-            let option = {
-                title: {
-                    text: 'ECharts 入门示例'
-                },
-                tooltip: {},
-                legend: {
-                    data:['销量']
-                },
-                xAxis: {
-                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                },
-                yAxis: {},
-                series: [{
-                    name: '销量',
-                    type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
-                }]
-            };
-
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
+            this.getUserInfo();
         }
     }
 </script>
@@ -67,7 +95,6 @@
   /*登录卡片内容*/
   .box-card {
     width: 100%;
-    margin-top: 10%;
   }
 
   /*整体布局*/
@@ -92,17 +119,16 @@
 
   .el-aside {
     text-align: center;
-    line-height: 100px;
+    line-height: 100%;
+    padding-left: 7%;
   }
 
   .el-main {
-    padding-right: 6%;
-    padding-left: 6%;
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 40px;
-    padding-top: 0;
+    line-height: 120%;
+    padding-top: 2%;
   }
 
   body > .el-container {
@@ -138,5 +164,16 @@
   .grid-content {
     border-radius: 4px;
     min-height: 50px;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 480px;
   }
 </style>

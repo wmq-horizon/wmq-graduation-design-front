@@ -17,64 +17,39 @@
             </div>
           </el-col>
         </div>
-        <el-table
-          :data="userInfo"
-          style="width: 100%;">
-          <el-table-column class="table-column"
-                           prop="uid"
-                           label="用户编号">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="用户名">
-          </el-table-column>
-          <el-table-column
-            prop="integrity"
-            label="诚信值">
-          </el-table-column>
-          <el-table-column
-            prop="role"
-            label="角色">
-          </el-table-column>
-          <el-table-column
-            prop="score"
-            label="量化分">
-          </el-table-column>
-          <el-table-column
-            prop="status"
-            label="状态">
-          </el-table-column>
-          <el-table-column
-            prop="operation"
-            label="操作">
-            <template slot-scope="scope">
-              <el-button style="float: left; padding-right: 3px;" type="text">
-                <span style="color: red" @click="delItem(scope.row,scope.$index)">删除</span>
-              </el-button>
-              <el-button style="float: left; padding-right: 3px;" type="text">
-                <span @click="editItem(scope.row,scope.$index)">锁定</span>
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-card class="box-card">
+          <div><span style="font-weight:bold;">我的信息</span></div>
+          <el-divider></el-divider>
+          <div><span>编号：{{user.uid}}</span></div>
+          <el-divider></el-divider>
+          <div><span>昵称：{{user.name}}</span></div>
+          <el-divider></el-divider>
+          <div><span>诚信值：{{user.integrity}}</span></div>
+          <el-divider></el-divider>
+          <div><span>量化分：{{user.score}}</span></div>
+          <el-divider></el-divider>
+          <div><span>角色：{{user.role}}</span></div>
+        </el-card>
+
       </el-col>
     </div>
   </div>
 </template>
-
 <script>
     export default {
         name: "studentCenter",
         data() {
             return {
-                userInfo:[{
+                data:'',
+                user:{
                     uid:'',
                     name:'',
-                    integrity:'',
+                    password:'',
+                    integrity:0,
                     role:'',
-                    score:'',
-                    status:''
-                }],
+                    score:0,
+                    status:0,
+                },
                 input1: '',
                 input2: '',
                 input3: '',
@@ -87,9 +62,21 @@
             },
             handleDelete(index, row) {
                 console.log(index, row);
+            },
+            getUserInfo(){
+                this.$axios.get('/student/hello').then(res=>{
+                    this.user = res.data.data;
+                    console.log("this.user:");
+                    console.log(this.user);
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                });
             }
         },
+
         created() {
+            this.getUserInfo();
             this.$axios.get("/admin/users").then(res=>{
                 this.userInfo = res.data.data;
                 console.log(res);

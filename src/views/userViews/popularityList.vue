@@ -13,13 +13,147 @@
     <homeComponent></homeComponent>
   </el-header>
   <el-container>
-
+    <div id = 'barChart' style="width:600px;height:400px"></div>
+    <div id="pieChart" style="width: 600px;height: 400px"></div>
+    <div id="topRoomChart" style="width: 600px;height: 400px"></div>
   </el-container>
 </el-container>
 </template>
 <script>
     export default {
-        name: "popularityList"
+        name: "popularityList",
+        data(){
+            return{
+
+            }
+        },
+        methods:{
+            getTopLecture(){
+                let barChart = this.$echarts.init(document.getElementById('barChart'));
+                var titles = [];
+                var lecNumbers = [];
+                var counts = [];
+                this.$axios.get("/student/getTopLecture").then(res=>{
+                    console.log("res");
+                    console.log(res);
+                    for(let i = 0;i<res.data.data.length;i++){
+                        titles.push(res.data.data[i].title);
+                        lecNumbers.push(res.data.data[i].lecNumber);
+                        counts.push(res.data.data[i].totalLecture);
+                    }
+                    console.log(res.data.data);
+                    let option = {
+                        xAxis: {
+                            type: 'category',
+                            data: lecNumbers
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            // data: [120, {
+                            //     value: 200,
+                            //     itemStyle: {
+                            //         color: '#a90000'
+                            //     }
+                            // }, 150, 80, 70, 110, 130],
+                            data: counts,
+                            type: 'bar'
+                        }]
+                    };
+                    barChart.setOption(option);
+                    console.log(res)
+                }).catch(err=>{console.log(err)})
+            },
+            getTopSpeakers(){
+                let data = [];
+                let itemMap={
+                    value:0,
+                    name:'',
+                };
+                let pieChart = this.$echarts.init(document.getElementById('pieChart'));
+                this.$axios.get("student/getTopThreeSpeaker").then(res=>{
+                    console.log(res);
+                    for(let i = 0;i<res.data.data.length;i++){
+                        console.log("itemMap");
+                        itemMap.name = res.data.data[i].speaker;
+                        itemMap.value = res.data.data[i].totalLecture;
+                        data.push({name:res.data.data[i].speaker,value:res.data.data[i].totalLecture});
+                        console.log(itemMap);
+                    }
+                    console.log("data");
+                    console.log(data);
+                    let option = {
+                        title: {
+                            text: '讲师人气度',
+                            subtext: '分析第一名和第二名',
+                            left: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                        },
+                        series: [
+                            {
+                                name: '人气占比',
+                                type: 'pie',
+                                radius: '50%',
+                                data: data,
+                                emphasis: {
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    pieChart.setOption(option);
+                }).catch(err=>{
+                    console.log(err);
+                });
+            },
+            getTopRoom(){
+               let topRoomChart = this.$echarts.init(document.getElementById('topRoomChart'));
+               let names = [];
+               let values = [];
+               this.$axios.get("/student/topRoom").then(res=>{
+                   console.log(res);
+                   // for(let i = 0 ;i<res.data.data.length;i++){
+                   //     roomNumbers.push(res.data.data[i].roomNumber);
+                   //     roomCount.push(res.data.data[i].roomCount);
+                   // }
+                   let option = {
+                       series: [{
+                           type: 'treemap',
+                           data: [{
+                               name: res.data.data[0].roomNumber,            // First tree
+                               value: res.data.data[0].roomCount,
+
+                           }, {
+                               name: res.data.data[1].roomNumber,            // Second tree
+                               value: res.data.data[1].roomCount,
+                           }]
+                       }]
+                   };
+                   topRoomChart.setOption(option);
+                   console.log(res);
+
+               }).catch(err=>{
+                   console.log(err);
+               });
+            }
+        },
+
+        mounted(){
+            this.getTopLecture();
+            this.getTopSpeakers();
+            this.getTopRoom();
+            }
     }
 </script>
 

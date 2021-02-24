@@ -14,7 +14,9 @@
       <homeComponent></homeComponent>
     </el-header>
     <el-container>
-      <div id="myCharts" style="width: 600px;height: 600px"></div>
+      <div id="topStudent" style="width: 600px;height: 400px"></div>
+      <div id="topScoreStudent" style="width: 600px;height: 400px"></div>
+      <div id="topIntegrityStudent" style="width: 800px;height: 600px"></div>
     </el-container>
   </el-container>
 </template>
@@ -23,33 +25,129 @@
     export default {
         name: "hardworkingList",
         methods:{
+            getTopStudent(){
+                let names = [];
+                let stuNumbers = [];
+                let stuCount = [];
+                let topStudentChart = this.$echarts.init(document.getElementById('topStudent'));
+                this.$axios.get("student/getTopStudent").then(res=>{
+                    console.log("get/topStudent");
+                    console.log(res);
+                    for(let i = 0;i<res.data.data.length;i++){
+                        names.push(res.data.data[i].name);
+                        stuNumbers.push(res.data.data[i].stuNumber);
+                        stuCount.push(res.data.data[i].stuCount);
+                    }
+                    // 查询预定讲座次数最多的10名学生并且排序
+                    let option = {
+                        xAxis: {
+                            type: 'category',
+                            data: names
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data:stuCount,
+                            type: 'bar',
+                        }]
+                    };
+                    topStudentChart.setOption(option);
+                }).catch(err=>{
+                    console.log(err)
+                });
 
+            },
+            getTopScoreStudent(){
+                let names = [];
+                let scores = [];
+                let topScoreStudent = this.$echarts.init(document.getElementById('topScoreStudent'));
+                this.$axios.get("student/topScoreUser").then(res=>{
+                    for(let i = 0;i<res.data.data.length;i++){
+                        names.push(res.data.data[i].name);
+                        scores.push(res.data.data[i].score);
+                    }
+                    let option = {
+                        angleAxis: {
+                            type: 'category',
+                            data: names,
+                        },
+                        radiusAxis: {
+                        },
+                        polar: {
+                        },
+                        series: [{
+                            type: 'bar',
+                            data:scores,
+                            coordinateSystem: 'polar',
+                            name: 'A',
+                            stack: 'a',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        }, {
+                            type: 'bar',
+                            data: [2, 4, 6, 1, 3, 2, 1],
+                            coordinateSystem: 'polar',
+                            name: 'B',
+                            stack: 'a',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        }, {
+                            type: 'bar',
+                            data: [1, 2, 3, 4, 1, 2, 5],
+                            coordinateSystem: 'polar',
+                            name: 'C',
+                            stack: 'a',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        }],
+                        legend: {
+                            show: true,
+                            data: ['A', 'B', 'C']
+                        }
+                    };
+                    topScoreStudent.setOption(option);
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            getTopIntegrityStudent(){
+                let names = [];
+                let integrities = [];
+                let topIntegrityStudent = this.$echarts.init(document.getElementById('topIntegrityStudent'));
+                this.$axios.get('student/topIntegrityUser').then(res=>{
+                    console.log(res);
+                    for(let i = 0;i <res.data.data.length;i++){
+                        names.push(res.data.data[i].name);
+                        integrities.push(res.data.data[i].integrity);
+                    }
+                   let option = {
+                        xAxis: {
+                            type: 'category',
+                            data: names,
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: integrities,
+                            type: 'line',
+                        }]
+                    };
+                    topIntegrityStudent.setOption(option);
+                }).catch(err=>{
+                    console.log(err);
+                });
+            },
         },
         mounted(){
-            let echarts = require('echarts');
-            let myChart = this.$echarts.init(document.getElementById('myCharts'));
-            // 指定图表的配置项和数据
-            let option = {
-                title: {
-                    text: 'ECharts 入门示例'
-                },
-                tooltip: {},
-                legend: {
-                    data:['销量']
-                },
-                xAxis: {
-                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                },
-                yAxis: {},
-                series: [{
-                    name: '销量',
-                    type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
-                }]
-            };
-
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
+            this.getTopStudent();
+            this.getTopScoreStudent();
+            this.getTopIntegrityStudent();
         },
     }
 </script>
