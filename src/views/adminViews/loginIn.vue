@@ -49,6 +49,22 @@
                     console.log(res);
                 }).catch(err=>{console.log(err)});
             },
+            // loginIn() {
+            //     this.$axios.post("/user/login", {
+            //         uid: this.userId,
+            //         password: this.passWord,
+            //         role:'student'
+            //     }).then(res => {
+            //         console.log(res);
+            //         if(res.data.code===200){
+            //             sessionStorage.setItem("session",res.data.data);
+            //         }
+            //         console.log("session");
+            //         console.log(res.data.data);
+            //     }).catch(err => {
+            //         console.log(err)
+            //     })
+            // },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {

@@ -4,22 +4,17 @@
     <div>
       <el-col :span="4"><menuComponent></menuComponent></el-col>
       <el-col :span="20">
-        <div>
-          <el-col :span="24" class="table-title">
-            <div style="margin-top: 15px;margin-bottom: 10px;margin-right: 15%;">
-              <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                <el-select v-model="select" slot="prepend" placeholder="请选择">
-                  <el-option label="用户编号" value="1"></el-option>
-                  <el-option label="用户名" value="2"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
-              </el-input>
-            </div>
-          </el-col>
+        <div class="demo-image">
+          <div class="block" v-for="fit in fits" :key="fit">
+            <el-image
+              style="width: 100%; height: 150px"
+              :src="url"
+              :fit="fit"></el-image>
+          </div>
         </div>
         <el-card class="box-card">
-          <div><span style="font-weight:bold;">我的信息</span></div>
-          <el-divider></el-divider>
+<!--          <div><span style="font-weight:bold;">我的信息</span></div>-->
+<!--          <el-divider></el-divider>-->
           <div><span>编号：{{user.uid}}</span></div>
           <el-divider></el-divider>
           <div><span>昵称：{{user.name}}</span></div>
@@ -40,6 +35,8 @@
         name: "studentCenter",
         data() {
             return {
+                fits: ['fill'],
+                url: 'https://tse1-mm.cn.bing.net/th/id/OIP.Q84dPkecBmJ9UyTIV8AiEAHaEo?pid=ImgDet&rs=1',
                 data:'',
                 user:{
                     uid:'',
