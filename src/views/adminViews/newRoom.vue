@@ -14,7 +14,7 @@
       <div style="padding-left:15%;">
         <el-col :span="15" class="add-form" >
           <!--          form表单-->
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" style="padding-right:5%">
+          <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" style="padding-right:5%">
             <el-form-item label="宣讲室编号" prop="roomNumber"  style="padding-top: 3%">
               <el-input v-model="ruleForm.roomNumber"></el-input>
             </el-form-item>
