@@ -19,7 +19,7 @@
       required: true, message: '请输入正确的密码', trigger: 'blur'},
       { type: 'string', message: '请输入正确的密码', trigger: ['blur', 'change'] }]"
         >
-          <el-input v-model="dynamicValidateForm.password"></el-input>
+          <el-input v-model="dynamicValidateForm.password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('dynamicValidateForm')">登录</el-button>

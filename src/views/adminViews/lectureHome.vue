@@ -161,21 +161,23 @@
                     }
                 }
                 this.lecture.sel = testData;
-                this.$axios.post("/admin/updateLecture", {
-                    lecNumber:this.editItem.lecNumber,
-                    lecRoom:this.editItem.lecRoom,
-                    title:this.editItem.title,
-                    speaker:this.editItem.speaker,
-                    lecScore:this.editItem.lecScore,
-                    lecDate:this.editItem.lecDate,
-                    lecTime:this.editItem.lecTime,
-                    introduction:this.editItem.introduction,
-                    content:this.editItem.content,
-            }).then(res => {
-                console.log(res);
-                }).catch(err => {
-                console.log(err);
-                });
+                if(this.editItem!=null){
+                    this.$axios.post("/admin/updateLecture", {
+                        lecNumber:this.editItem.lecNumber,
+                        lecRoom:this.editItem.lecRoom,
+                        title:this.editItem.title,
+                        speaker:this.editItem.speaker,
+                        lecScore:this.editItem.lecScore,
+                        lecDate:this.editItem.lecDate,
+                        lecTime:this.editItem.lecTime,
+                        introduction:this.editItem.introduction,
+                        content:this.editItem.content,
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
             },
             // 相当于开关，打开开关则允许表格被编辑
             editRow(row, index) { //编辑
