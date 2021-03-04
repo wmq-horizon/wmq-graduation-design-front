@@ -219,7 +219,8 @@
         },
         created() {
             this.getInitTableInfo();
-        }
+        },
+
     }
 </script>
 

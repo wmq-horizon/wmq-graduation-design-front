@@ -10,16 +10,13 @@ import menuComponent from "./components/administrator/menuComponent";
 import headerBar from "./components/administrator/headerBar";
 import axios from 'axios';
 Vue.prototype.$axios = axios;
-
 import echarts from 'echarts';
 Vue.prototype.$echarts = echarts;
-
 Vue.component('homeComponent',homeComponent);
 Vue.component('menuComponent',menuComponent);
 Vue.component('headerBar',headerBar);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
-
 axios.defaults.baseURL = 'http://localhost:8088/api';
 //设置允许携带cookie
 axios.defaults.withCredentials = true;

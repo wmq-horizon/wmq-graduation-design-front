@@ -15,7 +15,7 @@
     <el-container>
       <el-container>
         <el-aside width="30%">
-          <div class="demo-image">
+          <div class="demo-image wow pulse" data-wow-delay="1s">
             <div class="block" v-for="fit in fits" :key="fit">
 <!--              <span class="demonstration">{{ fit }}</span>-->
               <el-image
@@ -26,7 +26,7 @@
           </div>
         </el-aside>
         <el-main>
-          <el-card class="box-card">
+          <el-card class="box-card wow lightSpeedIn">
             <div><span style="font-weight:bold;">我的信息</span></div>
             <el-divider></el-divider>
             <div><span>编号：{{user.uid}}</span></div>
@@ -45,7 +45,8 @@
   </el-container>
 </template>
 <script>
-
+    import {WOW} from 'wowjs'
+    import 'animate.css'
     export default {
         name: "student_home",
         data(){
@@ -76,6 +77,9 @@
         },
         mounted() {
             this.getUserInfo();
+            let options={live:false};
+            let wow=new WOW(options);
+            wow.init();
         }
     }
 </script>

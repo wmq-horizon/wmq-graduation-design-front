@@ -134,12 +134,17 @@
 <!--          右边的两个侧栏-->
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
-              <el-card class="box-card">
+              <el-card class="box-card" v-if="loginStatus==='请登录'">
                 <div>用户登录</div>
                 <el-input v-model="userId" placeholder="用户名"></el-input>
                 <el-input v-model="passWord" placeholder="密码" type="password"></el-input>
                 <el-button round style="height: 45px;width: 100%" @click="loginIn">登录</el-button>
                 <el-link :underline="false" style="color:#2D634E" @click="showWhoIam">重置密码</el-link>
+              </el-card>
+              <el-card class="box-card wow pulse" v-if="loginStatus!=='请登录'">
+                <div v-for="o in 4" :key="o" class="text item">
+                  {{'列表内容 ' + o }}
+                </div>
               </el-card>
 <!--              其他讲座的连接入口-->
               <el-card class="box-card">
@@ -185,10 +190,13 @@
 </template>
 
 <script>
+    import {WOW} from 'wowjs'
+    import 'animate.css'
     export default {
         name: "FirstPage",
         data() {
             return {
+                loginStatus:sessionStorage.getItem("session"),
                 userId:'',
                 passWord:'',
                 count: 6,
@@ -218,7 +226,6 @@
         },
         methods: {
             showWhoIam(){
-                var myChart = echarts.init(document.getElementById('main'));
                 this.$axios.get("student/hello").then(res=>{
                     console.log(res);
                     console.log("show me")
@@ -239,9 +246,11 @@
                     role:'student'
             }).then(res => {
                     console.log(res);
+                    let status = this.loginStatus.slice();
                     if(res.data.code===200){
-                        sessionStorage.setItem("session",res.data.data);
+                        status = sessionStorage.setItem("session",res.data.data);
                     }
+                    this.loginStatus = status;
                     console.log("session");
                     console.log(res.data.data);
                 }).catch(err => {
@@ -258,12 +267,17 @@
                 this.lecture.message = res.data.message;
                 this.lecture.code = res.data.code;
                 this.lecture.dataInfo = res.data.data;
-                console.log(this.lecture.dataInfo);
             }).catch(err => {
                 console.log(err)
             })
 
         },//created
+        mounted(){
+            sessionStorage.setItem("session","请登录");
+            let options={live:false};
+            let wow=new WOW(options);
+            wow.init();
+        }
     }
 </script>
 

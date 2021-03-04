@@ -14,8 +14,11 @@
         <el-menu-item index="/popularityList">人气榜</el-menu-item>
         <el-menu-item index="/hardworkingList">勤学榜</el-menu-item>
         <el-menu-item index="/studentHome">个人中心</el-menu-item>
-        <el-link type="danger" style="float:right;margin-top: 3%;padding-right: 1%;color: red" @click="logOut">退出</el-link>
+        <span v-if="userName!==null">
+          <el-link type="danger" style="float:right;margin-top: 3%;padding-right: 1%;color: red" @click="logOut">退出</el-link>
         <span style="float:right;margin-top: 3%;padding-right: 1%;font-size: 15px;color: white">你好,{{this.userName}}</span>
+        </span>
+
       </el-menu>
     </el-header>
   </div>
@@ -38,11 +41,14 @@
             logOut(){
                 sessionStorage.removeItem("session");
                 this.$axios.get("/user/logOut").then(res=>{
-                    window.location.href='/admin/login';
+                    window.location.href='/homePage';
                     console.log("logout");
                     console.log(res);
                 }).catch(err=>{console.log(err)});
             },
+        },
+        created() {
+            console.log("userName"+this.userName)
         }
 
     }

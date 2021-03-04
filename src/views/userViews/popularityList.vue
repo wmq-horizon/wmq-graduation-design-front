@@ -13,13 +13,15 @@
     <homeComponent></homeComponent>
   </el-header>
   <el-container>
-    <div id = 'barChart' style="width:600px;height:400px"></div>
+    <div id = 'barChart' style="width:600px;height:400px" class="wow slideInLeft"></div>
     <div id="pieChart" style="width: 600px;height: 400px"></div>
     <div id="topRoomChart" style="width: 600px;height: 400px"></div>
   </el-container>
 </el-container>
 </template>
 <script>
+    import {WOW} from 'wowjs'
+    import 'animate.css'
     export default {
         name: "popularityList",
         data(){
@@ -148,12 +150,16 @@
                });
             }
         },
-
+        created(){},
         mounted(){
             this.getTopLecture();
             this.getTopSpeakers();
             this.getTopRoom();
-            }
+            let options={live:false};
+            let wow=new WOW(options);
+            wow.init();
+            },
+
     }
 </script>
 
