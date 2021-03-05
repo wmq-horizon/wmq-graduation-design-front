@@ -77,6 +77,10 @@ export default new Router({
       path: '/admin/userCenter',
       name: 'userCenter',
       component: userCenter
+    }, {
+      path: '/admin/ personalInfo',
+      name: ' personalInfo',
+      component: personalInfo
     }
   ],
   mode:'history'

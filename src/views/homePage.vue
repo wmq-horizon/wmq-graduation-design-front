@@ -134,16 +134,23 @@
 <!--          右边的两个侧栏-->
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
-              <el-card class="box-card" v-if="loginStatus==='请登录'">
+              <el-card class="box-card" v-if="loginStatus===null">
                 <div>用户登录</div>
                 <el-input v-model="userId" placeholder="用户名"></el-input>
                 <el-input v-model="passWord" placeholder="密码" type="password"></el-input>
                 <el-button round style="height: 45px;width: 100%" @click="loginIn">登录</el-button>
                 <el-link :underline="false" style="color:#2D634E" @click="showWhoIam">重置密码</el-link>
               </el-card>
-              <el-card class="box-card wow pulse" v-if="loginStatus!=='请登录'">
-                <div v-for="o in 4" :key="o" class="text item">
-                  {{'列表内容 ' + o }}
+              <el-card class="box-card"  v-if=" loginStatus!==null">
+<!--                <div v-for="o in 4" :key="o" class="text item">-->
+<!--                  {{'列表内容 ' + o }}-->
+<!--                </div>-->
+<!--                <span>欢迎光临</span>-->
+                <div class="wow pulse" data-wow-duration="2s" data-wow-iteration="3" v-for="fit in fits" :key="fit">
+                  <el-image
+                    style="width: 350px; height: 250px"
+                    :src="url"
+                    :fit="fit"></el-image>
                 </div>
               </el-card>
 <!--              其他讲座的连接入口-->
@@ -192,11 +199,14 @@
 <script>
     import {WOW} from 'wowjs'
     import 'animate.css'
+    import loginIn from "./adminViews/loginIn";
     export default {
         name: "FirstPage",
         data() {
             return {
-                loginStatus:sessionStorage.getItem("session"),
+                fits: ['fill'],
+                url: 'https://uploadfile.bizhizu.cn/2017/0318/20170318102106585.jpg',
+                loginStatus:sessionStorage.getItem("status"),
                 userId:'',
                 passWord:'',
                 count: 6,
@@ -246,12 +256,14 @@
                     role:'student'
             }).then(res => {
                     console.log(res);
-                    let status = this.loginStatus.slice();
+                    //为了slice方法不会报错
                     if(res.data.code===200){
-                        status = sessionStorage.setItem("session",res.data.data);
+                        sessionStorage.setItem("session",res.data.data);
+                        sessionStorage.setItem("status","true");
+                        let status = sessionStorage.getItem("status").slice();
+                        this.loginStatus = status;
+                        console.log("status:"+sessionStorage.getItem("status"));
                     }
-                    this.loginStatus = status;
-                    console.log("session");
                     console.log(res.data.data);
                 }).catch(err => {
                     console.log(err)
@@ -263,6 +275,8 @@
             //加载界面的时候从后端获取数据
         },
         created() {
+            this.loginStatus = sessionStorage.getItem("status");
+            console.log("this.loginStatus:" +this.loginStatus);
             this.$axios.get('/student/home').then(res => {
                 this.lecture.message = res.data.message;
                 this.lecture.code = res.data.code;
@@ -273,7 +287,6 @@
 
         },//created
         mounted(){
-            sessionStorage.setItem("session","请登录");
             let options={live:false};
             let wow=new WOW(options);
             wow.init();
