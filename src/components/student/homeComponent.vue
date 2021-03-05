@@ -14,7 +14,7 @@
         <el-menu-item index="/popularityList">人气榜</el-menu-item>
         <el-menu-item index="/hardworkingList">勤学榜</el-menu-item>
         <el-menu-item index="/studentHome">个人中心</el-menu-item>
-        <span v-if="userName!==null">u
+        <span v-if="userName!==null">
           <el-link type="danger" style="float:right;margin-top: 3%;padding-right: 1%;color: red" @click="logOut">退出</el-link>
         <span style="float:right;margin-top: 3%;padding-right: 1%;font-size: 15px;color: white">你好,{{this.userName}}</span>
         </span>

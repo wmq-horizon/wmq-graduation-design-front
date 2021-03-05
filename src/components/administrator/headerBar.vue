@@ -5,7 +5,7 @@
         <img src="../../assets/校徽.png" height="50" width="50"/>
         <img src="../../assets/标题.png" height="50" width="250"/>
       </div>
-        <span v-if="loginStatus">
+        <span v-if="userName!==null">
           <el-link type="danger" style="float:right;margin-top: 2%;padding-right: 1%" @click="logOut">退出</el-link>
           <span style="float:right;margin-top: 2%;padding-right: 1%;font-size: 15px">你好,{{this.userName}}</span>
         </span>
@@ -18,7 +18,7 @@
         name: "headerBar",
         data() {
             return {
-                loginStatus:false,
+                loginStatus:sessionStorage.getItem("session"),
                 userName: sessionStorage.getItem("session"),
             }
         },

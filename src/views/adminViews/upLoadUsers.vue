@@ -4,19 +4,13 @@
     <div>
       <el-col :span="4"><menuComponent></menuComponent></el-col>
       <el-col :span="20">
-        <div>
-          <el-col :span="24" class="table-title">
-            <div style="margin-top: 15px;margin-bottom: 10px;margin-right: 15%;">
-              <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                <el-select v-model="select" slot="prepend" placeholder="请选择">
-                  <el-option label="讲座编号" value="1"></el-option>
-                  <el-option label="讲座名称" value="2"></el-option>
-                  <el-option label="宣讲室" value="3"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
-              </el-input>
-            </div>
-          </el-col>
+        <div class="demo-image">
+          <div class="block" v-for="fit in fits" :key="fit">
+            <el-image
+              style="width: 100%; height: 150px"
+              :src="url"
+              :fit="fit"></el-image>
+          </div>
         </div>
         <el-upload
           :format ="['xlsx','xls']"
@@ -38,6 +32,8 @@
         name: "upLoadUsers",
         data () {
             return {
+                fits: ['fill'],
+                url: 'https://th.bing.com/th/id/R696cbd8d94fa49aaebcda05b0d743e69?rik=wKr1tM3dQHvPCA&riu=http%3a%2f%2fimg1.juimg.com%2f180307%2f330863-1P30F4451260.jpg&ehk=glVNmqCsWZ7eypF7OvjvDiEm%2fLsq4NiNl%2bD4d8jZvdg%3d&risl=&pid=ImgRaw',
                 input3:'',
                 select:''
             };
@@ -48,6 +44,9 @@
 </script>
 
 <style scoped>
+  .upload-demo{
+    margin-top: 3%;
+  }
   .table-title{
     background-color:#B3CCB6;
   }

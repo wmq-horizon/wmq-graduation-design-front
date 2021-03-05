@@ -1,31 +1,40 @@
 <template>
-  <div>
+  <div class="body">
     <div class="center">
-      <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
-        <el-form-item
-          prop="name"
-          label="账号"
-          :rules="[
+      <el-card class="box-card" style="opacity:0.9">
+        <div slot="header" style="height:50px;line-height: 30px">
+          <span>欢迎您！</span>
+          <el-button style="float: right; padding:0" type="text">注册</el-button>
+        </div>
+        <div>
+          <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" style="float:left">
+            <el-form-item
+              prop="name"
+              label="账号"
+              :rules="[
       { required: true, message: '请输入账号', trigger: 'blur' },
       { type: 'string', message: '请输入正确的账号格式', trigger: ['blur', 'change'] }
     ]"
-        >
-          <el-input v-model="dynamicValidateForm.name"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="密码"
-          prop="password"
-          :rules="[{
+            >
+              <el-input v-model="dynamicValidateForm.name"></el-input>
+            </el-form-item>
+            <el-form-item
+              label="密码"
+              prop="password"
+              :rules="[{
       required: true, message: '请输入正确的密码', trigger: 'blur'},
       { type: 'string', message: '请输入正确的密码', trigger: ['blur', 'change'] }]"
-        >
-          <el-input v-model="dynamicValidateForm.password" type="password"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('dynamicValidateForm')">登录</el-button>
-          <el-button @click="register('dynamicValidateForm')">注册</el-button>
-        </el-form-item>
-      </el-form>
+            >
+              <el-input v-model="dynamicValidateForm.password" type="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('dynamicValidateForm')">登录</el-button>
+<!--              <el-button @click="register('dynamicValidateForm')">注册</el-button>-->
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-card>
+
     </div>
 
   </div>
@@ -105,6 +114,9 @@
 </script>
 
 <style scoped>
+  .el-card{
+
+  }
   .center {
     width: 400px;
     height: 200px;
@@ -112,5 +124,9 @@
     text-align: center;
     margin: auto;
     padding-top: 10%;
+  }
+  .body{
+    background: url(../../assets/管理员登录背景.png);
+    background-size:100% 100%;
   }
 </style>

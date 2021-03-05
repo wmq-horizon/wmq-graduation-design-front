@@ -14,14 +14,26 @@
       <homeComponent></homeComponent>
     </el-header>
     <el-container>
-      <div id="topStudent" style="width: 600px;height: 400px"></div>
-      <div id="topScoreStudent" style="width: 600px;height: 400px"></div>
-      <div id="topIntegrityStudent" style="width: 800px;height: 600px"></div>
+      <div class="charts">
+        <div id="topStudent" style="width: 600px;height: 400px" class="wow slideInRight chartItem" data-wow-duration="4"></div>
+        <div id="topScoreStudent" style="width: 600px;height: 400px" class="wow slideInLeft chartItem" data-wow-duration="4"></div>
+        <div id="topIntegrityStudent" style="width: 800px;height: 600px" class="wow slideInRight chartItem" data-wow-duration="4"></div>
+      </div>
     </el-container>
+    <el-footer>
+      四川师范大学 讲座信息网
+    </el-footer>
+    <el-footer>
+      <span>联系人：王女士</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>联系电话：15760232967 </span>
+    </el-footer>
   </el-container>
 </template>
 
 <script>
+    import {WOW} from 'wowjs'
+    import 'animate.css'
     export default {
         name: "hardworkingList",
         methods:{
@@ -40,6 +52,11 @@
                     }
                     // 查询预定讲座次数最多的10名学生并且排序
                     let option = {
+                        title: {
+                            text: '勤奋学生榜',
+                            subtext: '分析参加讲座次数最多的10名学生',
+                            left: 'center'
+                        },
                         xAxis: {
                             type: 'category',
                             data: names
@@ -68,6 +85,11 @@
                         scores.push(res.data.data[i].score);
                     }
                     let option = {
+                        title: {
+                            text: '量化分最多的10名学生',
+                            subtext: '分析量化分最多的10名学生',
+                            left: 'center'
+                        },
                         angleAxis: {
                             type: 'category',
                             data: names,
@@ -126,6 +148,11 @@
                         integrities.push(res.data.data[i].integrity);
                     }
                    let option = {
+                       title: {
+                           text: '诚信学生',
+                           subtext: '分析诚信值最高的10名学生',
+                           left: 'center'
+                       },
                         xAxis: {
                             type: 'category',
                             data: names,
@@ -148,11 +175,21 @@
             this.getTopStudent();
             this.getTopScoreStudent();
             this.getTopIntegrityStudent();
+            let options={live:false};
+            let wow=new WOW(options);
+            wow.init();
         },
     }
 </script>
 
 <style scoped>
+  .chartItem{
+    margin-top: 5%;
+  }
+  .charts{
+    margin-left: 30%;
+    margin-bottom: 3%;
+  }
   #myCharts{
     background-color: #B3CCB6;
   }

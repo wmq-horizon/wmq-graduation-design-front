@@ -13,10 +13,22 @@
     <homeComponent></homeComponent>
   </el-header>
   <el-container>
-    <div id = 'barChart' style="width:600px;height:400px" class="wow slideInLeft"></div>
-    <div id="pieChart" style="width: 600px;height: 400px"></div>
-    <div id="topRoomChart" style="width: 600px;height: 400px"></div>
+    <div class="charts">
+      <div id = 'barChart' style="width:600px;height:400px" class="wow slideInLeft chartItem" data-wow-duration="4"></div>
+      <div id="pieChart" style="width: 600px;height: 400px" class="wow slideInRight chartItem" data-wow-duration="4"></div>
+      <div id="topRoomChart" style="width: 600px;height: 400px" class="wow slideInLeft chartItem" data-wow-duration="4"></div>
+    </div>
+
   </el-container>
+  <el-footer>
+    四川师范大学 讲座信息网
+  </el-footer>
+  <el-footer>
+    <span>联系人：王女士</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>联系电话：15760232967 </span>
+  </el-footer>
+
 </el-container>
 </template>
 <script>
@@ -45,6 +57,11 @@
                     }
                     console.log(res.data.data);
                     let option = {
+                        title: {
+                            text: '最受欢迎的10个讲座:单位/个）',
+                            // subtext: '分析最受欢迎的10个讲座',
+                            // sublink: 'http://e.weibo.com/1341556070/AjQH99che'
+                        },
                         xAxis: {
                             type: 'category',
                             data: lecNumbers
@@ -88,7 +105,7 @@
                     let option = {
                         title: {
                             text: '讲师人气度',
-                            subtext: '分析第一名和第二名',
+                            subtext: '分析最受欢迎的讲师的第一名和第二名',
                             left: 'center'
                         },
                         tooltip: {
@@ -130,6 +147,11 @@
                    //     roomCount.push(res.data.data[i].roomCount);
                    // }
                    let option = {
+                       title: {
+                           text: '最实用的教室',
+                           subtext: '分析使用最多的教室的第一名和第二名',
+                           // left: 'center'
+                       },
                        series: [{
                            type: 'treemap',
                            data: [{
@@ -164,6 +186,13 @@
 </script>
 
 <style scoped>
+  .chartItem{
+    margin-top: 5%;
+  }
+  .charts{
+    margin-left: 30%;
+    margin-bottom: 3%;
+  }
   .lecture-class {
     background-color: white;
     font-size: 16px;
@@ -218,6 +247,7 @@
 
   body > .el-container {
     margin-bottom: 40px;
+
   }
 
   /*轮播图css*/
