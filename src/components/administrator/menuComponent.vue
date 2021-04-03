@@ -15,8 +15,10 @@
             <span>讲座信息管理</span>
           </template>
           <el-menu-item-group>
+            <el-menu-item index="/admin/todayLecture">今日讲座</el-menu-item>
             <el-menu-item index="/lectureHome">编辑讲座</el-menu-item>
             <el-menu-item index="/createNewLecture">新增讲座</el-menu-item>
+            <el-menu-item index="/signPage">确认签到</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">

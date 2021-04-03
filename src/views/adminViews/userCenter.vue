@@ -96,12 +96,6 @@
                 this.currentPage = currentPage;
                 console.log(this.currentPage)  //点击第几页
             },
-            handleEdit(index, row) {
-                console.log(index, row);
-            },
-            handleDelete(index, row) {
-                console.log(index, row);
-            }
         },
         created() {
             this.$axios.get("/admin/users").then(res=>{

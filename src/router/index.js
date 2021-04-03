@@ -14,6 +14,8 @@ import newRoom from "../views/adminViews/newRoom";
 import loginIn from "../views/adminViews/loginIn";
 import userCenter from "../views/adminViews/userCenter";
 import upLoadUsers from "../views/adminViews/upLoadUsers";
+import todayLecture from "../views/adminViews/todayLecture";
+import signPage from "../views/userViews/signPage";
 
 Vue.use(Router);
 export default new Router({
@@ -78,9 +80,17 @@ export default new Router({
       name: 'userCenter',
       component: userCenter
     }, {
-      path: '/admin/ personalInfo',
+      path: '/admin/personalInfo',
       name: ' personalInfo',
       component: personalInfo
+    }, {
+      path: '/admin/todayLecture',
+      name: ' todayLecture',
+      component: todayLecture
+    }, {
+      path: 'signPage',
+      name: ' signPage',
+      component: signPage
     }
   ],
   mode:'history'
