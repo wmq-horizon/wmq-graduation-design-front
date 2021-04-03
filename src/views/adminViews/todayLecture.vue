@@ -17,12 +17,21 @@
               {{item.lecTime}}
               <el-divider direction="vertical"></el-divider>
               地点：{{item.lecRoom}}
+              <el-divider direction="vertical"></el-divider>
+              <router-link
+                :to="{
+                              path:'/signPage',
+                              query:{
+                                lecName:item.title,
+                                lecNumber:item.lecNumber,
+                                }}"> 签到页面</router-link>
             </div>
+
             <div class="text item">讲座编号：{{item.lecNumber}}
               <el-divider direction="vertical"></el-divider>
               量化分{{item.lecScore}}
               <el-divider direction="vertical"></el-divider>
-              <el-link :href="'http://127.0.0.1:8088/api/activity/create/activity-code?lecNumber='+item.lecNumber" target="_blank" type="primary">现场签到</el-link>
+              <el-link :href="'http://127.0.0.1:8088/api/activity/create/activity-code?lecName='+item.title+'&lecNumber='+item.lecNumber" target="_blank" type="primary">现场签到</el-link>
             </div>
             <div class="text item">讲师：{{item.speaker}},{{item.introduction}}</div>
             <div class="text item">{{item.content}}</div>
