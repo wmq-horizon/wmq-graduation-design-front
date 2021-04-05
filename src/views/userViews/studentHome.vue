@@ -15,18 +15,7 @@
     <el-container>
       <el-container>
         <el-aside width="30%">
-          <div class="demo-image wow pulse" data-wow-delay="5s" data-wow-iteration="7">
-            <div class="block" v-for="fit in fits" :key="fit">
-<!--              <span class="demonstration">{{ fit }}</span>-->
-              <el-image
-                style="width: 100%; height: 100%"
-                :src="url"
-                :fit="fit"></el-image>
-            </div>
-          </div>
-        </el-aside>
-        <el-main>
-          <el-card class="box-card wow slideInRight">
+          <el-card class="box-card">
             <div><span style="font-weight:bold;">我的信息</span></div>
             <el-divider></el-divider>
             <div><span>编号：{{user.uid}}</span></div>
@@ -39,6 +28,29 @@
             <el-divider></el-divider>
             <div><span>角色：{{user.role}}</span></div>
           </el-card>
+        </el-aside>
+        <el-main>
+          <div v-for=" (item,index) in lectures" :key="index">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix title">
+                <span>{{item.title}}</span>
+              </div>
+              <!--              内容简介-->
+              <div class="text item">{{item.date}}
+                <el-divider direction="vertical"></el-divider>
+                {{item.time}}
+                <el-divider direction="vertical"></el-divider>
+                地点：{{item.lecRoom}}
+                <el-divider direction="vertical"></el-divider>
+              </div>
+                <el-divider direction="vertical"></el-divider>
+                量化分{{item.score}}
+                <el-divider direction="vertical"></el-divider>
+              <div class="text item">讲师：{{item.speaker}},{{item.introduction}}</div>
+              <div class="text item">{{item.content}}</div>
+              <div class="text item">{{item.commented}}</div>
+            </el-card>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -61,7 +73,19 @@
                     role:'',
                     score:0,
                     status:0,
-                }
+                },
+                lectures:[{
+                    time:'',
+                    date:'',
+                    score:0,
+                    commented:0,
+                    comments:'',
+                    lecRoom:'',
+                    title:'',
+                    speaker:'',
+                    introduction:'',
+                    content:'',
+                }]
             }
         },
         methods:{
@@ -70,11 +94,21 @@
                     this.user = res.data.data;
                     console.log(this.user);
                     console.log(res);
+                    this.lectures = res.data.data;
+                    this.$axios.get('/student/participated?stuNumber='+this.user.uid).then(res=>{
+                        console.log(res);
+                        this.lectures = res.data.data;
+                    }).catch(err=>{
+                        console.log(err);
+                    });
                 }).catch(err=>{
                     console.log(err);
                 });
+
+
             }
         },
+
         mounted() {
             this.getUserInfo();
             let options={live:false};
@@ -85,21 +119,6 @@
 </script>
 
 <style scoped>
-  .lecture-class {
-    background-color: white;
-    font-size: 16px;
-  }
-
-  .lecture-text-class {
-    background-color: white;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  /*登录卡片内容*/
-  .box-card {
-    width: 100%;
-  }
 
   /*整体布局*/
   .el-header {
@@ -111,73 +130,46 @@
     font-size: x-small;
   }
 
-  .el-footer {
-    background-color: #3C3C43;
-    color: white;
-    text-align: center;
-    float: left;
-    width: 100%;
-    padding-bottom: 0;
-    padding-top: 2%;
-  }
-
   .el-aside {
     text-align: center;
     line-height: 100%;
     padding-left: 7%;
   }
-
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 120%;
-    padding-top: 2%;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
-  }
-
-  /*轮播图css*/
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 150px;
-    margin: 0;
-  }
-
-  /*标题栏css*/
-  .el-col {
-    border-radius: 4px;
-  }
-
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-
-  .bg-purple {
-    background: #d3dce6;
-  }
-
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-
-  .grid-content {
-    border-radius: 4px;
-    min-height: 50px;
-  }
-  .text {
-    font-size: 14px;
-  }
-
   .item {
     padding: 18px 0;
   }
 
   .box-card {
     width: 480px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+    text-align: left;
+  }
+
+  .title {
+    background-color: #B3CCB6;
+    font-size: 20px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: 1%;
   }
 </style>
