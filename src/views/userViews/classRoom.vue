@@ -95,12 +95,15 @@
                   },
                 // 从homePage传递过来的参数
                 bookInfo:{
+                    stuNumber:sessionStorage.getItem("session"),
                     roomNumber:'',
                     lecNumber:'',
-                    stuNumber:'',
+                    rrow:'',
+                    collumn:'',
                     time:'',
                     date:'',
-                    score:''
+                    score:'',
+                    title:''
                 }
             }
         },
@@ -262,15 +265,17 @@
                             let  seatNumberAndName='seat_'+count+'='+this.bookInfo.roomNumber;
                             console.log(seatNumberAndName);
                             this.$axios.post('/student/buySeat',{
-                                title:this.bookInfo.stuNumber,
-                                lecRoom:this.bookInfo.roomNumber,
+                                stuNumber:this.bookInfo.stuNumber,
+                                title:this.bookInfo.title,
+                                roomNumber:this.bookInfo.roomNumber,
                                 lecNumber:this.bookInfo.lecNumber,
-                                speaker:i,
-                                introduction:j,
-                                lecTime:this.bookInfo.time,
-                                lecDate:this.bookInfo.date,
-                                lecScore:this.bookInfo.score,
-                                content:count,
+                                rrow:i,
+                                collumn:j,
+                                time:this.bookInfo.time,
+                                date:this.bookInfo.date,
+                                score:this.bookInfo.score,
+                                commented:count,
+
                             }).then(res=>{
                                  console.log('修改成功');
                             }).catch(()=>{
@@ -303,10 +308,13 @@
             getParams:function(){
                 this.bookInfo.roomNumber = this.$route.query.roomNumber;
                 this.bookInfo.lecNumber = this.$route.query.lecNumber;
-                this.bookInfo.stuNumber = this.$route.query.stuNumber;
                 this.bookInfo.time = this.$route.query.time;
                 this.bookInfo.date = this.$route.query.date;
                 this.bookInfo.score = this.$route.query.score;
+                this.bookInfo.title= this.$route.query.lecTitle;
+                // this.bookInfo.stuNumber = this.$route.query.stuNumber;
+                console.log("stuNumber:"+this.bookInfo.stuNumber);
+                // 获取数据渲染座位列表
                 this.$axios.get('/student/getSeatInfo?roomName='+this.bookInfo.roomNumber+'&lecNumber='+this.bookInfo.lecNumber).then(res=>{
                     console.log(res.data.data);
                     this.dataArray = res.data.data;

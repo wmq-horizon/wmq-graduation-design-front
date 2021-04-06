@@ -65,17 +65,15 @@
                                 lecNumber:item.lecNumber,
                                 time:item.lecTime,
                                 date:'2020-01-01',
-                                score:item.lecScore
+                                score:item.lecScore,
+                                lecTitle:item.title,
+                                stuNumber:item.stuNumber,
                                 }}"> 预定座位</router-link>
                       </div>
                     </el-col>
                   </el-row>
                 </el-row>
               </div>
-              <!--                  预留作为无限滚动的显示部位-->
-              <!--                  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">-->
-              <!--                    <li v-for="i in count" class="infinite-list-item">{{ i }}</li>-->
-              <!--                  </ul>-->
             </div>
             <el-divider content-position="left">
               <i class="el-icon-upload2"></i>
@@ -199,7 +197,6 @@
 <script>
     import {WOW} from 'wowjs'
     import 'animate.css'
-    import loginIn from "./adminViews/loginIn";
     export default {
         name: "FirstPage",
         data() {
@@ -215,14 +212,15 @@
                     message: '',
                     code: 0,
                     dataInfo: [{
-                        'lecNumber': '',
-                        'lecRoom': '',
-                        'lecScore': '',
-                        'letDate':'',
-                        'lecTime': '',
-                        'speaker': '',
-                        'title': '',
-                        'content': '',
+                        lecNumber: '',
+                        lecRoom: '',
+                        lecScore: '',
+                        letDate:'',
+                        lecTime: '',
+                        speaker: '',
+                        title: '',
+                        content: '',
+                        stuNumber:this.userId,
                     }]
                 },
                 seat:{

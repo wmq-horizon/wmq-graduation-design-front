@@ -10,9 +10,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "animate.css": "^3.7.2",
     "axios": "^0.21.1",
     "echarts": "^4.8.0",
     "element-ui": "latest",
+    "js-md5": "^0.7.3",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "wowjs": "^1.1.3"

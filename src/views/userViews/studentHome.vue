@@ -13,12 +13,11 @@
       <homeComponent></homeComponent>
     </el-header>
     <el-container>
-      <el-container>
-        <el-aside width="30%">
+        <el-aside width="25%">
           <el-card class="box-card">
             <div><span style="font-weight:bold;">我的信息</span></div>
             <el-divider></el-divider>
-            <div><span>编号：{{user.uid}}</span></div>
+            <div><span>学号：{{user.uid}}</span></div>
             <el-divider></el-divider>
             <div><span>昵称：{{user.name}}</span></div>
             <el-divider></el-divider>
@@ -26,7 +25,6 @@
             <el-divider></el-divider>
             <div><span>量化分：{{user.score}}</span></div>
             <el-divider></el-divider>
-            <div><span>角色：{{user.role}}</span></div>
           </el-card>
         </el-aside>
         <el-main>
@@ -42,17 +40,32 @@
                 <el-divider direction="vertical"></el-divider>
                 地点：{{item.lecRoom}}
                 <el-divider direction="vertical"></el-divider>
-              </div>
-                <el-divider direction="vertical"></el-divider>
                 量化分{{item.score}}
-                <el-divider direction="vertical"></el-divider>
+              </div>
               <div class="text item">讲师：{{item.speaker}},{{item.introduction}}</div>
               <div class="text item">{{item.content}}</div>
-              <div class="text item">{{item.commented}}</div>
+              <div class="text item">
+                <div v-if="item.commented===0">
+                  <el-collapse>
+                    <el-collapse-item title="写评价">
+                      <el-input
+                        type="textarea"
+                        :rows="2"
+                        placeholder="写下您的心得或者建议"
+                        v-model="item.comments">
+                      </el-input>
+                        <el-button type="text" @click="doComment(item.comments,item.title)" style="float:right">提交</el-button>
+                    </el-collapse-item>
+                  </el-collapse>
+                </div>
+                <div v-if="item.commented===1">
+                  <span>已评价</span><br>
+                  <span> {{item.comments}}</span>
+                </div>
+              </div>
             </el-card>
           </div>
         </el-main>
-      </el-container>
     </el-container>
   </el-container>
 </template>
@@ -85,10 +98,24 @@
                     speaker:'',
                     introduction:'',
                     content:'',
-                }]
+                }],
+                // comments:'',
             }
         },
         methods:{
+            doComment(comments,title){
+                this.$axios.put("student/doComment",{
+                    stuNumber:this.user.uid,
+                    title:title,
+                    comments:comments
+                }).then(res=>{
+                    // 评价成功之后修改前端页面
+                    console.log(res);
+
+                }).catch(err=>{
+                  console.log(err);
+                })
+            },
             getUserInfo(){
                 this.$axios.get('/student/hello').then(res=>{
                     this.user = res.data.data;
@@ -108,7 +135,6 @@
 
             }
         },
-
         mounted() {
             this.getUserInfo();
             let options={live:false};
@@ -124,7 +150,7 @@
   .el-header {
     text-align: center;
     float: left;
-    line-height: 3%;
+    line-height: 2%;
     width: 100%;
     padding: 0;
     font-size: x-small;
@@ -133,14 +159,14 @@
   .el-aside {
     text-align: center;
     line-height: 100%;
-    padding-left: 7%;
+    padding-left: 3%;
   }
-  .item {
-    padding: 18px 0;
-  }
+  /*.item {*/
+  /*  padding: 18px 0;*/
+  /*}*/
 
   .box-card {
-    width: 480px;
+    width: 100%;
   }
 
   .text {
@@ -148,7 +174,7 @@
   }
 
   .item {
-    margin-bottom: 18px;
+    margin-bottom: 2%;
     text-align: left;
   }
 

@@ -9,6 +9,8 @@ import homeComponent from "./components/student/homeComponent";
 import menuComponent from "./components/administrator/menuComponent";
 import headerBar from "./components/administrator/headerBar";
 import axios from 'axios';
+import md5 from 'js-md5';
+Vue.prototype.$md5 = md5;
 Vue.prototype.$axios = axios;
 import echarts from 'echarts';
 Vue.prototype.$echarts = echarts;
