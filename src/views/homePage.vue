@@ -242,15 +242,16 @@
             },
 
             logOut(){
-                this.$axios.get("/user/logOut").then(res=>{
+                this.$axios.get("logOut").then(res=>{
                     console.log("logout");
                     console.log(res);
                 }).catch(err=>{console.log(err)});
             },
             loginIn() {
-                this.$axios.post("/user/login", {
+                console.log(this.$md5(this.passWord));
+                this.$axios.post("/login", {
                     uid: this.userId,
-                    password: this.passWord,
+                    password: this.$md5(this.passWord),
                     role:'student'
             }).then(res => {
                     console.log(res);

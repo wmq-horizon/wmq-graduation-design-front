@@ -88,7 +88,7 @@ export default new Router({
       name: ' todayLecture',
       component: todayLecture
     }, {
-      path: '/signPage',
+      path: '/signUp',
       name: ' signPage',
       component: signPage
     }

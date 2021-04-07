@@ -56,7 +56,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$axios.get("/student/sign?stuNumber="+this.numberValidateForm.stuNumber+"&lecNumber="+this.lecNumber).then(res=>{
+                        this.$axios.get("/signUp?stuNumber="+this.numberValidateForm.stuNumber+"&lecNumber="+this.lecNumber).then(res=>{
                             console.log(res);
                         }).catch(err=>{
                             console.log(err);

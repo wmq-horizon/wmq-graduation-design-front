@@ -16,7 +16,7 @@
           :format ="['xlsx','xls']"
           class="upload-demo"
           drag
-          action="http://localhost:8088/api/upload/excelFile"
+          action="http://localhost:8088/api/admin/upload/excelFile"
           multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>

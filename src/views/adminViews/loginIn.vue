@@ -79,7 +79,7 @@
         },
         methods: {
             logOut() {
-                this.$axios.get("/user/logOut").then(res => {
+                this.$axios.get("/logOut").then(res => {
                     console.log("logout");
                     console.log(res);
                 }).catch(err => {
@@ -115,7 +115,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$axios.post("/user/login", {
+                        this.$axios.post("/login", {
                             uid: this.ruleForm.uid,
                             password: this.$md5(this.ruleForm.password),
                             role: 'admin'

@@ -13,7 +13,7 @@
       <homeComponent></homeComponent>
     </el-header>
     <el-container>
-        <el-aside width="25%">
+        <el-aside >
           <el-card class="box-card">
             <div><span style="font-weight:bold;">我的信息</span></div>
             <el-divider></el-divider>
@@ -107,11 +107,11 @@
                 this.$axios.put("student/doComment",{
                     stuNumber:this.user.uid,
                     title:title,
-                    comments:comments
+                    comments:comments,
+                    lecNumber:"lecNumber"
                 }).then(res=>{
                     // 评价成功之后修改前端页面
                     console.log(res);
-
                 }).catch(err=>{
                   console.log(err);
                 })

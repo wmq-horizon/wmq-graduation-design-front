@@ -42,9 +42,8 @@
                 sessionStorage.removeItem("session");
                 sessionStorage.removeItem("status");
                 window.location.href='/homePage';
-                this.$axios.get("/user/logOut").then(res=>{
+                this.$axios.get("/logOut").then(res=>{
                     console.log("logout");
-
                     console.log(res);
                 }).catch(err=>{console.log(err)});
             },
