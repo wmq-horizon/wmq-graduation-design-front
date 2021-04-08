@@ -31,4 +31,7 @@ export default {
 
 }
 a{text-decoration:none}
+    .el-link{
+      text-decoration: none;
+    }
 </style>

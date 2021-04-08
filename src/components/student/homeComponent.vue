@@ -1,26 +1,30 @@
 <template>
-  <div>
-    <el-header>
+  <div class="parent">
       <!--    导航菜单-->
-      <el-menu :default-active="$route.path"
-        class="el-menu-demo"
-        mode="horizontal"
-        router="router"
-        @select="handleSelect"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="/homePage">讲座大厅</el-menu-item>
-        <el-menu-item index="/popularityList">人气榜</el-menu-item>
-        <el-menu-item index="/hardworkingList">勤学榜</el-menu-item>
-        <el-menu-item index="/studentHome">个人中心</el-menu-item>
-        <span v-if="userName!==null">
-          <el-link type="danger" style="float:right;margin-top: 3%;padding-right: 1%;color: red" @click="logOut">退出</el-link>
-        <span style="float:right;margin-top: 3%;padding-right: 1%;font-size: 15px;color: white">你好,{{this.userName}}</span>
-        </span>
+      <div >
+          <img src="../../assets/标题.png" height="90%" width="70%" alt="title"/>
+      </div>
+      <div>
+        <el-menu :default-active="$route.path"
+                 class="el-menu-demo"
+                 mode="horizontal"
+                 router="router"
+                 @select="handleSelect"
+                 text-color="#000"
+                 active-text-color="#006080">
 
-      </el-menu>
-    </el-header>
+          <el-menu-item index="/homePage"><i class="el-icon-office-building"></i>讲座大厅</el-menu-item>
+
+          <el-menu-item index="/popularityList"><i class="el-icon-finished"></i>数据分析</el-menu-item>
+
+          <el-menu-item index="/studentHome"><i class="el-icon-s-custom"></i>个人中心</el-menu-item>
+<!--          <span v-if="userName!==null">-->
+<!--          <el-link type="danger" style="float:right;margin-top: 3%;padding-right: 1%;color: red" @click="logOut">退出</el-link>-->
+<!--        <span style="float:right;margin-top: 3%;padding-right: 1%;font-size: 15px;color: white">你好,{{this.userName}}</span>-->
+<!--        </span>-->
+
+        </el-menu>
+      </div>
   </div>
 </template>
 
@@ -38,15 +42,15 @@
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
             },
-            logOut(){
-                sessionStorage.removeItem("session");
-                sessionStorage.removeItem("status");
-                window.location.href='/homePage';
-                this.$axios.get("/logOut").then(res=>{
-                    console.log("logout");
-                    console.log(res);
-                }).catch(err=>{console.log(err)});
-            },
+            // logOut(){
+            //     sessionStorage.removeItem("session");
+            //     sessionStorage.removeItem("status");
+            //     window.location.href='/homePage';
+            //     this.$axios.get("/logOut").then(res=>{
+            //         console.log("logout");
+            //         console.log(res);
+            //     }).catch(err=>{console.log(err)});
+            // },
         },
         created() {
             console.log("userName"+this.userName)
@@ -54,7 +58,11 @@
 
     }
 </script>
-
 <style scoped>
-
+  .parent{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    padding-bottom: 15%;
+  }
 </style>

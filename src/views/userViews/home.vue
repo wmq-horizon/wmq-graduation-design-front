@@ -12,130 +12,30 @@
       <el-main id="area">
         <el-row>
           <el-col :span="8" style="padding-right: 1%">
-              <el-card id="box-card">
-                <div class="imgbox">
-                  <el-image
-                    :fits="fits"
-                    :src="require('../assets/sea1.jpg')"
-                    style="width: 350px; height: 520px"></el-image>
-                    <a href="/test">
-                      <div class="mask">
-                        <span>近期讲座</span>
-                      </div>
-                    </a>
-                </div>
-              </el-card>
+            <el-card id="box-card">
+              <div class="imgbox">
+                <el-image
+                  :fits="fits"
+                  :src="require('../../assets/sea1.jpg')"
+                  style="width: 350px; height: 520px"></el-image>
+                <a href="/test">
+                  <div class="mask">
+                    <span>近期讲座</span>
+                  </div>
+                </a>
+              </div>
+            </el-card>
           </el-col>
           <el-col :span="8" style="padding-right: 1%">
             <div class="grid-content">
               <el-card class="box-card" v-if="loginStatus===null">
                 <el-image
                   :fits="fits"
-                  :src="require('../assets/sea2.jpg')"
+                  :src="require('../../assets/sea2.jpg')"
                   style="width: 350px; height: 520px"></el-image>
               </el-card>
             </div>
           </el-col>
-          <!--          <el-col :span="16" style="padding-right: 1%">-->
-          <!--            <el-divider content-position="left">-->
-          <!--              <i class="el-icon-view"></i>-->
-          <!--              <span class="lecture-text-class">   近期讲座</span></el-divider>-->
-          <!--            &lt;!&ndash;              <div class="grid-content bg-purple">&ndash;&gt;-->
-          <!--            <div>-->
-          <!--              &lt;!&ndash;                显示一行讲座的信息&ndash;&gt;-->
-          <!--              <div v-for="item of lecture.dataInfo">-->
-          <!--                <el-row>-->
-          <!--                  <el-col :span="12">-->
-          <!--                    <div class="lecture-text-class"><i class="el-icon-caret-right"></i> {{item.title}}</div>-->
-          <!--                  </el-col>-->
-          <!--                  <el-col :span="12">-->
-          <!--                    <div class="lecture-class">{{item.lecDate}} | 量化分 {{item.lecScore}}</div>-->
-          <!--                  </el-col>-->
-          <!--                </el-row>-->
-          <!--                <el-row>-->
-          <!--                  <el-row>-->
-          <!--                    <el-col :span="8">-->
-          <!--                      <div class="lecture-class">{{item.speaker}} | {{item.introduction}}</div>-->
-          <!--                    </el-col>-->
-          <!--                    <el-col :span="5">-->
-          <!--                      <div class="lecture-class">.</div>-->
-          <!--                    </el-col>-->
-          <!--                    <el-col :span="11">-->
-          <!--                      <div class="lecture-class">{{item.lecTime}}【{{item.lecRoom}}】-->
-          <!--                        <router-link-->
-          <!--                          :to="{-->
-          <!--                              path:'/classRoom',-->
-          <!--                              query:{-->
-          <!--                                roomNumber:item.lecRoom,-->
-          <!--                                lecNumber:item.lecNumber,-->
-          <!--                                time:item.lecTime,-->
-          <!--                                date:'2020-01-01',-->
-          <!--                                score:item.lecScore,-->
-          <!--                                lecTitle:item.title,-->
-          <!--                                stuNumber:item.stuNumber,-->
-          <!--                                }}"> 预定座位</router-link>-->
-          <!--                      </div>-->
-          <!--                    </el-col>-->
-          <!--                  </el-row>-->
-          <!--                </el-row>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--            <el-divider content-position="left">-->
-          <!--              <i class="el-icon-upload2"></i>-->
-          <!--              <span class="lecture-text-class">人气讲座</span>-->
-          <!--            </el-divider>-->
-          <!--            <div v-for="item of lecture.dataInfo">-->
-          <!--              <el-row>-->
-          <!--                <el-col :span="12">-->
-          <!--                  <div class="lecture-text-class"><i class="el-icon-caret-right"></i> {{item.title}}</div>-->
-          <!--                </el-col>-->
-          <!--                <el-col :span="12">-->
-          <!--                  <div class="lecture-class">{{item.lecTime}} | 量化分 {{item.lecScore}}</div>-->
-          <!--                </el-col>-->
-          <!--              </el-row>-->
-          <!--              <el-row>-->
-          <!--                <el-col :span="8">-->
-          <!--                  <div class="lecture-class">{{item.speaker}} | {{item.introduction}}</div>-->
-          <!--                </el-col>-->
-          <!--                <el-col :span="8">-->
-          <!--                  <div class="lecture-class">.</div>-->
-          <!--                </el-col>-->
-          <!--                <el-col :span="8">-->
-          <!--                  <div class="lecture-class">【{{item.lecRoom}}】-->
-          <!--                    <router-link to="/classRoom"> 预定座位</router-link>-->
-          <!--                  </div>-->
-          <!--                </el-col>-->
-          <!--              </el-row>-->
-          <!--            </div>-->
-          <!--            <el-divider content-position="left">-->
-          <!--              <i class="el-icon-date"></i><span class="lecture-text-class"></span>往期回顾-->
-          <!--            </el-divider>-->
-          <!--            <div v-for="item of lecture.dataInfo">-->
-          <!--              <el-row>-->
-          <!--                <el-col :span="12">-->
-          <!--                  <div class="lecture-text-class"><i class="el-icon-caret-right"></i> {{item.title}}</div>-->
-          <!--                </el-col>-->
-          <!--                <el-col :span="12">-->
-          <!--                  <div class="lecture-class">{{item.lecTime}} | 量化分 {{item.lecScore}}</div>-->
-          <!--                </el-col>-->
-          <!--              </el-row>-->
-          <!--              <el-row>-->
-          <!--                <el-col :span="8">-->
-          <!--                  <div class="lecture-class">{{item.speaker}} | {{item.introduction}}</div>-->
-          <!--                </el-col>-->
-          <!--                <el-col :span="8">-->
-          <!--                  <div class="lecture-class">.</div>-->
-          <!--                </el-col>-->
-          <!--                <el-col :span="8">-->
-          <!--                  <div class="lecture-class">【{{item.lecRoom}}】-->
-          <!--                    <router-link to="/classRoom"> 预定座位</router-link>-->
-          <!--                  </div>-->
-          <!--                </el-col>-->
-          <!--              </el-row>-->
-          <!--            </div>-->
-          <!--          </el-col>-->
-
-
           <!--          右边的两个侧栏-->
           <el-col :span="8">
             <div class="grid-content">
@@ -306,14 +206,13 @@
 <style scoped>
   .imgbox {
     position: relative;
-    width: 220px;
-    height: 200px;
-    margin: auto;
+    width: 350px;
+    height: 520px;
   }
 
   .imgbox .el-image {
-    width: 220px;
-    height: 200px;
+    width: 350px;
+    height: 520px;
     /* 转换速度 */
     transition: transform 0.5s ease;
   }
@@ -322,8 +221,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 220px;
-    height: 200px;
+    width: 350px;
+    height: 520px;
     background: rgba(44, 44, 44, 0.6);
     color: #ffffff;
     opacity: 0;
@@ -354,30 +253,9 @@
     /* IE 9 */
     transform: scale(1.1, 1.1);
   }
-
-
-  #sea1 {
-    background-image: url("../assets/sea1.jpg");
-    background-size: cover;
-    transition: background 0.3s linear;
-  }
-
-  .lecture-class {
-    background: white;
-    font-size: 16px;
-  }
-
-  .lecture-text-class {
-    background-color: white;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
   /*登录卡片内容*/
   .box-card {
-    position: relative;
     width: 100%;
-    margin-top: 10%;
   }
 
   .box-card:hover {
@@ -395,6 +273,7 @@
   }
 
   .el-main {
+    margin-top: 3%;
     padding-right: 6%;
     padding-left: 6%;
     /*background-color: #E9EEF3;*/
@@ -402,6 +281,9 @@
     text-align: center;
     line-height: 40px;
     padding-top: 0;
+  }
+  .el-row{
+    margin:5%;
   }
 
   body > .el-container {

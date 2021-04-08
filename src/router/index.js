@@ -16,6 +16,8 @@ import userCenter from "../views/adminViews/userCenter";
 import upLoadUsers from "../views/adminViews/upLoadUsers";
 import todayLecture from "../views/adminViews/todayLecture";
 import signPage from "../views/userViews/signPage";
+import test from "../views/userViews/test";
+import home from "../views/userViews/home";
 
 Vue.use(Router);
 export default new Router({
@@ -91,6 +93,14 @@ export default new Router({
       path: '/signUp',
       name: ' signPage',
       component: signPage
+    }, {
+      path: '/nest',
+      name: ' nest',
+      component: test
+    }, {
+      path: '/home',
+      name: ' home',
+      component: home
     }
   ],
   mode:'history'
