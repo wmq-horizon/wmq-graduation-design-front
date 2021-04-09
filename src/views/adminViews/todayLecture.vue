@@ -149,15 +149,6 @@
 </script>
 
 <style scoped>
-  /*带状态的学生的表格展示*/
-  .el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
-
   .text {
     font-size: 14px;
   }

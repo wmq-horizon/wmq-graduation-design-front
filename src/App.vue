@@ -1,20 +1,60 @@
 <template>
-  <div id="app">
+  <div id="app" @click="handleTime">
     <router-view/>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App',
-    // created() {
-    //     if(sessionStorage.getItem("session")==null){
-    //         console.log("app.vue里面的session");
-    //         console.log(sessionStorage.getItem("session"));
-    //         window.location.href='/admin/login';
-    //     }
-    // }
-}
+    // import {megError, megSuc} from "@/utils/notice";
+    export default {
+        name: 'APP',
+        data() {
+            return {
+                timmer: null,
+                lastTime: null
+            }
+        },
+        methods: {
+            handleTime() {
+                const curTime = new Date();
+                // session超时时间和后端超时时间一样
+                if (curTime - this.lastTime > 1000 * 15 * 60) {
+                    //退出
+                    if (this.$route.path === '/home') {
+                        return
+                    }
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '登录超时',
+                        message: h('i', { style: 'color: teal'}, '登录超时，请重新登录')
+                    });
+                    this.$router.push('/home');
+                    sessionStorage.removeItem("status");
+                    sessionStorage.removeItem("session");
+
+                } else {
+                    this.lastTime = curTime;
+                }
+            }
+        },
+        created() {
+            this.lastTime = new Date();
+            window.addEventListener('resize', () => {
+                this.handleTime();
+            });
+
+            window.addEventListener('scroll', () => {
+                if (this.timmer) {
+                    clearTimeout(this.timmer);
+                }
+
+                this.timmer = setTimeout(() => {
+                    this.handleTime();
+                }, 3000)
+            }, true);
+
+        }
+    }
 </script>
 <style>
 #app {

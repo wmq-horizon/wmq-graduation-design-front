@@ -1,79 +1,98 @@
 <template>
-  <div class="wrapper">
-    <el-row>
-      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-        <div class="grid-content" style="padding-left:3%;float: left">
-          <img src="../../assets/校徽.png" height="50" width="50"/>
-          <img src="../../assets/标题.png" height="50" width="250"/>
-        </div>
-      </el-col>
-    </el-row>
-    <el-header>
-      <!--    导航菜单-->
-      <homeComponent></homeComponent>
-    </el-header>
-    <div class="cinema-wrapper">
-<!--      <h1 class="title">学校公开讲座预约管理系统</h1>-->
-<!--      标题下面的按钮-->
-      <div class="btn-wrapper">
-        <div class="btn-buy" @click="buySeat">
-          选定座位
-        </div>
-<!--        <div class="btn-buy" @click="resetSeat">-->
-<!--          重置座位-->
-<!--        </div>-->
-        <!--智能选择-->
-        <template v-for="(item,index) in smartChooseMaxNum">
-          <div class="btn-buy smart" @click="smartChoose(index+1)">
-            推荐选座{{index+1}}人
+    <div>
+      <vue-canvas-nest :config="{color:'0,96,128 ', count: 800}" :el="'#area'">
+      </vue-canvas-nest>
+      <el-header>
+        <!--    导航菜单-->
+        <homeComponent></homeComponent>
+      </el-header>
+      <div id="area" class="wrapper">
+        <div class="cinema-wrapper">
+          <el-card class="box-card  login_box">
+            <div slot="header" class="clearfix title">
+              <span>{{lectureInfo.title}}</span>
+            </div>
+            <!--              内容简介-->
+            <div class="item">{{lectureInfo.lecDate}}
+              <el-divider direction="vertical"></el-divider>
+              {{lectureInfo.lecTime}}
+              <el-divider direction="vertical"></el-divider>
+              地点：{{lectureInfo.lecRoom}}
+              <el-divider direction="vertical"></el-divider>
+            </div>
+
+            <div class="item">讲座编号：{{lectureInfo.lecNumber}}
+              <el-divider direction="vertical"></el-divider>
+              量化分{{lectureInfo.lecScore}}
+            </div>
+            <div class="item">讲师：{{lectureInfo.speaker}},{{lectureInfo.introduction}}</div>
+            <div class="item">{{lectureInfo.content}}</div>
+          </el-card>
+          <div class="btn-wrapper">
+            <div class="btn-buy" @click="buySeat">
+              选定座位
+            </div>
+            <!--        <div class="btn-buy" @click="resetSeat">-->
+            <!--          重置座位-->
+            <!--        </div>-->
+            <!--智能选择-->
+            <template v-for="(item,index) in smartChooseMaxNum">
+              <div class="btn-buy smart" @click="smartChoose(index+1)">
+                推荐选座{{index+1}}人
+              </div>
+            </template>
           </div>
-        </template>
-      </div>
-<!--      框框框起来的座位的信息部分-->
-      <div class="seat-wrapper">
-<!--        解释座位是否可选，以及展示座位展示的状态-->
-        <div class="illustration">
-          <div class="illustration-img-wrapper unselected-seat">
-          </div>
-          <span class="illustration-text">可选</span>
-          <div class="illustration-img-wrapper selected-seat">
-          </div>
-          <span class="illustration-text">已选</span>
-          <div class="illustration-img-wrapper bought-seat">
-          </div>
-          <span class="illustration-text">不可选</span>
-        </div>
-        <div class="screen">
-          龙湖剧场
-        </div>
-        <div class="screen-center">
-          投影仪处
-<!--          中心线-->
-          <div class="mid-line"></div>
-        </div>
-        <div class="inner-seat-wrapper" ref="innerSeatWrapper">
-<!--         用双重循环渲染出一层一层的座位信息-->
-          <div v-for="row in seatRow">
-            <!--这里的v-if很重要，如果没有则会导致报错，因为seatArray初始状态为空-->
-            <div v-for="col in seatCol"
-                 v-if="seatArray.length>0"
-                 class="seat"
-                 :style="{width:seatSize+'px',height:seatSize+'px'}">
-              <div class="inner-seat"
-                   @click="handleChooseSeat(row-1,col-1)"
-                   v-if="seatArray[row-1][col-1]!=='-1'"
-                   :class="seatArray[row-1][col-1]==='2'?'bought-seat':(seatArray[row-1][col-1]==='1'?'selected-seat':'unselected-seat')">
+          <!--      框框框起来的座位的信息部分-->
+          <div class="seat-wrapper">
+            <!--        解释座位是否可选，以及展示座位展示的状态-->
+            <div class="illustration">
+              <div class="illustration-img-wrapper unselected-seat">
+              </div>
+              <span class="illustration-text">可选</span>
+              <div class="illustration-img-wrapper selected-seat">
+              </div>
+              <span class="illustration-text">已选</span>
+              <div class="illustration-img-wrapper bought-seat">
+              </div>
+              <span class="illustration-text">不可选</span>
+            </div>
+            <div class="screen">
+              龙湖剧场
+            </div>
+            <div class="screen-center">
+              投影仪处
+              <!--          中心线-->
+              <div class="mid-line"></div>
+            </div>
+            <div class="inner-seat-wrapper" ref="innerSeatWrapper">
+              <!--         用双重循环渲染出一层一层的座位信息-->
+              <div v-for="row in seatRow">
+                <!--这里的v-if很重要，如果没有则会导致报错，因为seatArray初始状态为空-->
+                <div v-for="col in seatCol"
+                     v-if="seatArray.length>0"
+                     class="seat"
+                     :style="{width:seatSize+'px',height:seatSize+'px'}">
+                  <div class="inner-seat"
+                       @click="handleChooseSeat(row-1,col-1)"
+                       v-if="seatArray[row-1][col-1]!=='-1'"
+                       :class="seatArray[row-1][col-1]==='2'?'bought-seat':(seatArray[row-1][col-1]==='1'?'selected-seat':'unselected-seat')">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <foots></foots>
     </div>
-  </div>
 </template>
 <script>
+    import vueCanvasNest from 'vue-canvas-nest'
+    import {WOW} from 'wowjs'
+    import 'animate.css'
     export default {
         name: "classRoom",
+        components: {vueCanvasNest},
         data() {
             return {
                 //教室座位的二维数组,-1为非座位，0为未购座位，1为已选座位(绿色),2为已购座位(红色)
@@ -83,7 +102,7 @@
                 //问题，当输入的行数和列数为10和10的时候画出的座位列表不对
                 seatSize: '',
                 //推荐选座最大数量，会导致上面的绿色按钮出现不同的数量
-                smartChooseMaxNum: 3,
+                smartChooseMaxNum: 1,
                   seatRow: 10,
                   seatCol: 20,
                   classRoom:{
@@ -96,7 +115,7 @@
                 // 从homePage传递过来的参数
                 bookInfo:{
                     stuNumber:sessionStorage.getItem("session"),
-                    roomNumber:'',
+                    roomName:'',
                     lecNumber:'',
                     rrow:'',
                     collumn:'',
@@ -104,12 +123,22 @@
                     date:'',
                     score:'',
                     title:''
+                },
+                lectureInfo:{
+                    lecNumber: '',
+                    lecRoom: '',
+                    lecScore: '',
+                    letDate: '',
+                    lecTime: '',
+                    speaker: '',
+                    title: '',
+                    content: '',
+                    stuNumber: this.uid,
                 }
             }
         },
         computed: {},
         methods: {
-
             //智能推荐座位的函数，按照座位的方向进行搜索
             //向前后某个方向进行搜索的函数,参数是起始行，终止行,推荐座位个数，
             searchSeatByDirection: function (fromRow, toRow, num) {
@@ -256,32 +285,54 @@
                 //遍历seatArray，将值为1的座位变为2
                 let oldArray = this.seatArray.slice();
                 let count = 0;
+                let test = 0;
+                let ONLY_ONECE = 2;
                 for (let i = 0; i < this.seatRow; i++) {
                     for (let j = 0; j < this.seatCol; j++) {
                         count++;
                         if (oldArray[i][j] === '1') {
-                            oldArray[i][j] ='2';
-                            this.seatArray = oldArray;
-                            let  seatNumberAndName='seat_'+count+'='+this.bookInfo.roomNumber;
-                            console.log(seatNumberAndName);
-                            this.$axios.post('/student/buySeat',{
-                                stuNumber:this.bookInfo.stuNumber,
-                                title:this.bookInfo.title,
-                                roomNumber:this.bookInfo.roomNumber,
-                                lecNumber:this.bookInfo.lecNumber,
-                                rrow:i,
-                                collumn:j,
-                                time:this.bookInfo.time,
-                                date:this.bookInfo.date,
-                                score:this.bookInfo.score,
-                                commented:count,
-
-                            }).then(res=>{
-                                 console.log('修改成功');
-                            }).catch(()=>{
-                                console.log(seatNumberAndName);
-                                console.log('err')
-                            });
+                              test = test+1;
+                              //test用于检测每人仅限选择一个位子
+                            if(test<ONLY_ONECE){
+                                this.$axios.post('/student/buySeat',{
+                                    stuNumber:this.bookInfo.stuNumber,
+                                    roomNumber:this.bookInfo.roomNumber,
+                                    lecNumber:this.bookInfo.lecNumber,
+                                    rrow:i,
+                                    collumn:j,
+                                    commented:count,
+                                    title:this.bookInfo.title,
+                                    time:this.bookInfo.time,
+                                    date:this.bookInfo.date,
+                                    score:this.bookInfo.score,
+                                }).then(res=>{
+                                    if(re.data.code===200){
+                                        console.log('修改成功');
+                                        oldArray[i][j] ='2';
+                                        this.seatArray = oldArray;
+                                    }else{
+                                        console.log("修改失败！");
+                                        const h = this.$createElement;
+                                        this.$notify({
+                                            title: '预定失败！',
+                                            message: h('i', { style: 'color: teal'}, '请检查无误后重新预定')
+                                        });
+                                    }
+                                }).catch(()=>{
+                                    console.log('err');
+                                    const h = this.$createElement;
+                                    this.$notify({
+                                        title: '预定失败！',
+                                        message: h('i', { style: 'color: teal'}, '请检查无误后重新预定')
+                                    });
+                                });
+                            }else{
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '预定失败！',
+                                    message: h('i', { style: 'color: teal'}, '每人仅限一次')
+                                });
+                            }
                         }
                     }
                 }
@@ -306,13 +357,13 @@
             },
             //初始座位数组，包括座位的相关信息和不是座位的相关信息
             getParams:function(){
-                this.bookInfo.roomNumber = this.$route.query.roomNumber;
+                this.bookInfo.roomNumber = this.$route.query.roomName;
                 this.bookInfo.lecNumber = this.$route.query.lecNumber;
+
                 this.bookInfo.time = this.$route.query.time;
                 this.bookInfo.date = this.$route.query.date;
                 this.bookInfo.score = this.$route.query.score;
                 this.bookInfo.title= this.$route.query.lecTitle;
-                // this.bookInfo.stuNumber = this.$route.query.stuNumber;
                 console.log("stuNumber:"+this.bookInfo.stuNumber);
                 // 获取数据渲染座位列表
                 this.$axios.get('/student/getSeatInfo?roomName='+this.bookInfo.roomNumber+'&lecNumber='+this.bookInfo.lecNumber).then(res=>{
@@ -336,11 +387,16 @@
                             count++;
                         }
                     }
-                    // this.initSeatArray();
                     this.seatArray = this.tempArray;
                 }).catch(err=>{
                     console.log("请求出错啦");
                     console.log(err)
+                });
+                this.$axios.get("student/getLectureByNumber?lecNumber="+this.bookInfo.lecNumber).then(res=>{
+                    console.log(res);
+                    this.lectureInfo=res.data.data;
+                }).catch(err=>{
+                    console.log(err);
                 })
 
             },
@@ -380,12 +436,14 @@
 <style scoped>
   .wrapper {
     height: 100%;
-    /*padding: 40px;*/
     box-sizing:border-box;
   }
 
   .cinema-wrapper {
-    height: 100%;
+    padding-top: 30px;
+    padding-bottom: 100px;
+    height: 90%;
+    background:rgba(0,96,128,0.1);
   }
 
   .title {
@@ -393,6 +451,7 @@
   }
 
   .seat-wrapper {
+    background-color: white;
     height: 700px;
     width: 1000px;
     border: 1px dotted #c5c5c5;
@@ -436,6 +495,7 @@
   .selected-seat {
     background: url('./../../assets/selected.png') center center no-repeat;
     background-size: 100% 100%;
+    /*background-blend-mode: lighten;*/
   }
 
   .unselected-seat {
@@ -483,7 +543,7 @@
     font-size: 14px;
     border-radius: 5px;
     padding: 0 5px;
-    background-color: #ffa349;
+    background-color: black;
     color: #ffffff;
     display: inline-block;
     cursor: pointer;
@@ -491,7 +551,7 @@
   }
 
   .smart {
-    background-color: #39ac6a;
+    background-color: #006080;
   }
 
   .illustration {
@@ -519,5 +579,23 @@
     font-size: 14px;
     position: relative;
     top: -2px;
+  }
+  .item {
+    font-size: 14px;
+    text-align: left;
+  }
+  /*登录卡片内容*/
+  .box-card {
+    width: 75%;
+    margin:30px auto;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+
+  .clearfix:after {
+    clear: both
   }
 </style>

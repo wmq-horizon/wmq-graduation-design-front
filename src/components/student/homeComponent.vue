@@ -13,15 +13,11 @@
                  text-color="#000"
                  active-text-color="#006080">
 
-          <el-menu-item index="/homePage"><i class="el-icon-office-building"></i>讲座大厅</el-menu-item>
+          <el-menu-item index="/home"><i class="el-icon-office-building"></i>讲座大厅</el-menu-item>
 
           <el-menu-item index="/popularityList"><i class="el-icon-finished"></i>数据分析</el-menu-item>
 
           <el-menu-item index="/studentHome"><i class="el-icon-s-custom"></i>个人中心</el-menu-item>
-<!--          <span v-if="userName!==null">-->
-<!--          <el-link type="danger" style="float:right;margin-top: 3%;padding-right: 1%;color: red" @click="logOut">退出</el-link>-->
-<!--        <span style="float:right;margin-top: 3%;padding-right: 1%;font-size: 15px;color: white">你好,{{this.userName}}</span>-->
-<!--        </span>-->
 
         </el-menu>
       </div>
@@ -65,4 +61,5 @@
     height: 100%;
     padding-bottom: 15%;
   }
+
 </style>

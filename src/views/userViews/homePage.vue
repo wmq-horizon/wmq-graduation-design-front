@@ -6,43 +6,45 @@
       <!--    导航菜单-->
       <homeComponent></homeComponent>
     </el-header>
-    <!--    主体部分  -->
     <el-container>
-      <!--          主体部分-->
       <el-main id="area">
         <el-row>
-          <el-col :span="8" style="padding-right: 1%">
-            <el-card>
-              <div class="imgbox">
-                <el-image
-                  :fits="fits"
-                  :src="require('../../assets/sea1.jpg')"
-                  style="width: 330px; height: 520px;"></el-image>
-                <a href="/homePage">
-                  <div class="mask">
-                    <span class="text" style="font-size: 18px">近期讲座<br></span>
-                    <span class="text"><br>学海无涯，徜徉在知识的海洋</span>
-                  </div>
-                </a>
+          <el-col :span="16" style="padding-right: 1%">
+              <div v-for=" (item,index) in lecture.dataInfo" :key="index">
+                <el-card class="box-card  login_box">
+                    <div slot="header" class="clearfix title">
+                      <span>{{item.title}}</span>
+                    </div>
+                    <!--              内容简介-->
+                    <div class="item">{{item.lecDate}}
+                      <el-divider direction="vertical"></el-divider>
+                      {{item.lecTime}}
+                      <el-divider direction="vertical"></el-divider>
+                      地点：{{item.lecRoom}}
+                      <el-divider direction="vertical"></el-divider>
+                      <router-link
+                        :to="{
+                              path:'/classRoom',
+                              query:{
+                                roomName:item.lecRoom,
+                                lecNumber:item.lecNumber,
+                                time:item.lecTime,
+                                date:item.lecDate,
+                                score:item.lecScore,
+                                lecTitle:item.title,
+                                }}"> 预约订座</router-link>
+                    </div>
+
+                    <div class="item">讲座编号：{{item.lecNumber}}
+                      <el-divider direction="vertical"></el-divider>
+                      量化分{{item.lecScore}}
+                    </div>
+                    <div class="item">讲师：{{item.speaker}},{{item.introduction}}</div>
+                    <div class="item">{{item.content}}</div>
+                </el-card>
               </div>
-            </el-card>
           </el-col>
-          <el-col :span="8" style="padding-right: 1%">
-            <el-card>
-              <div class="imgbox">
-                <el-image
-                  :fits="fits"
-                  :src="require('../../assets/sea2.jpg')"
-                  style="width: 330px; height: 520px"></el-image>
-                <a href="/oldLecture">
-                  <div class="mask">
-                    <span class="text" style="font-size: 18px">往期回顾<br></span>
-                    <span class="text"><br>看评价知兴衰</span>
-                  </div>
-                </a>
-              </div>
-            </el-card>
-          </el-col>
+
           <!--          右边的两个侧栏-->
           <el-col :span="8">
             <div class="grid-content">
@@ -51,10 +53,8 @@
                 <el-input placeholder="用户名" v-model="userId"></el-input>
                 <el-input placeholder="密码" type="password" v-model="passWord"></el-input>
                 <el-button @click="loginIn" round style="height: 45px;width: 100%">登录</el-button>
-                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E" >
-                  <span class="links">重置密码</span></el-link>
+                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E">重置密码</el-link>
               </el-card>
-
               <el-card class="box-card" v-if=" loginStatus!==null">
                 <div  class="wow pulse logOut" data-wow-duration="2s" data-wow-iteration="3">
                   <div>欢迎您！</div>
@@ -69,22 +69,22 @@
                 </div>
                 <div>
                   <el-link :underline="false" href="https://lib.xmu.edu.cn/lecture/" style="color:#2D634E">
-                    <span class="links">厦门大学讲座报名入口</span>
+                    厦门大学讲座报名入口
                   </el-link>
                 </div>
                 <div>
                   <el-link :underline="false" href="http://lib.scu.edu.cn/lecture_detail_list" style="color:#2D634E">
-                    <span class="links">四川大学讲座信息查看</span>
+                    四川大学讲座信息查看
                   </el-link>
                 </div>
                 <div>
                   <el-link :underline="false" href="http://202.115.193.40/lrs/Default.aspx" style="color:#2D634E">
-                    <span class="links">四川师范大学图书馆讲座预约</span>
+                    四川师范大学图书馆讲座预约
                   </el-link>
                 </div>
                 <div>
                   <el-link :underline="false" href="https://lib.tsinghua.edu.cn/service/workshop.html"
-                           style="color:#2D634E"><span class="links">清华大学图书馆讲座信息</span>
+                           style="color:#2D634E">清华大学图书馆讲座信息
                   </el-link>
                 </div>
               </el-card>
@@ -95,19 +95,18 @@
     </el-container>
     <foots></foots>
   </el-container>
+
 </template>
 
 <script>
     import vueCanvasNest from 'vue-canvas-nest'
     import {WOW} from 'wowjs'
     import 'animate.css'
-
     export default {
         name: "FirstPage",
         components: {vueCanvasNest},
         data() {
             return {
-                fits: ['fill'],
                 loginStatus: sessionStorage.getItem("status"),
                 userId: '',
                 passWord: '',
@@ -171,6 +170,8 @@
                         sessionStorage.setItem("status", "true");
                         let status = sessionStorage.getItem("status").slice();
                         this.loginStatus = status;
+                        let uid = sessionStorage.getItem("session").slice();
+                        this.uid = uid;
                         console.log("status:" + sessionStorage.getItem("status"));
                     }
                     console.log(res.data.data);
@@ -204,104 +205,80 @@
 </script>
 
 <style scoped>
-  .imgbox {
-    border-radius: 4px;
-    position: relative;
-    width: 330px;
-    height: 520px;
-    margin: auto;
+  .lecture-class {
+    background: white;
+    font-size: 16px;
   }
 
-  .imgbox .el-image {
-    border-radius: 4px;
-    width: 330px;
-    height: 520px;
-    /* 转换速度 */
-    transition: transform 0.5s ease;
-  }
-
-  .imgbox .mask {
-    border-radius: 4px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 330px;
-    height: 520px;
-    background: rgba(44, 44, 44, 0.6);
-    color: #ffffff;
-    opacity: 0;
-    display: flex;
-    font-size: 13px;
-    /* 转换速度 */
-    transition: transform 0.5s ease;
-  }
-
-  .mask span {
-    margin: auto;
-    transition: transform 0.5s ease;
-  }
-  .imgbox:hover .text{
-    -webkit-transform: scale(1.2, 1.2) translate(0,-50px);
-  }
-
-  .imgbox:hover .mask {
-    opacity: 1;
-    /* 增加元素的大小*/
-    -webkit-transform: scale(1.05, 1.05) ;
-    /* Safari */
-    -ms-transform: scale(1.05, 1.05) ;
-    /* IE 9 */
-    transform: scale(1.05, 1.05) ;
-  }
-
-  .imgbox:hover .el-image{
-    -webkit-transform: scale(1.05, 1.05);
-    /* Safari */
-    -ms-transform: scale(1.05, 1.05);
-    /* IE 9 */
-    transform: scale(1.05, 1.05);
+  .lecture-text-class {
+    font-size: 16px;
+    font-weight: bold;
   }
 
   /*登录卡片内容*/
   .box-card {
+    position: relative;
     width: 100%;
-    margin-bottom: 4%;
+    margin-bottom: 50px;
   }
+
+  .box-card .el-input{
+    margin-bottom: 1%;
+
+  }
+
   .el-main {
-    margin-top: 3%;
     padding-right: 6%;
     padding-left: 6%;
     color: #333;
     text-align: center;
     line-height: 40px;
-    padding-top: 0;
   }
-  .el-row{
-    margin-top:3%;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
+  .item {
+    font-size: 14px;
+    text-align: left;
   }
 
   .grid-content {
     border-radius: 4px;
     min-height: 50px;
+    margin-left: 10%;
   }
-  .box-card .el-input{
-    margin-bottom: 1%;
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
   }
-  .links:hover{
-    color: #99a9bf;
+
+  .clearfix:after {
+    clear: both
+  }
+  .el-row{
+    margin-top:3%;}
+
+  .login_box{
+    border-radius:40px;
+    box-shadow: 10px 10px 5px #888;
+    margin-right: 10%;
+    background:rgba(0,96,128,0.1);
+  }
+  .login_box:hover{
+    -webkit-transform: scale(1.02, 1.02);
+    /* Safari */
+    -ms-transform: scale(1.02, 1.02);
+    /* IE 9 */
+    transform: scale(1.02, 1.02);
   }
   .logOut {
     background: url("../../assets/sea3.jpg");
     background-size: cover;
-    width: 350px;
+    width: 320px;
     height: 250px;
     color: white;
     transition: transform 0.5s ease;
+    margin: auto;
   }
+
   .logOut:hover{
     -webkit-transform: scale(1.02, 1.02);
     /* Safari */
@@ -309,4 +286,5 @@
     /* IE 9 */
     transform: scale(1.02, 1.02);
   }
+
 </style>

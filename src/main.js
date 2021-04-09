@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import homeComponent from "./components/student/homeComponent";
 import menuComponent from "./components/administrator/menuComponent";
 import headerBar from "./components/administrator/headerBar";
+import foots from "./components/student/foots";
 import axios from 'axios';
 import md5 from 'js-md5';
 Vue.prototype.$md5 = md5;
@@ -17,6 +18,7 @@ Vue.prototype.$echarts = echarts;
 Vue.component('homeComponent',homeComponent);
 Vue.component('menuComponent',menuComponent);
 Vue.component('headerBar',headerBar);
+Vue.component('foots',foots);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 axios.defaults.baseURL = 'http://localhost:8088/api';
@@ -36,6 +38,14 @@ router.beforeEach((to,from,next)=>{
   }else{
     if(sessionStorage.getItem("session")!==null){
       next();
+    }else{
+      if(sessionStorage.getItem("status")===null){
+        //Notification 通知
+        ElementUI.Notification({
+          title: '请先登录',
+          message: '请先登录再执行操作',
+        });
+      }
     }
   }
 });

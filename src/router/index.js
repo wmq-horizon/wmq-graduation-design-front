@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import homePage from '../views/homePage';
+import homePage from '../views/userViews/homePage';
 import classRoom from '../views/userViews/classRoom';
 import hardworkingList from '../views/userViews/hardworkingList';
 import lectureHall from '../views/userViews/lectureHall';
@@ -16,15 +16,20 @@ import userCenter from "../views/adminViews/userCenter";
 import upLoadUsers from "../views/adminViews/upLoadUsers";
 import todayLecture from "../views/adminViews/todayLecture";
 import signPage from "../views/userViews/signPage";
-import test from "../views/userViews/test";
 import home from "../views/userViews/home";
+import foots from "../components/student/foots";
+import oldLecture from "../views/userViews/oldLecture";
 
 Vue.use(Router);
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect:"/homePage",
+      redirect:"/home",
+    },{
+      path: '/home',
+      name: 'home',
+      component: home,
     },{
       path: '/homePage',
       name: 'homePage',
@@ -94,13 +99,13 @@ export default new Router({
       name: ' signPage',
       component: signPage
     }, {
-      path: '/nest',
-      name: ' nest',
-      component: test
+      path: '/foots',
+      name: ' foots',
+      component: foots
     }, {
-      path: '/home',
-      name: ' home',
-      component: home
+      path: '/oldLecture',
+      name: ' oldLecture',
+      component: oldLecture
     }
   ],
   mode:'history'
