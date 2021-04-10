@@ -1,10 +1,12 @@
 <template>
   <el-container>
+    <vue-canvas-nest :config="{color:'0,96,128 ', count: 800}" :el="'#area'">
+    </vue-canvas-nest>
     <el-header>
       <!--    导航菜单-->
       <homeComponent></homeComponent>
     </el-header>
-    <el-container>
+    <el-container id="area">
         <el-aside >
           <el-card class="box-card">
             <div><span style="font-weight:bold;">我的信息</span></div>
@@ -16,6 +18,8 @@
             <div><span>诚信值：{{user.integrity}}</span></div>
             <el-divider></el-divider>
             <div><span>量化分：{{user.score}}</span></div>
+            <el-divider></el-divider>
+            <div><span>修改密码</span></div>
             <el-divider></el-divider>
           </el-card>
         </el-aside>
@@ -59,17 +63,18 @@
           </div>
         </el-main>
     </el-container>
+    <foots></foots>
   </el-container>
 </template>
 <script>
     import {WOW} from 'wowjs'
     import 'animate.css'
+    import vueCanvasNest from 'vue-canvas-nest'
     export default {
         name: "student_home",
+        components: {vueCanvasNest},
         data(){
             return{
-                fits: ['fill'],
-                url: 'https://th.bing.com/th/id/R0cc76b7131caa1c7a6672f05d6ce4fc1?rik=bqQNNwk%2f17ZVOw&riu=http%3a%2f%2fimg.mp.itc.cn%2fupload%2f20170403%2fd265e7c573c2414ba9de52f49db14ad0_th.jpg&ehk=F58NLPLaIeKND7eyIfaa2GAGgd%2f5Y5Q1zdNmDPjbDtA%3d&risl=&pid=ImgRaw',
                 user:{
                     uid:'',
                     name:'',
@@ -95,6 +100,14 @@
             }
         },
         methods:{
+            // moreComments(title){
+            //   this.$axios.get("student/getMoreComments?title="+title).then(res=>{
+            //       console.log(res);
+            //   }).catch(err=>{
+            //       console.log(err);
+            //   })
+            // },
+
             doComment(comments,title){
                 this.$axios.put("student/doComment",{
                     stuNumber:this.user.uid,
@@ -143,22 +156,22 @@
     text-align: center;
     float: left;
     line-height: 2%;
-    width: 100%;
-    padding: 0;
-    font-size: x-small;
+    /*width: 100%;*/
+    /*padding: 0;*/
+    /*margin-bottom: 100px;*/
+    /*font-size: x-small;*/
   }
 
-  .el-aside {
+  .el-aside .box-card{
     text-align: center;
     line-height: 100%;
-    padding-left: 3%;
+    background: rgba(0,96,128,0.3);
+    position: fixed;
+    box-shadow: 7px 7px 4px #888;
   }
-  /*.item {*/
-  /*  padding: 18px 0;*/
-  /*}*/
 
-  .box-card {
-    width: 100%;
+  #area{
+    padding: 50px 100px 30px;
   }
 
   .text {
@@ -171,8 +184,10 @@
   }
 
   .title {
-    background-color: #B3CCB6;
+    background: rgba(0,96,128,0.1);
     font-size: 20px;
+    color: black;
+    border-radius: 5px;
   }
 
   .clearfix:before,
@@ -184,10 +199,7 @@
   .clearfix:after {
     clear: both
   }
-
   .box-card {
-    margin-left: 3%;
-    margin-right: 3%;
-    margin-top: 1%;
+    margin-bottom: 3%;
   }
 </style>

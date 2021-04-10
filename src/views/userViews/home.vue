@@ -37,7 +37,7 @@
                 <a href="/oldLecture">
                   <div class="mask">
                     <span class="text" style="font-size: 18px">往期回顾<br></span>
-                    <span class="text"><br>看评价知兴衰</span>
+                    <span class="text"><br>查看建议和心得</span>
                   </div>
                 </a>
               </div>
@@ -101,7 +101,6 @@
     import vueCanvasNest from 'vue-canvas-nest'
     import {WOW} from 'wowjs'
     import 'animate.css'
-
     export default {
         name: "FirstPage",
         components: {vueCanvasNest},

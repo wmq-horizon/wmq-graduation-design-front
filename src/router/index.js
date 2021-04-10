@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import homePage from '../views/userViews/homePage';
 import classRoom from '../views/userViews/classRoom';
-import hardworkingList from '../views/userViews/hardworkingList';
 import lectureHall from '../views/userViews/lectureHall';
 import popularityList from '../views/userViews/popularityList';
 import studentHome from '../views/userViews/studentHome';
@@ -34,10 +33,6 @@ export default new Router({
       path: '/homePage',
       name: 'homePage',
       component: homePage
-    }, {
-      path: '/hardworkingList',
-      name: 'hardworkingList',
-      component: hardworkingList
     }, {
       path: '/popularityList',
       name: 'popularityList',

@@ -16,31 +16,31 @@
                   <span>{{item.title}}</span>
                 </div>
                 <!--              内容简介-->
-                <div class="item">{{item.lecDate}}
+                <div class="item">{{item.date}}
                   <el-divider direction="vertical"></el-divider>
-                  {{item.lecTime}}
+                  {{item.time}}
                   <el-divider direction="vertical"></el-divider>
-                  地点：{{item.lecRoom}}
+                  地点：{{item.roomNumber}}
                   <el-divider direction="vertical"></el-divider>
-                  <router-link
-                    :to="{
-                              path:'/classRoom',
-                              query:{
-                                roomName:item.lecRoom,
-                                lecNumber:item.lecNumber,
-                                time:item.lecTime,
-                                date:item.lecDate,
-                                score:item.lecScore,
-                                lecTitle:item.title,
-                                }}"> 预约订座</router-link>
+<!--                  <router-link-->
+<!--                    :to="{-->
+<!--                              path:'/classRoom',-->
+<!--                              query:{-->
+<!--                                roomName:item.lecRoom,-->
+<!--                                lecNumber:item.lecNumber,-->
+<!--                                time:item.lecTime,-->
+<!--                                date:item.lecDate,-->
+<!--                                score:item.lecScore,-->
+<!--                                lecTitle:item.title,-->
+<!--                                }}"> 预约订座</router-link>-->
                 </div>
 
                 <div class="item">讲座编号：{{item.lecNumber}}
                   <el-divider direction="vertical"></el-divider>
-                  量化分{{item.lecScore}}
+                  量化分{{item.score}}
                 </div>
-                <div class="item">讲师：{{item.speaker}},{{item.introduction}}</div>
-                <div class="item">{{item.content}}</div>
+<!--                <div class="item">讲师：{{item.speaker}},{{item.introduction}}</div>-->
+                <div class="item">{{item.comments}}</div>
               </el-card>
             </div>
           </el-col>
@@ -87,7 +87,7 @@
             //加载界面的时候从后端获取数据
         },
         created() {
-            this.$axios.get('/student/pastLecture?date='+this.date+'&time='+this.time).then(res => {
+            this.$axios.get('/pastLecture?date='+this.date+'&time='+this.time).then(res => {
                 console.log(res);
                 this.bookedLecture.message = res.data.message;
                 this.bookedLecture.code = res.data.code;
