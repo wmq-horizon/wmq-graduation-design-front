@@ -86,7 +86,13 @@
                             roomName:this.ruleForm.name,
                             roomNumber:this.ruleForm.roomNumber
                         }).then(res=>{
-
+                            if(res.data.code==200){
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '创建成功',
+                                    message: h('i', { style: 'color: teal'}, '创建成功，请到宣讲室列表中查看')
+                                });
+                            }
                             console.log(res)
                         }).catch(err=>{
                             console.log(err)

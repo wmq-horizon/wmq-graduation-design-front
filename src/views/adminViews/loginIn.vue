@@ -78,14 +78,6 @@
             };
         },
         methods: {
-            logOut() {
-                this.$axios.get("/logOut").then(res => {
-                    console.log("logout");
-                    console.log(res);
-                }).catch(err => {
-                    console.log(err)
-                });
-            },
             // 根据登录注册按钮改变登录注册form表单
             registe() {
                 if (this.registStatus === 0) {
@@ -122,14 +114,34 @@
                         }).then(res => {
                             console.log(res.data);
                             if (res.data.code !== 200) {
-                                console.log("登录失败")
+                                console.log("登录失败");
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '登录失败',
+                                    message: h('i', { style: 'color: teal'}, '登录失败')
+                                });
                             }
                             if (res.data.setMessage !== 'admin') {
-                                console.log('权限不足')
+                                console.log('权限不足');
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '权限不足',
+                                    message: h('i', { style: 'color: teal'}, '对不起，您的权限不足')
+                                });
+
                             }
                             if ((res.data.code === 200 && res.data.setMessage === 'admin') || res.data.setMessage === '已经登录') {
+                                if(res.data.setMessage === '已经登录'){
+                                    const h = this.$createElement;
+                                    this.$notify({
+                                        title: '已经登录',
+                                        message: h('i', { style: 'color: teal'}, '您已经登录了')
+                                    });
+                                }
                                 sessionStorage.setItem("session", res.data.data);
-                                window.location.href = '/lectureHome';
+                                window.location.href = '/admin/todayLecture';
+                                sessionStorage.setItem("status", "true");
+                                sessionStorage.setItem("role", "admin");
                                 console.log("session");
                                 console.log(res.data.data);
                             }

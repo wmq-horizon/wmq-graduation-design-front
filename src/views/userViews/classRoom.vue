@@ -268,18 +268,6 @@
                 return result
             },
             //重置座位
-            resetSeat: function () {
-                //将所有座位的值变为0，也就是重置座位为初始状态
-                let oldArray = this.seatArray.slice();
-                for (let i = 0; i < this.seatRow; i++) {
-                    for (let j = 0; j < this.seatCol; j++) {
-                        if (oldArray[i][j] !== '-1') {
-                            oldArray[i][j] = '0';
-                        }
-                    }
-                }
-                this.seatArray = oldArray;
-            },
             //选定且购买座位， 此处可以向后，将原来选定的座位状态为1全部设置成为购买状态2
             buySeat: function () {
                 //遍历seatArray，将值为1的座位变为2
@@ -400,27 +388,6 @@
                 })
 
             },
-            initSeatArray: function () {
-
-                // 初始化不是座位的地方
-                // for (let i = 0; i < 9; i++) {
-                //     this.tempArray[i][0] = '-1';
-                // }
-                // // 前八行倒数第一列和第二列全部
-                // for (let i = 0; i < 9; i++) {
-                //     this.tempArray[i][this.tempArray[0].length - 1] = '-1';
-                //     this.tempArray[i][this.tempArray[0].length - 2] = '-1';
-                // }
-                // //倒数第三行前九列全部为非座位。
-                // for (let i = 0; i < 9; i++) {
-                //     this.tempArray[i][this.tempArray[0].length - 3] = '-1';
-                // }
-                // //第二行全部为非座位
-                // for (let i = 0; i < this.tempArray[0].length; i++) {
-                //     this.tempArray[2][i] = '-1';
-                // }
-            },
-            // 从定讲座首页传递过来相关信息、
         },
         //挂载的时候初始化座位的相关信息。
         mounted: function () {

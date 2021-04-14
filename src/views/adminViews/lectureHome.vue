@@ -9,11 +9,16 @@
         <div>
           <el-col :span="24" class="table-title">
             <div style="margin-top: 15px;margin-bottom: 10px;margin-right: 15%;">
-              <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+              <el-input placeholder="请输入内容" v-model="searchData" class="input-with-select">
                 <el-select v-model="select" slot="prepend" placeholder="请选择">
                   <el-option label="讲座编号" value="1"></el-option>
                   <el-option label="讲座名称" value="2"></el-option>
                   <el-option label="宣讲室" value="3"></el-option>
+                  <el-option label="讲师" value="4"></el-option>
+                  <el-option label="日期" value="5"></el-option>
+                  <el-option label="时间" value="6"></el-option>
+                  <el-option label="量化分" value="7"></el-option>
+
                 </el-select>
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
               </el-input>
@@ -49,6 +54,10 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page="page" :page-sizes="[1, 2,5, 8]" :page-size="limit"
+                       layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
       </el-col>
     </div>
   </div>
@@ -59,14 +68,12 @@
         name: "lectureHome",
         data() {
             return {
-                input3: '',
-                select: '',
-                // rules: {
-                //     input3: [
-                //         { required: true, message: '请输入搜索条件', trigger:'blur'},
-                //         { min: 0, message: '至少一个字符', trigger: 'blur' }
-                //     ]
-                // },
+                saveInfo:[],
+                searchData:'',
+                limit: 5,
+                total: null,
+                page: 1,
+                select:'',//下拉框选择条件
                 editItem: {
                     content: '',
                     introduction: '',
@@ -98,7 +105,7 @@
                     }, {
                         prop: "title",
                         label: "标题",
-                        width: 230
+                        width: 270
                     }, {
                         prop: "lecRoom",
                         label: "宣讲室",
@@ -126,36 +133,64 @@
         },
         methods: {
             search(){
-                if(this.select==="讲座编号"){
-                    console.log("根据讲座编号查找");
-                    this.$axios.get("/admin/searchLecturByNnumber?lecNumber="+this.input3).then(res=>{
-                        console.log(res);
-                    }).catch(err=>{
-                        console.log(err);
-                    })
-
+                this.page =1;
+                this.searchByconditions();
+            },
+            searchByconditions(){
+                console.log(this.select);
+                let list = [];
+                if (this.select==="1"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.lecNumber.includes(this.searchData)
+                    );
+                }else if (this.select==="2" || this.select===""){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.title.includes(this.searchData)
+                    );
+                }else if(this.select==="3"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.lecRoom.includes(this.searchData)
+                    );
+                }else if(this.select==="4"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.speaker.includes(this.searchData)
+                    );
+                }else if(this.select==="5"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.lecDate.includes(this.searchData)
+                    );
+                }else if(this.select==="6"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.lecTime.includes(this.searchData)
+                    );
+                }else if(this.select==="7"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.lecScore==includes(this.searchData)
+                    );
+                }else{
+                    list = this.saveInfo;
                 }
-                if(this.select==="讲座名称"){
-                    console.log("根据讲座名称问查找");
-                    this.$axios.get("/admin/searchLectureByName?lecName="+this.input3).then(res=>{
-                        console.log(res);
-                    }).catch(err=>{
-                        console.log(err);
-                    });
-                }
-                if(this.select==="宣讲室"){
-                    console.log("根据宣讲室名称查找");
-                    this.$axios.get("/admin/searchLectureByRoom?lecRoom="+this.input3).then(res=>{
-                        console.log(res);
-                    }).catch(err=>{
-                        console.log(err);
-                    });
-                }
+                this.lecture.sel = list.filter((item, index) =>
+                    index < this.page * this.limit && index >= this.limit * (this.page - 1)
+                );
+                this.total = list.length;
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                this.limit = val;
+                this.searchByconditions();
+            },
+            // 当当前页改变
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+                this.page = val;
+                this.searchByconditions();
             },
             saveRow(row) { //保存
                 let testData = this.lecture.sel.slice();
                 for (let i = 0; i < testData.length; i++) {
                     if (testData[i].lecNumber === row.lecNumber) {
+                        console.log("不等于Null");
                         testData[i] = this.editItem;
                         testData[i].edit = false;
                     }
@@ -193,7 +228,6 @@
                 }
                 this.lecture.sel = testData;
             },
-
             deleteRow(index,datas,row) { //删除
                 datas.splice(index, 1);
                 console.log(row);
@@ -211,7 +245,8 @@
             getInitTableInfo() {
                 this.$axios.get('/student/lectureInfo').then(res => {
                     console.log("res");
-                    this.lecture.sel = res.data.data;
+                    this.saveInfo = res.data.data;
+                    this.search();
                 }).catch(err => {
                     console.log(err);
                 })

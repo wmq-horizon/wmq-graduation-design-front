@@ -14,7 +14,7 @@
             <i class="el-icon-menu"></i>
             <span>讲座信息管理</span>
           </template>
-          <el-menu-item-group>
+          <el-menu-item-group >
             <el-menu-item index="/admin/todayLecture">今日讲座</el-menu-item>
             <el-menu-item index="/lectureHome">编辑讲座</el-menu-item>
             <el-menu-item index="/createNewLecture">新增讲座</el-menu-item>
@@ -23,7 +23,7 @@
         <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-location"></i>
-            <span>教室资源管理</span>
+            <span>宣讲室管理</span>
           </template>
           <el-menu-item-group>
             <el-menu-item index="/classRoomHome">编辑宣讲室</el-menu-item>
@@ -46,9 +46,7 @@
             <span> 个人信息管理</span>
           </template>
           <el-menu-item-group>
-            <!--            <template slot="title">分组一</template>-->
-            <el-menu-item index="/admin/ personalInfo">个人中心</el-menu-item>
-<!--            <el-menu-item index="1-2">选项2</el-menu-item>-->
+            <el-menu-item index="/admin/personalInfo">个人中心</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -79,5 +77,14 @@
 <style scoped>
   .main{
     background-color: #434A50
+  }
+
+  element.style {
+    padding-left: 40px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(84, 92, 100);
+  }
+  .el-submenu .el-menu-item{
+    min-width: 0px;
   }
 </style>

@@ -36,8 +36,8 @@
                   style="width: 330px; height: 520px"></el-image>
                 <a href="/oldLecture">
                   <div class="mask">
-                    <span class="text" style="font-size: 18px">往期回顾<br></span>
-                    <span class="text"><br>查看建议和心得</span>
+                    <span class="text" style="font-size: 18px">数据分析<br></span>
+                    <span class="text"><br>查看数据分析</span>
                   </div>
                 </a>
               </div>
@@ -168,6 +168,7 @@
                     if (res.data.code === 200) {
                         sessionStorage.setItem("session", res.data.data);
                         sessionStorage.setItem("status", "true");
+                        sessionStorage.setItem("role", "student");
                         let status = sessionStorage.getItem("status").slice();
                         this.loginStatus = status;
                         console.log("status:" + sessionStorage.getItem("status"));
@@ -282,6 +283,7 @@
   body > .el-container {
     margin-bottom: 40px;
   }
+
 
   .grid-content {
     border-radius: 4px;

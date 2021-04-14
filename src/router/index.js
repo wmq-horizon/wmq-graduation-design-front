@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import homePage from '../views/userViews/homePage';
 import classRoom from '../views/userViews/classRoom';
-import lectureHall from '../views/userViews/lectureHall';
 import popularityList from '../views/userViews/popularityList';
 import studentHome from '../views/userViews/studentHome';
 import lectureHome from '../views/adminViews/lectureHome';
@@ -18,7 +17,7 @@ import signPage from "../views/userViews/signPage";
 import home from "../views/userViews/home";
 import foots from "../components/student/foots";
 import oldLecture from "../views/userViews/oldLecture";
-
+import testVue from "../views/adminViews/testVue";
 Vue.use(Router);
 export default new Router({
   routes: [
@@ -41,11 +40,7 @@ export default new Router({
       path: '/studentHome',
       name: 'studentHome',
       component: studentHome
-    },{
-      path: '/lectureHall',
-      name: 'lectureHall',
-      component: lectureHall
-    },  {
+    }, {
       path: '/classRoom',
       name: 'classRoom',
       component: classRoom
@@ -57,11 +52,7 @@ export default new Router({
       path: '/classRoomHome',
       name: 'classRoomHome',
       component: classRoomHome
-    }, {
-      path: '/personalInfo',
-      name: 'personalInfo',
-      component: personalInfo
-    }, {
+    },{
       path: '/createNewLecture',
       name: 'createNewLecture',
       component: createNewLecture
@@ -70,7 +61,7 @@ export default new Router({
       name: 'newRoom',
       component: newRoom
     }, {
-      path: '/admin/login',
+      path: '/login',
       name: 'loginIn',
       component: loginIn
     }, {
@@ -101,6 +92,10 @@ export default new Router({
       path: '/oldLecture',
       name: ' oldLecture',
       component: oldLecture
+    }, {
+      path: '/test',
+      name: ' test',
+      component: testVue
     }
   ],
   mode:'history'

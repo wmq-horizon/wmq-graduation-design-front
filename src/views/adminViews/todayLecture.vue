@@ -31,7 +31,7 @@
               <el-divider direction="vertical"></el-divider>
               量化分{{item.lecScore}}
               <el-divider direction="vertical"></el-divider>
-              <el-link :href="'http://127.0.0.1:8088/api/admin/qrCode?lecName='+item.title+'&lecNumber='+item.lecNumber" target="_blank" type="primary">现场签到</el-link>
+              <el-link :href="'http://127.0.0.1:8088/api/qrCode?lecName='+item.title+'&lecNumber='+item.lecNumber" target="_blank" type="primary">现场签到</el-link>
             </div>
             <div class="text item">讲师：{{item.speaker}},{{item.introduction}}</div>
             <div class="text item">{{item.content}}</div>
@@ -70,7 +70,7 @@
                     <el-table-column
                       label="是否签到">
                       <template slot-scope="scope">
-                        <span v-if="scope.row.arrived===0">待签到</span>
+                        <span v-if="scope.row.arrived===0" style="color: red">待签到</span>
                         <span v-if="scope.row.arrived===1">已签到</span>
                       </template>
                     </el-table-column>
@@ -94,7 +94,6 @@
                 datedStuLecNumber:'',
                 datedStuLecTitle:'',
                 lectureBookers:[{
-
                 }],
                 lecture: [{
                     content: '',
@@ -178,4 +177,5 @@
     margin-right: 3%;
     margin-top: 1%;
   }
+
 </style>

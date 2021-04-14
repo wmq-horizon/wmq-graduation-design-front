@@ -13,8 +13,6 @@
           </div>
         </div>
         <el-card class="box-card wow lightSpeedIn">
-<!--          <div><span style="font-weight:bold;">我的信息</span></div>-->
-<!--          <el-divider></el-divider>-->
           <div><span>编号：{{user.uid}}</span></div>
           <el-divider></el-divider>
           <div><span>昵称：{{user.name}}</span></div>
@@ -23,7 +21,10 @@
           <el-divider></el-divider>
           <div><span>量化分：{{user.score}}</span></div>
           <el-divider></el-divider>
-          <div><span>角色：{{user.role}}</span></div>
+          <div>
+            <span v-if="user.role==='admin'">管理员</span>
+            <span v-if="user.role==='student'">学生</span>
+          </div>
         </el-card>
       </el-col>
     </div>
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+    import {WOW} from 'wowjs'
+    import 'animate.css'
     export default {
         name: "personalInfo",
         data(){

@@ -7,12 +7,12 @@
       <div>
         <el-col :span="24" class="table-title">
           <div style="margin-top: 15px;margin-bottom: 10px;margin-right: 15%;">
-            <el-input placeholder="请输入搜索内容" v-model="input3" class="input-with-select">
+            <el-input placeholder="请输入搜索内容" v-model="searchData" class="input-with-select">
               <el-select v-model="select" slot="prepend" placeholder="请选择">
                 <el-option label="宣讲室编号" value="1"></el-option>
                 <el-option label="宣讲室名称" value="2"></el-option>
               </el-select>
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
             </el-input>
           </div>
         </el-col>
@@ -20,38 +20,36 @@
       <el-table
         :data="tableData"
         style="width: 100%;">
-        <el-table-column class="table-column"
-                         prop="roomNumber"
-                         label="宣讲室编号">
-        </el-table-column>
-        <el-table-column
-          prop="roomName"
-          label="宣讲室名称">
-        </el-table-column>
-        <el-table-column
-          prop="rowCount"
-          label="行数"
-          width="130">
-        </el-table-column>
-        <el-table-column
-          prop="colCount"
-          label="列数"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="operation"
-          label="操作"
-          width="100">
+        <el-table-column v-for="item in columns" v-bind:key="item.id" :label="item.label" :prop="item.prop"
+                         :width="item.width">
           <template slot-scope="scope">
-            <el-button style="float: left; padding-right: 3px;" type="text">
-              <span style="color: red" @click="delItem(scope.row,scope.$index)">删除</span>
-            </el-button>
-            <el-button style="float: left; padding-right: 3px;" type="text">
-              <span @click="editItem(scope.row,scope.$index)">编辑</span>
-            </el-button>
+            <span v-if="scope.row.edit">
+              <el-input size="mini" :placeholder="scope.row[item.prop]" v-model="editItem[item.prop]"></el-input>
+            </span>
+            <span v-else>{{scope.row[item.prop]}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="scope">
+             <span class="el-tag el-tag--success el-tag--mini" style="cursor: pointer;"
+                   @click="saveRow(scope.row,scope.$index)">
+               保存
+             </span>
+            <span class="el-tag el-tag--primary el-tag--mini" style="cursor: pointer;"
+                  @click="editRow(scope.row,scope.$index)">
+               编辑
+             </span>
+            <span class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;"
+                  @click="deleteRow(scope.$index,tableData,scope.row)">
+               删除
+             </span>
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                     :current-page="page" :page-sizes="[1, 2,5, 8]" :page-size="limit"
+                     layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
     </el-col>
   </div>
   </div>
@@ -62,30 +60,134 @@
         name: "classRoomHome",
         data(){
             return{
-                input1: '',
-                input2: '',
-                input3: '',
+                saveInfo:[],
+                searchData:'',
+                limit: 5,
+                total: null,
+                page: 1,
                 select: '',
+                editItem: {//接收编辑的讲座信息
+                    roomNumber:'',
+                    roomName:'',
+                    rowCount:'',
+                    colCount:'',
+                },
                 tableData:[{
                     roomNumber:'',
                     roomName:'',
                     rowCount:0,
                     colCount:0,
+                    edit:false,
+                }],
+                columns: [{
+                    prop: "roomNumber",
+                    label: "宣讲室编号",
+                    width: 200,
+                }, {
+                    prop: "roomName",
+                    label: "宣讲室名称",
+                    width: 300
+                }, {
+                    prop: "rowCount",
+                    label: "总行数",
+                    width: 200
+                }, {
+                    prop: "colCount",
+                    label: "总列数",
+                    width: 200
                 }],
             }
         },
         methods:{
-            delItem(row,index){
-                console.log(index);
+            search(){
+                this.page =1;
+                this.searchByconditions();
             },
-            editItem(row,index){
+            searchByconditions(){
+                console.log(this.select);
+                let list = [];
+                if (this.select==="1"){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.roomNumber.includes(this.searchData)
+                    );
+                }else if (this.select==="2" || this.select===""){
+                    list = this.saveInfo.filter((item, index) =>
+                        item.roomName.includes(this.searchData)
+                    );
+                }else{
+                    list = this.saveInfo;
+                }
+                this.tableData = list.filter((item, index) =>
+                    index < this.page * this.limit && index >= this.limit * (this.page - 1)
+                );
+                this.total = list.length;
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                this.limit = val;
+                this.searchByconditions();
+            },
+            // 当前页改变
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+                this.page = val;
+                this.searchByconditions();
+            },
+            deleteRow(index,datas,row) { //删除
+                datas.splice(index, 1);
+                console.log(row);
+                this.$axios.get("/admin/deleteRoom?roomNumber="+row.roomNumber).then(res=>{
+                    console.log(res);
+                    if(res.data.code===200){
+                        this.$message("删除成功");
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                });
+            }
+            ,
+            editRow(row,index){
                 console.log(row);
                 console.log(index);
+                let testData = this.tableData.slice();
+                for (let i = 0; i < testData.length; i++) {
+                    console.log(i);
+                    if (testData[i].roomNumber === row.roomNumber) {
+                        testData[i].edit = true;
+                        console.log("查看数据刷新");
+                        console.log(testData);
+                    }
+                }
+                this.tableData = testData;
+            },
+            saveRow(row) { //保存
+                let testData = this.tableData.slice();
+                for (let i = 0; i < testData.length; i++) {
+                    console.log(i);
+                    if (testData[i].roomNumber === row.roomNumber) {
+                        testData[i] = this.editItem;
+                        testData[i].edit = false;
+                    }
+                }
+                this.tableData = testData;
+                if(this.editItem!=null){
+                    this.$axios.post("/admin/updateLectureRoom", {
+                        roomNumber:this.tableData.roomNumber,
+                        roomName:this.tableData.roomName,
+                        rowCount:this.tableData.rowCount,
+                        colCount:this.tableData.colCount,
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
             },
             getInitTableInfo(){
                 this.$axios.get('/admin/getClassRoomInfo').then(res=>{
                     console.log("res");
-                    this.tableData=res.data.data;
+                    this.saveInfo=res.data.data;
+                    this.search();
                     console.log(this.tableData);
                 }).catch(err=>{
                     console.log(err);

@@ -32,7 +32,7 @@ new Vue({
 });
 // 配置全局前置路由守卫
 router.beforeEach((to,from,next)=>{
-  if(to.path==='/'||to.path==='/lectureHome'){
+  if(to.path==='/'||to.path==='/home'==='/login'){
     console.log(sessionStorage.getItem("session"));
     next()
   }else{

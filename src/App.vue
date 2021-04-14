@@ -28,10 +28,15 @@
                         title: '登录超时',
                         message: h('i', { style: 'color: teal'}, '登录超时，请重新登录')
                     });
-                    this.$router.push('/home');
+
+                    if(sessionStorage.getItem("role")==="admin"){
+                        window.location.href = '/login';
+                    }else if(sessionStorage.getItem("role")==="student"){
+                        window.location.href = '/home';
+                    }
+                    sessionStorage.removeItem("role");
                     sessionStorage.removeItem("status");
                     sessionStorage.removeItem("session");
-
                 } else {
                     this.lastTime = curTime;
                 }
@@ -71,7 +76,6 @@
 
 }
 a{text-decoration:none}
-    .el-link{
-      text-decoration: none;
-    }
+
+
 </style>

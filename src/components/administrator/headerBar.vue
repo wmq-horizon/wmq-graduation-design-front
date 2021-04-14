@@ -6,7 +6,7 @@
         <img src="../../assets/标题.png" height="50" width="250"/>
       </div>
         <span v-if="userName!==null">
-          <el-link type="danger" style="float:right;margin-top: 2%;padding-right: 1%" @click="logOut">退出</el-link>
+          <el-button type="text" style="float:right;margin-top: 1.2%;padding-right: 1%;color: red" @click="logOut">退出</el-button>
           <span style="float:right;margin-top: 2%;padding-right: 1%;font-size: 15px">你好,{{this.userName}}</span>
         </span>
     </el-col>
@@ -25,8 +25,8 @@
         methods: {
             logOut() {
                 sessionStorage.removeItem("session");
-                this.$axios.get("/user/logOut").then(res => {
-                    window.location.href = '/admin/login';
+                this.$axios.get("logOut").then(res => {
+                    window.location.href = '/login';
                     console.log("logout");
                     console.log(res);
                 }).catch(err => {
@@ -45,5 +45,4 @@
 </script>
 
 <style scoped>
-
 </style>
