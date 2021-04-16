@@ -139,7 +139,10 @@
                 this.$axios.get("/admin/deleteRoom?roomNumber="+row.roomNumber).then(res=>{
                     console.log(res);
                     if(res.data.code===200){
-                        this.$message("删除成功");
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
                     }
                 }).catch(err=>{
                     console.log(err);
@@ -172,12 +175,19 @@
                 this.tableData = testData;
                 if(this.editItem!=null){
                     this.$axios.post("/admin/updateLectureRoom", {
-                        roomNumber:this.tableData.roomNumber,
-                        roomName:this.tableData.roomName,
-                        rowCount:this.tableData.rowCount,
-                        colCount:this.tableData.colCount,
+                        roomNumber:this.editItem.roomNumber,
+                        roomName:this.editItem.roomName,
+                        rowCount:this.editItem.rowCount,
+                        colCount:this.editItem.colCount,
+                        seat1:row.roomNumber,
                     }).then(res => {
                         console.log(res);
+                        const h = this.$createElement;
+
+                        this.$notify({
+                            title: '标题名称',
+                            message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                        });
                     }).catch(err => {
                         console.log(err);
                     });

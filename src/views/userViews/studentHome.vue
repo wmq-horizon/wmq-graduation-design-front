@@ -9,18 +9,36 @@
     <el-container id="area">
         <el-aside >
           <el-card class="box-card">
-            <div><span style="font-weight:bold;">我的信息</span></div>
+            <div>
+              <span style="font-weight:bold;" v-if="changePassword===0">我的信息</span>
+              <span style="font-weight:bold;" v-if="changePassword===1">修改密码</span>
+            </div>
             <el-divider></el-divider>
-            <div><span>学号：{{user.uid}}</span></div>
-            <el-divider></el-divider>
-            <div><span>昵称：{{user.name}}</span></div>
-            <el-divider></el-divider>
-            <div><span>诚信值：{{user.integrity}}</span></div>
-            <el-divider></el-divider>
-            <div><span>量化分：{{user.score}}</span></div>
-            <el-divider></el-divider>
-            <div><span>修改密码</span></div>
-            <el-divider></el-divider>
+            <div v-if="changePassword===0" style="min-width: 180px">
+              <div><span> {{user.uid}}  </span></div>
+              <el-divider></el-divider>
+              <div><span>昵称：{{user.name}}</span></div>
+              <el-divider></el-divider>
+              <div><span>诚信值：{{user.integrity}}</span></div>
+              <el-divider></el-divider>
+              <div><span>量化分：{{user.score}}</span></div>
+              <el-divider></el-divider>
+              <div>
+                <span v-if="user.role==='admin'">我是管理员</span>
+                <span v-if="user.role==='student'">我是学生</span>
+              </div>
+              <el-divider></el-divider>
+            </div>
+            <div v-if="changePassword===1" style="padding-bottom: 30px;width:180px">
+              <el-input placeholder="请输入原始密码" v-model="oldPassword" show-password></el-input>
+              <el-input placeholder="请输入新密码" v-model="newPassword" show-password></el-input>
+              <el-input placeholder="请再次确认新密码" v-model="confirmPassword" show-password></el-input>
+            </div>
+            <div >
+              <span type="text" v-if="changePassword===0" @click="changePasswords">修改密码</span>
+              <span type="text" v-if="changePassword===1" @click="changeAction">确认修改</span>
+            </div>
+            <div v-if="changePassword===1"><el-button type="text" style="margin-top: 20px;color: black" @click="showMyInfo">返回</el-button></div>
           </el-card>
         </el-aside>
         <el-main>
@@ -75,6 +93,10 @@
         components: {vueCanvasNest},
         data(){
             return{
+                changePassword: 0,
+                oldPassword:'',
+                newPassword:'',
+                confirmPassword:'',
                 user:{
                     uid:'',
                     name:'',
@@ -100,6 +122,49 @@
             }
         },
         methods:{
+            showMyInfo(){
+              this.changePassword = 0;
+            },
+            changeAction(){
+                //向后台发送请求
+                let password1  = this.$md5(this.oldPassword);
+                let password2 = this.$md5(this.newPassword);
+                if(this.newPassword===this.confirmPassword){
+                    this.$axios.get("/changePassword?oldPassword="+password1+"&newPassword="+password2).then(res=>{
+                        console.log(res);
+                        if(res.data.code==200){
+                            const h = this.$createElement;
+                            this.$notify({
+                                title: '修改成功',
+                                message: h('i', { style: 'color: teal'}, '恭喜你，修改密码成功，请记牢您的新密码')
+                            });
+                            this.changePassword = 0;
+                            this.oldPassword="";
+                            this.newPassword  = "";
+                            this.confirmPassword = "";
+                        }else{
+                            const h = this.$createElement;
+                            this.$notify({
+                                title: '修改失败',
+                                message: h('i', { style: 'color: teal'}, '请重新尝试')
+                            });
+                        }
+
+                    }).catch(err=>{
+                        console.log(err);
+                    });
+                }else{
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '修改失败',
+                        message: h('i', { style: 'color: teal'}, '两次输入的密码不一致')
+                    });
+                }
+            },
+            changePasswords() {
+                console.log("xiu");
+                this.changePassword = 1;
+            },
             // moreComments(title){
             //   this.$axios.get("student/getMoreComments?title="+title).then(res=>{
             //       console.log(res);
@@ -201,5 +266,11 @@
   }
   .box-card {
     margin-bottom: 3%;
+  }
+  .el-main{
+    min-height:700px;
+  }
+  .el-input{
+    padding-bottom: 20px;
   }
 </style>

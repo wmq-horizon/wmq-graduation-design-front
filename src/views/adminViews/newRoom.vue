@@ -116,7 +116,8 @@
     color:white;
   }
   .add-form{
-    background-color: #DDDDDD;
+    background:rgba(34,139,34,0.05);
+    box-shadow: 10px 10px 5px #888;
     /*padding-top:5%;*/
   }
 </style>

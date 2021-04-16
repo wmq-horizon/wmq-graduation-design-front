@@ -73,8 +73,6 @@
                   </el-time-select>
 
                 </el-col>
-
-
               </el-form-item>
               <el-form-item label="讲座简介" prop="desc">
                 <el-input type="textarea" v-model="ruleForm.desc"></el-input>
@@ -96,7 +94,6 @@
         name: "createNewLecture",
         data() {
             return {
-
                 ruleForm: {
                     name: '',
                     region: '',
@@ -173,12 +170,13 @@
 
 <style scoped>
   .table-title {
-    background-color: #B3CCB6;
+    background:rgba(34,139,34,0.2);
     color: white;
   }
 
   .add-form {
-    background-color: #DDDDDD;
+    background:rgba(34,139,34,0.05);
+    box-shadow: 10px 10px 5px #888;
     /*padding-top:5%;*/
   }
 </style>

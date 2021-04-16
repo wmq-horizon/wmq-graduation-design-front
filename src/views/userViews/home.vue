@@ -51,8 +51,8 @@
                 <el-input placeholder="用户名" v-model="userId"></el-input>
                 <el-input placeholder="密码" type="password" v-model="passWord"></el-input>
                 <el-button @click="loginIn" round style="height: 45px;width: 100%">登录</el-button>
-                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E" >
-                  <span class="links">重置密码</span></el-link>
+<!--                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E" >-->
+<!--                  <span class="links">重置密码</span></el-link>-->
               </el-card>
 
               <el-card class="box-card" v-if=" loginStatus!==null">
@@ -172,6 +172,17 @@
                         let status = sessionStorage.getItem("status").slice();
                         this.loginStatus = status;
                         console.log("status:" + sessionStorage.getItem("status"));
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '登录成功',
+                            message: h('i', { style: 'color: teal'}, '欢迎您！')
+                        });
+                    }else{
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '登录失败',
+                            message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                        });
                     }
                     console.log(res.data.data);
                 }).catch(err => {

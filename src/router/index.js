@@ -17,7 +17,6 @@ import signPage from "../views/userViews/signPage";
 import home from "../views/userViews/home";
 import foots from "../components/student/foots";
 import oldLecture from "../views/userViews/oldLecture";
-import testVue from "../views/adminViews/testVue";
 Vue.use(Router);
 export default new Router({
   routes: [
@@ -92,10 +91,6 @@ export default new Router({
       path: '/oldLecture',
       name: ' oldLecture',
       component: oldLecture
-    }, {
-      path: '/test',
-      name: ' test',
-      component: testVue
     }
   ],
   mode:'history'

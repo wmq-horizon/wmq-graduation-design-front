@@ -213,8 +213,6 @@
                 //直接返回结果
                 return finalResult
             },
-
-            //辅助函数:智能推荐的选座操作
             chooseSeat: function (result) {
                 // slice() 方法可从已有的数组中返回选定的元素，返回其中的所有的元素，存储到oldArray中
                 let oldArray = this.seatArray.slice();
@@ -273,76 +271,86 @@
                 //遍历seatArray，将值为1的座位变为2
                 let oldArray = this.seatArray.slice();
                 let count = 0;
-                let test = 0;
-                let ONLY_ONECE = 2;
                 for (let i = 0; i < this.seatRow; i++) {
                     for (let j = 0; j < this.seatCol; j++) {
-                        count++;
-                        if (oldArray[i][j] === '1') {
-                              test = test+1;
-                              //test用于检测每人仅限选择一个位子
-                            if(test<ONLY_ONECE){
-                                this.$axios.post('/student/buySeat',{
-                                    stuNumber:this.bookInfo.stuNumber,
-                                    roomNumber:this.bookInfo.roomNumber,
-                                    lecNumber:this.bookInfo.lecNumber,
-                                    rrow:i,
-                                    collumn:j,
-                                    commented:count,
-                                    title:this.bookInfo.title,
-                                    time:this.bookInfo.time,
-                                    date:this.bookInfo.date,
-                                    score:this.bookInfo.score,
-                                }).then(res=>{
-                                    if(re.data.code===200){
-                                        console.log('修改成功');
-                                        oldArray[i][j] ='2';
-                                        this.seatArray = oldArray;
-                                    }else{
-                                        console.log("修改失败！");
-                                        const h = this.$createElement;
-                                        this.$notify({
-                                            title: '预定失败！',
-                                            message: h('i', { style: 'color: teal'}, '请检查无误后重新预定')
-                                        });
-                                    }
-                                }).catch(()=>{
-                                    console.log('err');
+                        count ++;
+                        if(oldArray[i][j]==='1'){
+                            this.$axios.post('/student/buySeat',{
+                                stuNumber:this.bookInfo.stuNumber,
+                                roomNumber:this.bookInfo.roomNumber,
+                                lecNumber:this.bookInfo.lecNumber,
+                                rrow:i,
+                                collumn:j,
+                                commented:count,
+                                title:this.bookInfo.title,
+                                time:this.bookInfo.time,
+                                date:this.bookInfo.date,
+                                score:this.bookInfo.score,
+                            }).then(res=>{
+                                if(res.data.code===200){
+                                    console.log('修改成功');
+
+                                    oldArray[i][j] ='2';
+                                    this.seatArray = oldArray;
+                                    const h = this.$createElement;
+                                    this.$notify({
+                                        title: '预约成功！',
+                                        message: h('i', { style: 'color: teal'}, '记得现场签到，预约信息请到个人中心查看')
+                                    });
+                                }else{
+                                    console.log("修改失败！");
                                     const h = this.$createElement;
                                     this.$notify({
                                         title: '预定失败！',
-                                        message: h('i', { style: 'color: teal'}, '请检查无误后重新预定')
+                                        message: h('i', { style: 'color: teal'}, res.data.setMessage)
                                     });
-                                });
-                            }else{
+                                }
+                            }).catch(err=>{
+                                console.log(err);
                                 const h = this.$createElement;
                                 this.$notify({
                                     title: '预定失败！',
-                                    message: h('i', { style: 'color: teal'}, '每人仅限一次')
+                                    message: h('i', { style: 'color: teal'}, '')
                                 });
-                            }
+                            });
                         }
                     }
                 }
+                this.seatArray = oldArray;
             },
             //处理座位选择逻辑，手动用鼠标选择单个座位
             handleChooseSeat: function (row, col) {
-                // 保存传递进来的行列的值
-                let seatValue = this.seatArray[row][col];
-                // 定义新的数组为将要接收信息的数组，可以直接在oldArray上进行修改吗
-                let newArray = this.seatArray;
-                //如果是已购座位，直接返回
-                if (seatValue === '2') return;
-                //如果是已选座位点击后变未选
-                if (seatValue === '1') {
-                    newArray[row][col] = '0'
-                } else if (seatValue === '0') {
-                    newArray[row][col] = '1'
+                let count = 0;
+                for(let i = 0 ;i<this.classRoom.row_count;i++){
+                    for(let  j = 0;j<this.classRoom.col_count;j++){
+                        if(this.seatArray[i][j] ==='1'){
+                            count ++;
+                        }
+                        if(count>=2){
+                            break;
+                        }
+                    }
                 }
-                //必须整体更新二维数组，Vue无法检测到数组某一项更新,必须slice复制一个数组才行
-                this.seatArray = newArray.slice();
-                // 输出的是二维数组
+                if(count<1 ||  this.seatArray[row][col] ==='1'){
+                    let seatValue = this.seatArray[row][col];
+                    let newArray = this.seatArray;
+                    if (seatValue === '2') return;
+                    if (seatValue === '1') {
+                        newArray[row][col] = '0'
+                    } else if (seatValue === '0') {
+                        newArray[row][col] = '1'
+                    }
+                    this.seatArray = newArray.slice();
+                }else{
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '不可选',
+                        message: h('i', { style: 'color: teal'}, '每人只能选择一个座位，请先取消已选座位')
+                    });
+                }
+
             },
+
             //初始座位数组，包括座位的相关信息和不是座位的相关信息
             getParams:function(){
                 this.bookInfo.roomNumber = this.$route.query.roomName;

@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="center">
-      <el-card class="box-card" style="opacity:0.9">
+      <el-card class="box-card">
         <div slot="header" style="height:50px;line-height: 30px">
           <span>欢迎您！</span>
           <el-button style="float: right; padding:0" type="text" @click="registe"><span
@@ -166,7 +166,7 @@
 
 <style scoped>
   .el-card {
-
+    box-shadow: 10px 10px 5px #888;
   }
 
   .center {

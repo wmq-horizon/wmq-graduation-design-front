@@ -20,7 +20,7 @@
                 // session超时时间和后端超时时间一样
                 if (curTime - this.lastTime > 1000 * 15 * 60) {
                     //退出
-                    if (this.$route.path === '/home') {
+                    if (this.$route.path === '/home'||this.$route.path === '/login') {
                         return
                     }
                     const h = this.$createElement;

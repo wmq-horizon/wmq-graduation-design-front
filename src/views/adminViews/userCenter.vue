@@ -160,14 +160,16 @@
                 for (let i = 0; i < testData.length; i++) {
                     if (testData[i].uid === row.uid) {
                         testData[i] = this.editItem;
+                        testData[i].uid = row.uid;
+                        testData[i].role = row.role;
                         testData[i].edit = false;
                     }
                 }
                 this.userInfo = testData;
                 if(this.editItem!=null){
                     this.$axios.post("/admin/updateUserInfo", {
-                        uid:this.editItem.uid,
-                        name:this.editItem.name,
+                        uid:row.uid,
+                        name:this.editItem.name==''?row.name:this.editItem.name,
                         integrity:this.editItem.integrity,
                         role:this.editItem.role,
                         score:this.editItem.score,

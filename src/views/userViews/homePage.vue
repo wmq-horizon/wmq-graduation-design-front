@@ -53,7 +53,7 @@
                 <el-input placeholder="用户名" v-model="userId"></el-input>
                 <el-input placeholder="密码" type="password" v-model="passWord"></el-input>
                 <el-button @click="loginIn" round style="height: 45px;width: 100%">登录</el-button>
-                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E">重置密码</el-link>
+<!--                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E">重置密码</el-link>-->
               </el-card>
               <el-card class="box-card" v-if=" loginStatus!==null">
                 <div  class="wow pulse logOut" data-wow-duration="2s" data-wow-iteration="3">
