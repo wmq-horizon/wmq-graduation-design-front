@@ -170,12 +170,12 @@
 
 <style scoped>
   .table-title {
-    background:rgba(34,139,34,0.2);
+    background:rgba(67,74,80,0.8);
     color: white;
   }
 
   .add-form {
-    background:rgba(34,139,34,0.05);
+    background:rgba(67,74,80,0.3);
     box-shadow: 10px 10px 5px #888;
     /*padding-top:5%;*/
   }

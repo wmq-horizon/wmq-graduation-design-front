@@ -24,6 +24,8 @@
                               query:{
                                 lecName:item.title,
                                 lecNumber:item.lecNumber,
+                                score:item.lecScore,
+
                                 }}"> 签到页面</router-link>
             </div>
 

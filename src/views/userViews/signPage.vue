@@ -1,13 +1,10 @@
 <template>
   <el-container>
     <el-header>{{lecName}}</el-header>
-    <el-main>
-      <el-row>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">.</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple-light">
+    <vue-canvas-nest :config="{color:'0,96,128 ', count: 500}" :el="'#area'">
+    </vue-canvas-nest>
+    <el-main id="area">
+        <el-card class="box-card">
             <el-form :model="numberValidateForm" ref="numberValidateForm" label-width="100px" class="demo-ruleForm">
               <el-form-item
                 label="学号"
@@ -16,27 +13,24 @@
       { required: true, message: '学号不能为空'},
     ]"
               >
-                <el-input v-model.number="numberValidateForm.stuNumber" autocomplete="off"></el-input>
+                <el-input v-model.number="numberValidateForm.stuNumber" autocomplete="off"><el-button slot="append" @click="submitForm('numberValidateForm')">签到</el-button></el-input>
 
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="submitForm('numberValidateForm')">签到</el-button>
+<!--                <el-button type="primary" @click="submitForm('numberValidateForm')">签到</el-button>-->
               </el-form-item>
-
             </el-form>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-      </el-row>
+        </el-card>
     </el-main>
   </el-container>
 </template>
 
 <script>
+    import vueCanvasNest from 'vue-canvas-nest'
     export default {
         name: "signPage",
+
+        components: {vueCanvasNest},
         data() {
             return {
                 numberValidateForm: {
@@ -44,20 +38,25 @@
                 },
                 title: '',
                 lecName:'',
+                lecNumber:'',
+                score:'',
             }
         },
         methods: {
             getParam() {
+                //从哪个页面传过来的数据
                 this.lecName = this.$route.query.lecName;
                 this.lecNumber = this.$route.query.lecNumber;
+                this.score = this.$route.query.score;
                 console.log(this.lecName);
                 console.log(this.lecNumber);
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$axios.get("/signUp?stuNumber="+this.numberValidateForm.stuNumber+"&lecNumber="+this.lecNumber).then(res=>{
+                        this.$axios.get("/sign?stuNumber="+this.numberValidateForm.stuNumber+"&lecNumber="+this.lecNumber+'&score='+this.score).then(res=>{
                             console.log(res);
+                            console.log("测试签到");
                         }).catch(err=>{
                             console.log(err);
                         })
@@ -76,21 +75,22 @@
 
 <style scoped>
   .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
+    background-color: rgba(0,96,128,0.5);
     text-align: center;
     line-height: 60px;
   }
 
   .el-main {
-    background-color: #E9EEF3;
+    background-color: rgba(0,96,128,0.05);
     color: #333;
     text-align: center;
     line-height: 160px;
+    height: 100%;
+
   }
 
   body > .el-container {
-    margin-bottom: 40px;
+    /*margin-bottom: 40px;*/
   }
 
   .el-container:nth-child(5) .el-aside,
@@ -100,5 +100,17 @@
 
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 100%;
+    margin-bottom: 40%;
   }
 </style>

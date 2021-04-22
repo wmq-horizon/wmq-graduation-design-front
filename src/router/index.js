@@ -80,7 +80,7 @@ export default new Router({
       name: ' todayLecture',
       component: todayLecture
     }, {
-      path: '/signUp',
+      path: '/signPage',
       name: ' signPage',
       component: signPage
     }, {
