@@ -212,7 +212,7 @@
 
 <style scoped>
   .table-title{
-    background-color:#B3CCB6;
+    background:rgba(67,74,80,0.5);
   }
   .table-column{
     background-color: #B3CCB6;

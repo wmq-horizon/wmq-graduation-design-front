@@ -111,12 +111,13 @@
 </script>
 
 <style scoped>
-  .table-title{
-    background-color:#B3CCB6;
-    color:white;
+  .table-title {
+    background:rgba(67,74,80,0.5);
+    color: white;
   }
-  .add-form{
-    background:rgba(34,139,34,0.05);
+
+  .add-form {
+    background:rgba(67,74,80,0.3);
     box-shadow: 10px 10px 5px #888;
     /*padding-top:5%;*/
   }

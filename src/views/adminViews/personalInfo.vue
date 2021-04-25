@@ -130,7 +130,7 @@
     box-shadow: 10px 10px 5px #888;
     padding-left: 100px;
     margin: 50px 250px 80px 160px;
-    background: rgba(34, 139, 34, 0.1);
+    background:rgba(67,74,80,0.3);
   }
   .el-input{
     padding-bottom: 20px;

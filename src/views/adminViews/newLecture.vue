@@ -170,7 +170,7 @@
 
 <style scoped>
   .table-title {
-    background:rgba(67,74,80,0.8);
+    background:rgba(67,74,80,0.5);
     color: white;
   }
 

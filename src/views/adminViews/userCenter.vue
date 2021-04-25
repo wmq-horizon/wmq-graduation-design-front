@@ -74,23 +74,23 @@
                 columns: [{
                     prop: "uid",
                     label: "用户编号",
-                    width: 150,
+                    width: 200,
                 }, {
                     prop: "name",
                     label: "用户昵称",
-                    width: 150
+                    width: 200
                 }, {
                     prop: "integrity",
                     label: "诚信值",
-                    width: 100
+                    width: 150
                 }, {
                     prop: "role",
                     label: "角色",
-                    width: 150
+                    width: 200
                 }, {
                     prop: "score",
                     label: "量化分",
-                    width: 100
+                    width: 150
                 }, {
                     prop: "status",
                     label: "状态",
@@ -219,7 +219,7 @@
 
 <style scoped>
   .table-title{
-    background-color:#B3CCB6;
+    background:rgba(67,74,80,0.5);
   }
   .table-column{
     background-color: #B3CCB6;

@@ -16,7 +16,14 @@
         </el-col>
         <el-col :span="12">
           <el-card class="text-card wow fadeIn chartItem" data-wow-duration="4">
+<!--            <div style="font-size: 18px;font-weight: bold;margin-bottom: 20px">量化分最多的前十名学生</div>-->
+            <div v-for="(item,index) in topScoreStudent" :key="o" >
+                <div v-if="index<5">
+                    <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
+                  <div style="padding-bottom: 30px">学号{{item.uid}},昵称{{item.name}},量化分{{item.score}}</div><div></div>
 
+                </div>
+            </div>
           </el-card>
         </el-col>
       </el-row>
@@ -116,7 +123,15 @@
         name: "popularityList",
         components: {vueCanvasNest},
         data() {
-            return {}
+            return {
+                topScoreStudent:[],
+                topIntegrityStudent:[],
+                mostUsedRooms:[],
+                mostDatedLecture:[],
+                speakerHot:[],
+                hardStudent:[],
+
+            }
         },
         methods: {
             getTopStudent() {
@@ -125,6 +140,7 @@
                 let stuCount = [];
                 let topStudentChart = this.$echarts.init(document.getElementById('topStudent'));
                 this.$axios.get("student/getTopStudent").then(res => {
+                    this.hardStudent=res.data.data;
                     console.log("get/topStudent");
                     console.log(res);
                     for (let i = 0; i < res.data.data.length; i++) {
@@ -169,6 +185,7 @@
                 let scores = [];
                 let topScoreStudent = this.$echarts.init(document.getElementById('topScoreStudent'));
                 this.$axios.get("student/topScoreUser").then(res => {
+                    this.topScoreStudent = res.data.data;
                     for (let i = 0; i < res.data.data.length; i++) {
                         names.push(res.data.data[i].name);
                         scores.push(res.data.data[i].score);
@@ -219,6 +236,7 @@
                 let topIntegrityStudent = this.$echarts.init(document.getElementById('topIntegrityStudent'));
                 this.$axios.get('student/topIntegrityUser').then(res => {
                     console.log(res);
+                    this.topIntegrityStudent = res.data.data;
                     for (let i = 0; i < res.data.data.length; i++) {
                         names.push(res.data.data[i].name);
                         integrities.push(res.data.data[i].integrity);
@@ -259,6 +277,7 @@
                 var counts = [];
                 this.$axios.get("/student/getTopLecture").then(res => {
                     console.log("res");
+                    this.mostDatedLecture = res.data.data;
                     console.log(res);
                     for (let i = 0; i < res.data.data.length; i++) {
                         titles.push(res.data.data[i].title);
@@ -304,6 +323,7 @@
                 let pieChart = this.$echarts.init(document.getElementById('pieChart'));
                 this.$axios.get("student/getTopThreeSpeaker").then(res => {
                     console.log(res);
+                    this.speakerHot = res.data.data;
                     for (let i = 0; i < res.data.data.length; i++) {
                         console.log("itemMap");
                         itemMap.name = res.data.data[i].speaker;
@@ -315,7 +335,7 @@
                     console.log(data);
                     let option = {
                         title: {
-                            text: '演讲者气度',
+                            text: '演讲者人气度',
                             subtext: '分析最受欢迎的讲师的前三位',
                             left: 'center'
                         },
@@ -353,6 +373,7 @@
                 let values = [];
                 this.$axios.get("/student/topRoom").then(res => {
                     console.log(res);
+                    this.mostUsedRooms=res.data.data;
                     let option = {
                         title: {
                             text: '使用次数最多的宣讲室',
