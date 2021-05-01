@@ -17,7 +17,7 @@
         <el-col :span="12">
           <el-card class="text-card wow fadeIn chartItem" data-wow-duration="4">
 <!--            <div style="font-size: 18px;font-weight: bold;margin-bottom: 20px">量化分最多的前十名学生</div>-->
-            <div v-for="(item,index) in topScoreStudent" :key="o" >
+            <div v-for="(item,index) in topScoreStudent" :key="index" >
                 <div v-if="index<5">
                     <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
                   <div style="padding-bottom: 30px">学号{{item.uid}},昵称{{item.name}},量化分{{item.score}}</div><div></div>
@@ -31,6 +31,12 @@
       <el-row>
         <el-col :span="12">
           <el-card class="text-card-left wow fadeIn chartItem" data-wow-duration="4">
+            <div v-for="(item,index) in topIntegrityStudent" :key="index" >
+              <div v-if="index<5">
+                <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
+                <div style="padding-bottom: 30px">学号{{item.uid}},昵称{{item.name}},诚信值{{item.integrity}}</div><div></div>
+              </div>
+            </div>
           </el-card>
         </el-col>
         <el-col :span="12">
@@ -43,7 +49,6 @@
       </el-row>
       <!--    3-->
       <el-row>
-
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <div>
@@ -56,7 +61,12 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-card class="text-card wow fadeIn chartItem" data-wow-duration="4">
-
+              <div v-for="(item,index) in mostUsedRooms" :key="o" >
+                <div v-if="index<5">
+                  <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
+                  <div style="padding-bottom: 30px">{{item.roomNumber}},使用次数{{item.roomCount}}</div><div></div>
+                </div>
+              </div>
             </el-card>
           </div>
         </el-col>
@@ -65,7 +75,12 @@
       <el-row>
         <el-col :span="12">
           <el-card class="text-card-left wow fadeIn chartItem" data-wow-duration="4">
-
+            <div v-for="(item,index) in mostDatedLecture" :key="index" >
+              <div v-if="index<5">
+                <div style="font-size: 18px;font-weight: bold">第{{index+1}}名，预约人次{{item.totalLecture}}</div>
+                <div style="padding-bottom: 30px">{{item.title}}</div>
+              </div>
+            </div>
           </el-card>
         </el-col>
         <el-col :span="12">
@@ -92,7 +107,13 @@
         </el-col>
         <el-col :span="12">
           <el-card class="text-card wow fadeIn chartItem" data-wow-duration="4">
+            <div v-for="(item,index) in speakerHot" :key="index" >
+              <div v-if="index<5">
+                <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
+                <div style="padding-bottom: 30px">{{item.speaker}},累计培训人数：{{item.totalLecture}}</div>
 
+              </div>
+            </div>
           </el-card>
         </el-col>
       </el-row>
@@ -100,6 +121,13 @@
       <el-row>
         <el-col :span="12">
           <el-card class="text-card-left wow fadeIn chartItem" data-wow-duration="4">
+            <div v-for="(item,index) in hardStudent" :key="index" >
+              <div v-if="index<5">
+                <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
+                <div style="padding-bottom: 30px">学号{{item.stuNumber}},昵称{{item.name}},参与次数{{item.stuCount}}</div>
+
+              </div>
+            </div>
           </el-card>
         </el-col>
         <el-col :span="12">
@@ -118,7 +146,6 @@
     import {WOW} from 'wowjs'
     import 'animate.css'
     import vueCanvasNest from 'vue-canvas-nest'
-
     export default {
         name: "popularityList",
         components: {vueCanvasNest},

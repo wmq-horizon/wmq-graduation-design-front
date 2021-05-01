@@ -34,7 +34,7 @@
                   :fits="fits"
                   :src="require('../../assets/sea2.jpg')"
                   style="width: 330px; height: 520px"></el-image>
-                <a href="/oldLecture">
+                <a href="/popularityList">
                   <div class="mask">
                     <span class="text" style="font-size: 18px">数据分析<br></span>
                     <span class="text"><br>查看数据分析</span>
@@ -51,8 +51,6 @@
                 <el-input placeholder="用户名" v-model="userId"></el-input>
                 <el-input placeholder="密码" type="password" v-model="passWord"></el-input>
                 <el-button @click="loginIn" round style="height: 45px;width: 100%">登录</el-button>
-<!--                <el-link :underline="false" @click="showWhoIam" style="color:#2D634E" >-->
-<!--                  <span class="links">重置密码</span></el-link>-->
               </el-card>
 
               <el-card class="box-card" v-if=" loginStatus!==null">

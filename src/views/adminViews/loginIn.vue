@@ -118,7 +118,7 @@
                                 const h = this.$createElement;
                                 this.$notify({
                                     title: '登录失败',
-                                    message: h('i', { style: 'color: teal'}, '登录失败')
+                                    message: h('i', { style: 'color: teal'}, res.data.setMessage)
                                 });
                             }
                             if (res.data.setMessage !== 'admin') {
@@ -126,7 +126,7 @@
                                 const h = this.$createElement;
                                 this.$notify({
                                     title: '权限不足',
-                                    message: h('i', { style: 'color: teal'}, '对不起，您的权限不足')
+                                    message: h('i', { style: 'color: teal'}, res.data.setMessage)
                                 });
 
                             }
