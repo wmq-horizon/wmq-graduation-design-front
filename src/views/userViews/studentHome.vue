@@ -68,7 +68,7 @@
                         placeholder="写下您的心得或者建议"
                         v-model="item.comments">
                       </el-input>
-                        <el-button type="text" @click="doComment(item.comments,item.title)" style="float:right">提交</el-button>
+                        <el-button type="text" @click="doComment(item.comments,item.title,item.commented)" style="float:right">提交</el-button>
                     </el-collapse-item>
                   </el-collapse>
                 </div>
@@ -173,18 +173,27 @@
             //   })
             // },
 
-            doComment(comments,title){
-                this.$axios.put("student/doComment",{
-                    stuNumber:this.user.uid,
-                    title:title,
-                    comments:comments,
-                    lecNumber:"lecNumber"
-                }).then(res=>{
-                    // 评价成功之后修改前端页面
-                    console.log(res);
-                }).catch(err=>{
-                  console.log(err);
-                })
+            doComment(comments,title,commented){
+                if(commented==0){
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '不能评价！',
+                        message: h('i', { style: 'color: teal'}, "您未现场签到，不能评价")
+                    });
+                }else if(commented==1){
+                    this.$axios.put("student/doComment",{
+                        stuNumber:this.user.uid,
+                        title:title,
+                        comments:comments,
+                        lecNumber:"lecNumber"
+                    }).then(res=>{
+                        // 评价成功之后修改前端页面
+                        console.log(res);
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }
+
             },
             getUserInfo(){
                 this.$axios.get('/student/hello').then(res=>{
@@ -221,10 +230,6 @@
     text-align: center;
     float: left;
     line-height: 2%;
-    /*width: 100%;*/
-    /*padding: 0;*/
-    /*margin-bottom: 100px;*/
-    /*font-size: x-small;*/
   }
 
   .el-aside .box-card{
@@ -268,7 +273,7 @@
     margin-bottom: 3%;
   }
   .el-main{
-    min-height:700px;
+    min-height:750px;
   }
   .el-input{
     padding-bottom: 20px;

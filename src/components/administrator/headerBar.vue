@@ -25,6 +25,8 @@
         methods: {
             logOut() {
                 sessionStorage.removeItem("session");
+                sessionStorage.removeItem("status");
+                sessionStorage.removeItem("role");
                 this.$axios.get("logOut").then(res => {
                     window.location.href = '/login';
                     console.log("logout");

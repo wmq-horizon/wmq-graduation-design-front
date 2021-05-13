@@ -77,7 +77,7 @@
           <el-card class="text-card-left wow fadeIn chartItem" data-wow-duration="4">
             <div v-for="(item,index) in mostDatedLecture" :key="index" >
               <div v-if="index<5">
-                <div style="font-size: 18px;font-weight: bold">第{{index+1}}名，预约人次{{item.totalLecture}}</div>
+                <div style="font-size: 18px;font-weight: bold">第{{index+1}}名，预约人次{{item.total}}</div>
                 <div style="padding-bottom: 30px">{{item.title}}</div>
               </div>
             </div>
@@ -110,7 +110,7 @@
             <div v-for="(item,index) in speakerHot" :key="index" >
               <div v-if="index<5">
                 <div style="font-size: 18px;font-weight: bold">第{{index+1}}名</div>
-                <div style="padding-bottom: 30px">{{item.speaker}},累计培训人数：{{item.totalLecture}}</div>
+                <div style="padding-bottom: 30px">{{item.speaker}},累计培训人数：{{item.total}}</div>
 
               </div>
             </div>
@@ -354,8 +354,8 @@
                     for (let i = 0; i < res.data.data.length; i++) {
                         console.log("itemMap");
                         itemMap.name = res.data.data[i].speaker;
-                        itemMap.value = res.data.data[i].totalLecture;
-                        data.push({name: res.data.data[i].speaker, value: res.data.data[i].totalLecture});
+                        itemMap.value = res.data.data[i].total;
+                        data.push({name: res.data.data[i].speaker, value: res.data.data[i].total});
                         console.log(itemMap);
                     }
                     console.log("data");
@@ -459,7 +459,7 @@
 
   .text-card {
     width: 70%;
-    height: 450px;
+    height: 600px;
     border-radius: 30px;
     margin: auto auto auto 0;
     box-shadow: 7px 7px 4px #888;
@@ -467,16 +467,15 @@
 
   .text-card-left {
     width: 70%;
-    height: 450px;
+    height: 600px;
     border-radius: 30px;
     margin: auto 0 auto auto;
-
     box-shadow:2px 5px 1px   #888;
   }
 
   .box-card {
     width: 100%;
-    height: 450px;
+    height: 600px;
     margin: auto;
     background: rgba(0, 96, 128, 0.05);
     box-shadow: 7px 7px 4px #888;

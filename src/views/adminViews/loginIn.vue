@@ -167,15 +167,17 @@
 <style scoped>
   .el-card {
     box-shadow: 10px 10px 5px #888;
+    /*padding-right: 4%;*/
   }
 
   .center {
-    width: 400px;
+    width: 500px;
     height: 200px;
     line-height: 200px;
-    text-align: center;
+    /*text-align: center;*/
     margin: auto;
     padding-top: 10%;
+    border-color: #99a9bf;
   }
 
   .body {

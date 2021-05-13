@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>{{lecName}}</el-header>
+    <el-header>每一堂讲座，都是一次心灵的旅行！</el-header>
     <vue-canvas-nest :config="{color:'0,96,128 ', count: 500}" :el="'#area'">
     </vue-canvas-nest>
     <el-main id="area">
@@ -57,6 +57,19 @@
                         this.$axios.get("/sign?stuNumber="+this.numberValidateForm.stuNumber+"&lecNumber="+this.lecNumber+'&score='+this.score).then(res=>{
                             console.log(res);
                             console.log("测试签到");
+                            if(res.data.code===200){
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '',
+                                    message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                                });
+                            }else{
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '签到失败',
+                                    message: h('i', { style: 'color: teal'}, "签到失败，请稍后再试！")
+                                });
+                            }
                         }).catch(err=>{
                             console.log(err);
                         })
@@ -72,12 +85,12 @@
         }
     }
 </script>
-
 <style scoped>
   .el-header, .el-footer {
     background-color: rgba(0,96,128,0.5);
     text-align: center;
     line-height: 60px;
+    font-size: 32px;
   }
 
   .el-main {

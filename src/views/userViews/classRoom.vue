@@ -113,7 +113,8 @@
                     time:'',
                     date:'',
                     score:'',
-                    title:''
+                    title:'',
+                    speaker:'',
                 },
                 lectureInfo:{
                     lecNumber: '',
@@ -157,6 +158,7 @@
                                 collumn:j,
                                 commented:count,
                                 title:this.bookInfo.title,
+                                speaker:this.bookInfo.speaker,
                                 time:this.bookInfo.time,
                                 date:this.bookInfo.date,
                                 score:this.bookInfo.score,
@@ -233,11 +235,11 @@
             getParams:function(){
                 this.bookInfo.roomNumber = this.$route.query.roomName;
                 this.bookInfo.lecNumber = this.$route.query.lecNumber;
-
                 this.bookInfo.time = this.$route.query.time;
                 this.bookInfo.date = this.$route.query.date;
                 this.bookInfo.score = this.$route.query.score;
                 this.bookInfo.title= this.$route.query.lecTitle;
+                this.bookInfo.speaker = this.$route.query.speaker;
                 console.log("stuNumber:"+this.bookInfo.stuNumber);
                 // 获取数据渲染座位列表
                 this.$axios.get('/student/getSeatInfo?roomName='+this.bookInfo.roomNumber+'&lecNumber='+this.bookInfo.lecNumber).then(res=>{

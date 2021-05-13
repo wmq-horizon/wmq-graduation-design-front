@@ -159,6 +159,11 @@
                         testData[i].edit = true;
                         console.log("查看数据刷新");
                         console.log(testData);
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '编辑模式',
+                            message: h('i', { style: 'color: teal'}, "不必填写整行信息，填写您想修改的部分即可！")
+                        });
                     }
                 }
                 this.tableData = testData;
@@ -168,28 +173,45 @@
                 for (let i = 0; i < testData.length; i++) {
                     console.log(i);
                     if (testData[i].roomNumber === row.roomNumber) {
-                        testData[i] = this.editItem;
                         testData[i].edit = false;
+                        console.log(this.editRow.roomNumber+"roomNumber");
+                        testData[i].roomNumber = row.roomNumber;
+                        testData[i].roomName = this.editItem.roomName==''?row.roomName:this.editItem.roomName;
+                        testData[i].rowCount = this.editItem.rowCount==''?row.rowCount:this.editItem.rowCount;
+                        testData[i].colCount = this.editItem.colCount==''?row.colCount:this.editItem.colCount;
                     }
                 }
                 this.tableData = testData;
                 if(this.editItem!=null){
                     this.$axios.post("/admin/updateLectureRoom", {
-                        roomNumber:this.editItem.roomNumber,
-                        roomName:this.editItem.roomName,
-                        rowCount:this.editItem.rowCount,
-                        colCount:this.editItem.colCount,
+                        roomNumber:row.roomNumber,
+                        roomName:this.editItem.roomName==''?row.roomName:this.editItem.roomName,
+                        rowCount:this.editItem.rowCount==''?row.rowCount:this.editItem.rowCount,
+                        colCount:this.editItem.colCount==''?row.colCount:this.editItem.colCount,
                         seat1:row.roomNumber,
                     }).then(res => {
                         console.log(res);
-                        const h = this.$createElement;
+                        if(res.data.code===200){
+                            const h = this.$createElement;
+                            this.$notify({
+                                title: '成功！',
+                                message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                            });
+                        }else{
+                            const h = this.$createElement;
+                            this.$notify({
+                                title: '',
+                                message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                            });
+                        }
 
-                        this.$notify({
-                            title: '标题名称',
-                            message: h('i', { style: 'color: teal'}, res.data.setMessage)
-                        });
                     }).catch(err => {
                         console.log(err);
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '',
+                            message: h('i', { style: 'color: teal'}, "出错了")
+                        });
                     });
                 }
             },

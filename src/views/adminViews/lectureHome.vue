@@ -191,26 +191,52 @@
                 for (let i = 0; i < testData.length; i++) {
                     if (testData[i].lecNumber === row.lecNumber) {
                         console.log("不等于Null");
-                        testData[i] = this.editItem;
                         testData[i].edit = false;
+                        testData[i].lecNumber=row.lecNumber,
+                        testData[i].lecRoom=this.editItem.lecRoom==''?row.lecRoom:this.editItem.lecRoom,
+                        testData[i].title=this.editItem.title==''?row.title:this.editItem.title,
+                        testData[i].speaker=this.editItem.speaker==''?row.speaker:this.editItem.speaker,
+                        testData[i].lecScore=this.editItem.lecScore==''?row.lecScore:this.editItem.lecScore,
+                        testData[i].lecDate=this.editItem.lecDate==''?row.lecDate:this.editItem.lecDate,
+                        testData[i].lecTime=this.editItem.lecTime==''?row.lecTime:this.editItem.lecTime,
+                        testData[i].introduction=this.editItem.introduction==''?row.introduction:this.editItem.introduction,
+                        testData[i].content=this.editItem.content==''?row.content:this.editItem.content
+
                     }
                 }
                 this.lecture.sel = testData;
                 if(this.editItem!=null){
                     this.$axios.post("/admin/updateLecture", {
-                        lecNumber:this.editItem.lecNumber,
-                        lecRoom:this.editItem.lecRoom,
-                        title:this.editItem.title,
-                        speaker:this.editItem.speaker,
-                        lecScore:this.editItem.lecScore,
-                        lecDate:this.editItem.lecDate,
-                        lecTime:this.editItem.lecTime,
-                        introduction:this.editItem.introduction,
-                        content:this.editItem.content,
+                        lecNumber:row.lecNumber,
+                        lecRoom:this.editItem.lecRoom==''?row.lecRoom:this.editItem.lecRoom,
+                        title:this.editItem.title==''?row.title:this.editItem.title,
+                        speaker:this.editItem.speaker==''?row.speaker:this.editItem.speaker,
+                        lecScore:this.editItem.lecScore==''?row.lecScore:this.editItem.lecScore,
+                        lecDate:this.editItem.lecDate==''?row.lecDate:this.editItem.lecDate,
+                        lecTime:this.editItem.lecTime==''?row.lecTime:this.editItem.lecTime,
+                        introduction:this.editItem.introduction==''?row.introduction:this.editItem.introduction,
+                        content:this.editItem.content==''?row.content:this.editItem.content,
                     }).then(res => {
-                        console.log(res);
+                        if(res.data.code===200){
+                            const h = this.$createElement;
+                            this.$notify({
+                                title: '成功！',
+                                message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                            });
+                        }else{
+                            const h = this.$createElement;
+                            this.$notify({
+                                title: '',
+                                message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                            });
+                        }
                     }).catch(err => {
                         console.log(err);
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '失败',
+                            message: h('i', { style: 'color: teal'}, "请稍后重试")
+                        });
                     });
                 }
             },
@@ -224,6 +250,11 @@
                         testData[i].edit = true;
                         console.log("查看数据刷新");
                         console.log(testData);
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '编辑模式',
+                            message: h('i', { style: 'color: teal'}, "不必填写整行信息，填写您想修改的部分即可！")
+                        });
                     }
                 }
                 this.lecture.sel = testData;
@@ -235,10 +266,18 @@
                 this.$axios.get("/admin/deleteLecture?lecNumber="+row.lecNumber).then(res=>{
                     console.log(res);
                     if(res.data.code===200){
-                        this.$message("成功删除讲座");
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '成功！',
+                            message: h('i', { style: 'color: teal'}, '删除成功！')
+                        });
                     }
                 }).catch(err=>{
-                    console.log(err);
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '失败！',
+                        message: h('i', { style: 'color: teal'}, '删除失败！')
+                    });
                 });
             }
             ,

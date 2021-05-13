@@ -14,6 +14,7 @@ import md5 from 'js-md5';
 Vue.prototype.$md5 = md5;
 Vue.prototype.$axios = axios;
 import echarts from 'echarts';
+import  'lib-flexible';
 Vue.prototype.$echarts = echarts;
 Vue.component('homeComponent',homeComponent);
 Vue.component('menuComponent',menuComponent);
@@ -21,7 +22,7 @@ Vue.component('headerBar',headerBar);
 Vue.component('foots',foots);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
-axios.defaults.baseURL = 'http://47.108.211.133:8088/api';
+axios.defaults.baseURL = 'http://127.0.0.1:8088/api';
 //设置允许携带cookie
 axios.defaults.withCredentials = true;
 new Vue({

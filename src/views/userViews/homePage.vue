@@ -32,6 +32,7 @@
                                 date:item.lecDate,
                                 score:item.lecScore,
                                 lecTitle:item.title,
+                                speaker:item.speaker,
                                 }}"> 预约订座</router-link>
                     </div>
 
@@ -150,11 +151,13 @@
             logOut(){
                 sessionStorage.removeItem("session");
                 sessionStorage.removeItem("status");
-                window.location.href='/home';
                 this.$axios.get("/logOut").then(res=>{
                     console.log("logout");
                     console.log(res);
+                    window.location.href='/home';
                 }).catch(err=>{console.log(err)});
+
+
             },
             loginIn() {
                 console.log(this.$md5(this.passWord));

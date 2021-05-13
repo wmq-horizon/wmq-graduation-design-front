@@ -21,8 +21,12 @@
               <el-form-item label="宣讲室" prop="region" style="padding-top: 3%">
                 <el-col :span="11">
                   <el-select v-model="ruleForm.region" placeholder="请选择宣讲室">
-                    <el-option label="龙湖剧场" value="龙湖剧场"></el-option>
-                    <el-option label="学生活动中心" value="学生活动中心"></el-option>
+                    <el-option
+                      v-for="item in roomName"
+                      :key="item.roomNumber"
+                      :label="item.roomName"
+                      :value="item.roomName"
+                    />
                   </el-select>
                 </el-col>
                 <el-col :span="11">
@@ -71,7 +75,6 @@
       minTime: ruleForm.startTime
     }">
                   </el-time-select>
-
                 </el-col>
               </el-form-item>
               <el-form-item label="讲座简介" prop="desc">
@@ -130,11 +133,11 @@
                     score: [
                         {min: 0, required: true, message: '请设置讲座量化分', trigger: 'blur'}
                     ],
-                }
+                },
+                roomName:[]
             }
         },
         methods: {
-
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -150,7 +153,19 @@
                             lecTime: this.ruleForm.startTime+"-"+this.ruleForm.endTime,
                             content: this.ruleForm.desc,
                         }).then(res => {
-
+                            if(res.data.code===200){
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '成功！',
+                                    message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                                });
+                            }else{
+                                const h = this.$createElement;
+                                this.$notify({
+                                    title: '失败！',
+                                    message: h('i', { style: 'color: teal'}, "请稍后再试！")
+                                });
+                            }
                             console.log(res)
                         }).catch(err => {
                             console.log(err)
@@ -163,7 +178,20 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            getRooms(){
+                this.$axios.get("admin/getRoom").then(res=>{
+                    console.log(res);
+                    this.roomName = res.data.data;
+                    console.log(this.roomName);
+                }).catch(err=>{
+                    console.log(err);
+
+                })
             }
+        },
+        created() {
+            this.getRooms();
         }
     }
 </script>

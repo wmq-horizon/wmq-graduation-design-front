@@ -14,9 +14,13 @@
         </div>
         <el-upload
           :format ="['xlsx','xls']"
+          :on-success="uploadSuccess"
+          :on-error="uploadErr"
+          :before-upload="beforeUpload"
+          :on-preview="seeInfo"
           class="upload-demo"
           drag
-          action="http://localhost:8088/api/admin/upload/excelFile"
+          action="http://47.108.211.133:8088/api/admin/upload/excelFile"
           multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -39,8 +43,32 @@
             };
         },
         methods: {
+            uploadSuccess(){
+                const h = this.$createElement;
+                this.$notify({
+                    title: '上传成功！',
+                    message: h('i', { style: 'color: teal'}, '在编辑用户信息处可以搜索到已上传学生信息！')
+                });
+            },
+            uploadErr(){
+                const h = this.$createElement;
+                this.$notify({
+                    title: '上传失败',
+                    message: h('i', { style: 'color: teal'}, '请检查无误后重新上传！')
+                });
+            },
+            beforeUpload(file){
+
+            },
+            seeInfo(file){
+                console.log(file);
+            }
         }
     }
+    /**
+     * 文件上传
+     */
+
 </script>
 
 <style scoped>

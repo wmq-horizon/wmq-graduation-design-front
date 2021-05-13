@@ -74,11 +74,11 @@
                 columns: [{
                     prop: "uid",
                     label: "用户编号",
-                    width: 200,
+                    width: 150,
                 }, {
                     prop: "name",
                     label: "用户昵称",
-                    width: 200
+                    width: 150
                 }, {
                     prop: "integrity",
                     label: "诚信值",
@@ -86,7 +86,7 @@
                 }, {
                     prop: "role",
                     label: "角色",
-                    width: 200
+                    width: 150
                 }, {
                     prop: "score",
                     label: "量化分",
@@ -157,25 +157,42 @@
             },
             saveRow(row) { //保存
                 let testData = this.userInfo.slice();
+                //将编辑好的数据同时在前端展示出来
                 for (let i = 0; i < testData.length; i++) {
                     if (testData[i].uid === row.uid) {
-                        testData[i] = this.editItem;
                         testData[i].uid = row.uid;
                         testData[i].role = row.role;
+                        testData[i].name = this.editItem.name==''?row.name:this.editItem.name;
+                        testData[i].integrity = this.editItem.integrity==''?row.integrity:this.editItem.integrity;
+                        testData[i].score = this.editItem.score==''?row.score:this.editItem.score;
+                        testData[i].status = this.editItem.status==''?row.status:this.editItem.status;
                         testData[i].edit = false;
                     }
                 }
                 this.userInfo = testData;
                 if(this.editItem!=null){
                     this.$axios.post("/admin/updateUserInfo", {
+                        //uid、role不允许被修改
                         uid:row.uid,
                         name:this.editItem.name==''?row.name:this.editItem.name,
-                        integrity:this.editItem.integrity,
-                        role:this.editItem.role,
-                        score:this.editItem.score,
-                        status:this.editItem.status,
+                        integrity:this.editItem.integrity==''?row.integrity:this.editItem.integrity,
+                        score:this.editItem.score==''?row.score:this.editItem.score,
+                        status:this.editItem.status==''?row.status:this.editItem.status,
                     }).then(res => {
                         console.log(res);
+                      if(res.data.code===200){
+                          const h = this.$createElement;
+                          this.$notify({
+                              title: '成功！',
+                              message: h('i', { style: 'color: teal'}, res.data.setMessage)
+                          });
+                      }else{
+                          const h = this.$createElement;
+                          this.$notify({
+                              title: '失败！',
+                              message: h('i', { style: 'color: teal'}, "修改失败！")
+                          });
+                      }
                     }).catch(err => {
                         console.log(err);
                     });
@@ -187,6 +204,11 @@
                 for (let i = 0; i < testData.length; i++) {
                     if (testData[i].uid === row.uid) {
                         testData[i].edit = true;
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '编辑模式',
+                            message: h('i', { style: 'color: teal'}, "不必填写整行信息，填写您想修改的部分即可！")
+                        });
                     }
                 }
                 this.userInfo = testData;
@@ -195,12 +217,18 @@
                 datas.splice(index, 1);
                 console.log(row);
                 this.$axios.get("/admin/deleteUser?uid="+row.uid).then(res=>{
-                    console.log(res);
-                    if(res.data.code===200){
-                        this.$message("成功删除讲座");
-                    }
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '成功！',
+                        message: h('i', { style: 'color: teal'}, '删除成功！')
+                    });
                 }).catch(err=>{
                     console.log(err);
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '失败！',
+                        message: h('i', { style: 'color: teal'}, '删除失败！')
+                    });
                 });
             }
             ,

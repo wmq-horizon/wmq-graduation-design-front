@@ -27,12 +27,13 @@
                                 score:item.lecScore,
                                 }}"> 签到页面</router-link>
             </div>
-
             <div class="text item">讲座编号：{{item.lecNumber}}
               <el-divider direction="vertical"></el-divider>
               量化分{{item.lecScore}}
               <el-divider direction="vertical"></el-divider>
-              <el-link :href="'http://47.108.211.133:8088/api/qrCode?lecName='+item.title+'&lecNumber='+item.lecNumber+'&score='+item.lecScore" target="_blank" type="primary">现场签到</el-link>
+              <el-link :href="'http://127.0.0.1:8088/api/qrCode?lecNumber='+item.lecNumber+'&score='+item.lecScore" target="_blank" type="primary">现场签到</el-link>
+              <el-divider direction="vertical"></el-divider>
+              <el-button type="text" @click="reduceIntegrity(item.lecNumber)">扣诚信值</el-button>
             </div>
             <div class="text item">讲师：{{item.speaker}},{{item.introduction}}</div>
             <div class="text item">{{item.content}}</div>
@@ -73,6 +74,7 @@
                       <template slot-scope="scope">
                         <span v-if="scope.row.arrived===0" style="color: red">待签到</span>
                         <span v-if="scope.row.arrived===1">已签到</span>
+                        <span v-if="scope.row.arrived===2" style="background-color: grey">缺席</span>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -109,7 +111,28 @@
                 }],
             }
         },
+
         methods: {
+            reduceIntegrity(lecNumber){
+                this.$axios.get("admin/reduceIntegrity?lecNumber="+lecNumber).then(res=>{
+                    console.log(res);
+                    if(res.data.code===200){
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '成功！',
+                            message: h('i', { style: 'color: teal'},res.data.setMessage),
+                        });
+                    }else{
+                        const h = this.$createElement;
+                        this.$notify({
+                            title: '失败！',
+                            message: h('i', { style: 'color: teal'},res.data.setMessage),
+                    });
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
             // 带状态表格的处理
             tableRowClassName({row, rowIndex}) {
                 if (rowIndex === 1) {
@@ -120,7 +143,7 @@
                 return '';
             },
             getTodayLecture() {
-                this.$axios.get("admin/getLectureOfToday?lecDate=2021-02-18").then(res => {
+                this.$axios.get("admin/signedInfo").then(res => {
                     console.log("查询今天召开的讲座");
                     this.lecture = res.data.data;
                     console.log(this.lecture);

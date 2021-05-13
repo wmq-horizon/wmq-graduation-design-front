@@ -7,17 +7,16 @@
       <homeComponent></homeComponent>
     </el-header>
     <!--    主体部分  -->
-    <el-container>
-      <!--          主体部分-->
+    <el-container>     <!--          主体部分-->
       <el-main id="area">
         <el-row>
-          <el-col :span="8" style="padding-right: 1%">
+          <el-col :span="8" style="padding-right: 5%">
             <el-card>
               <div class="imgbox">
                 <el-image
                   :fits="fits"
                   :src="require('../../assets/sea1.jpg')"
-                  style="width: 330px; height: 520px;"></el-image>
+                  style="width: 100%; height: 100%;"></el-image>
                 <a href="/homePage">
                   <div class="mask">
                     <span class="text" style="font-size: 18px">近期讲座<br></span>
@@ -27,13 +26,13 @@
               </div>
             </el-card>
           </el-col>
-          <el-col :span="8" style="padding-right: 1%">
+          <el-col :span="8" style="padding-right: 5%">
             <el-card>
               <div class="imgbox">
                 <el-image
                   :fits="fits"
                   :src="require('../../assets/sea2.jpg')"
-                  style="width: 330px; height: 520px"></el-image>
+                  style="width: 100%; height: 100%"></el-image>
                 <a href="/popularityList">
                   <div class="mask">
                     <span class="text" style="font-size: 18px">数据分析<br></span>
@@ -44,7 +43,7 @@
             </el-card>
           </el-col>
           <!--          右边的两个侧栏-->
-          <el-col :span="8">
+          <el-col :span="8"  style="padding-right: 5%">
             <div class="grid-content">
               <el-card class="box-card" v-if="loginStatus===null">
                 <div>用户登录</div>
@@ -52,7 +51,6 @@
                 <el-input placeholder="密码" type="password" v-model="passWord"></el-input>
                 <el-button @click="loginIn" round style="height: 45px;width: 100%">登录</el-button>
               </el-card>
-
               <el-card class="box-card" v-if=" loginStatus!==null">
                 <div  class="wow pulse logOut" data-wow-duration="2s" data-wow-iteration="3">
                   <div>欢迎您！</div>
@@ -140,7 +138,6 @@
                 this.$axios.get("student/hello").then(res => {
                     console.log(res);
                     console.log("show me")
-
                 }).catch(err => {
                 });
             },
@@ -148,11 +145,13 @@
             logOut(){
                 sessionStorage.removeItem("session");
                 sessionStorage.removeItem("status");
-                window.location.href='/home';
                 this.$axios.get("/logOut").then(res=>{
                     console.log("logout");
                     console.log(res);
+                    window.location.href='/home';
                 }).catch(err=>{console.log(err)});
+
+
             },
             loginIn() {
                 console.log(this.$md5(this.passWord));
@@ -202,7 +201,6 @@
             }).catch(err => {
                 console.log(err)
             })
-
         },//created
         mounted() {
             let options = {live: false};
@@ -213,6 +211,10 @@
 </script>
 
 <style scoped>
+  .el-card{
+    border-radius: 10px;
+    width: 100%;
+  }
   .imgbox {
     border-radius: 4px;
     position: relative;
@@ -223,8 +225,8 @@
 
   .imgbox .el-image {
     border-radius: 4px;
-    width: 330px;
-    height: 520px;
+    width: 100%;
+    height: 100%;
     /* 转换速度 */
     transition: transform 0.5s ease;
   }
@@ -273,17 +275,18 @@
 
   /*登录卡片内容*/
   .box-card {
-    width: 100%;
+    width: 90%;
     margin-bottom: 4%;
   }
   .el-main {
-    margin-top: 3%;
-    padding-right: 6%;
+    /*margin-top: 3%;*/
+    /*padding-right: 2%;*/
     padding-left: 6%;
     color: #333;
     text-align: center;
     line-height: 40px;
     padding-top: 0;
+    min-height:750px;
   }
   .el-row{
     margin-top:3%;
@@ -299,6 +302,7 @@
     min-height: 50px;
   }
   .box-card .el-input{
+
     margin-bottom: 1%;
   }
   .links:hover{
@@ -311,6 +315,7 @@
     height: 250px;
     color: white;
     transition: transform 0.5s ease;
+    margin:auto;
   }
   .logOut:hover{
     -webkit-transform: scale(1.02, 1.02);
